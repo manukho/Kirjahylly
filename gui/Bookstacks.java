@@ -6,7 +6,7 @@ import javax.swing.DefaultListModel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 
-import lgc.Bookstack;
+import pub.Bookstack;
 
 public class Bookstacks extends JPanel {
 	
