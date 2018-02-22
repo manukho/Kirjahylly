@@ -2,32 +2,29 @@ package pub;
 
 import java.util.ArrayList;
 
-public class Incollection extends Publication {
+public class Inproceedings extends Publication {
 	
 	ArrayList<Person> authors;
 	String title;
 	String booktitle;
-	String publisher;
 	int year;
 	
 	ArrayList<Person> editors;
 	int volume;
 	int number;
 	String series;
-	String type;
-	int chapter;
 	int[] pages;
 	String address;
-	String edition;
 	String month;
+	String organization;
+	String publisher;
 	
-	public Incollection(int id, ArrayList<Person> auth, String t, String bt, String pub, int y) {
+	public Inproceedings(int id, ArrayList<Person> auth, String t, String bt, int y) {
 		if (id == 0) generateId();
-		else this.id = id;		
+		else this.id = id;
 		authors = auth;
 		title = t;
 		booktitle = bt;
-		publisher = pub;
 		year = y;
 		editors = new ArrayList<Person>();
 	}
@@ -36,7 +33,7 @@ public class Incollection extends Publication {
 		editors.addAll(ed);
 	}
 	
-	void addEditor(Person ed) {
+	void addEditors(Person ed) {
 		editors.add(ed);
 	}
 	
@@ -52,28 +49,24 @@ public class Incollection extends Publication {
 		series = s;
 	}
 	
-	void addType(String t) {
-		type = t;
-	}
-	
-	void addChapter(int chap) {
-		chapter = chap;
-	}
-	
 	void addPages(int[] p) {
 		pages = p;
 	}
-
+	
 	void addAddress(String s) {
 		address = s;
 	}
 	
-	void addEdition(String ed) {
-		edition = ed;
-	}
-	
 	void addMonth(String m) {
 		month = m;
+	}
+	
+	void addOrganization(String org) {
+		organization = org;
+	}
+	
+	void addPublisher(String pub) {
+		publisher = pub;
 	}
 
 	@Override
