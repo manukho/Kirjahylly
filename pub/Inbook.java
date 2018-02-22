@@ -2,30 +2,45 @@ package pub;
 
 import java.util.ArrayList;
 
-public class Book extends Publication {
+public class Inbook extends Publication {
 	
 	ArrayList<Person> authors;
 	ArrayList<Person> editors;
 	String title;
+	int chapter;
+	int[] pages;
 	String publisher;
 	int year;
 	
 	int volume;
 	int number;
 	String series;
+	String type;
 	String address;
 	String edition;
 	String month;
-	String url;
 	
-	
-	public Book(int id, ArrayList<Person> pers, boolean auth, String t, String pub, int y){
+	public Inbook(int id, ArrayList<Person> pers, boolean auth, String t, int chap, String pub, int y) {
 		this.id = id;
 		authors = new ArrayList<Person>();
 		editors = new ArrayList<Person>();
 		if (auth) authors = pers;
 		else editors = pers;
 		title = t;
+		chapter = chap;
+		publisher = pub;
+		year = y;
+		if (id == 0) generateId();
+	}
+	
+	public Inbook(int id, ArrayList<Person> pers, boolean auth, String t, int[] p, String pub, int y) {
+		this.id = id;
+		authors = new ArrayList<Person>();
+		editors = new ArrayList<Person>();
+		if (auth) authors = pers;
+		else editors = pers;
+		title = t;
+		pages = p;
 		publisher = pub;
 		year = y;
 		if (id == 0) generateId();
@@ -35,16 +50,20 @@ public class Book extends Publication {
 		volume = vol;
 	}
 	
-	void addNumber(int num) {
-		number = num;
+	void addNumber(int n) {
+		number = n;
 	}
 	
 	void addSeries(String s) {
 		series = s;
 	}
 	
-	void addAddress(String a) {
-		address = a;
+	void addType(String t) {
+		type = t;
+	}
+	
+	void addAddress(String s) {
+		address = s;
 	}
 	
 	void addEdition(String ed) {
@@ -53,10 +72,6 @@ public class Book extends Publication {
 	
 	void addMonth(String m) {
 		month = m;
-	}
-	
-	void addURL(String s) {
-		url = s;
 	}
 
 	@Override

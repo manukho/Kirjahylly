@@ -15,6 +15,7 @@ public class LitManagement {
 	private ArrayList<String> journalList;
 	private ArrayList<String> publisherList;
 	private ArrayList<String> seriesList;
+	private ArrayList<String> keys;
 	
 	public static LitManagement getLitManagementInstance() {
 		if (lm == null) lm = new LitManagement();
@@ -26,7 +27,8 @@ public class LitManagement {
 		personList = new ArrayList<Person>();
 		journalList = new ArrayList<String>();
 		publisherList = new ArrayList<String>();
-		seriesList = new ArrayList<String>();
+		seriesList = new ArrayList<String>();		
+		keys = new ArrayList<String>();
 		
 		lastPubID = 0; /* TODO: do something useful here */
 		lastPersID = 0; /* TODO: do something useful here */		
@@ -83,5 +85,14 @@ public class LitManagement {
 
 	void addBookstacks(ArrayList<Bookstack> bs) {
 		bookstacks.addAll(bs);
+	}
+	
+	boolean isKeyUnique(String key) {
+		if (keys.contains(key)) return false;
+		return true;
+	}
+	
+	void addKey(String key) {
+		keys.add(key);
 	}
 }

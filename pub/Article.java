@@ -14,12 +14,14 @@ public class Article extends Publication {
 	int[] pages;
 	String month;
 	
-	Article(String t, ArrayList<Person> auth, String j, int y, int vol){
+	public Article(int id, String t, ArrayList<Person> auth, String j, int y, int vol){
+		this.id = id;
 		title = t;
 		authors = auth;
 		journal = j;
 		year = y;
 		volume = vol;
+		if (id == 0) generateId();
 	}
 	
 	void addNumber(int n) {

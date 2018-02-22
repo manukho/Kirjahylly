@@ -40,6 +40,11 @@ public abstract class Publication {
 		String year = String.valueOf(y);
 		k.append(year.substring(year.length() - 2));
 		
+		int counter = 0;
+		while (!LitManagement.getLitManagementInstance().isKeyUnique(k.append(counter).toString())) {
+			k.replace(k.length() - String.valueOf(counter).length(), k.length(), "");
+			counter++;
+		}
 		key = k.toString();
 		return key;
 	}
