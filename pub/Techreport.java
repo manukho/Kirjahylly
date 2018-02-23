@@ -61,8 +61,7 @@ public class Techreport extends Publication {
 
 	@Override
 	void generateKey() {
-		// TODO Auto-generated method stub
-
+		generateKey(authors, year);
 	}
 
 }

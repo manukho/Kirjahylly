@@ -13,11 +13,11 @@ public abstract class Publication {
 		return id;
 	}
 	
-	void addNote(String s) {
+	void setNote(String s) {
 		note = s;
 	}
 	
-	void addKey(String s) {
+	void setKey(String s) {
 		key = s;
 	}
 	
