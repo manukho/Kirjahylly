@@ -2,23 +2,24 @@ package pub;
 
 import java.util.ArrayList;
 
-public class Phdthesis extends Publication {
+public class Techreport extends Publication {
 	
 	ArrayList<Person> authors;
 	String title;
-	String school;
+	String institution;
 	int year;
 	
 	String type;
+	int number;
 	String address;
 	String month;
 	
-	public Phdthesis(int id, ArrayList<Person> auth, String t, String s, int y) {
+	public Techreport(int id, ArrayList<Person> auth, String t, String inst, int y) {
 		if (id == 0) generateId();
 		else this.id = id;
 		authors = auth;
 		title = t;
-		school = s;
+		institution = inst;
 		year = y;
 	}
 	
@@ -34,16 +35,20 @@ public class Phdthesis extends Publication {
 		title = t;
 	}
 	
-	void setSchool(String s) {
-		school = s;
+	void setInstitution(String inst) {
+		institution = inst;
 	}
 	
 	void setYear(int y) {
 		year = y;
 	}
 	
-	void setType(String t) {
+	void setType(String t){
 		type = t;
+	}
+	
+	void setNumber(int n) {
+		number = n;
 	}
 	
 	void setAddress(String s) {
@@ -56,7 +61,8 @@ public class Phdthesis extends Publication {
 
 	@Override
 	void generateKey() {
-		generateKey(authors, year);
+		// TODO Auto-generated method stub
+
 	}
 
 }
