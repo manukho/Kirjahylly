@@ -56,7 +56,6 @@ public class PubAdd extends JPanel implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		pubClassSel = (String) pubClassList.getSelectedItem();
-		System.out.println(pubClassSel);
 		if (pubClassSel.equals("article")) showArticle();
 		if (pubClassSel.equals("book")) showBook();
 		if (pubClassSel.equals("booklet")) showBooklet();
@@ -65,6 +64,7 @@ public class PubAdd extends JPanel implements ActionListener {
 		if (pubClassSel.equals("inproceedings")) showInproceedings();
 		if (pubClassSel.equals("manual")) showManual();
 		if (pubClassSel.equals("mastersthesis")) showMastersthesis();
+		if (pubClassSel.equals("misc")) showMisc();
 	}
 	
 	private void showArticle() {
@@ -876,7 +876,6 @@ public class PubAdd extends JPanel implements ActionListener {
 	}
 	
 	private void showMastersthesis() {
-
 		panel.removeAll();
 		panel.repaint();
 		Dimension dim = new Dimension(200,25);
@@ -954,6 +953,70 @@ public class PubAdd extends JPanel implements ActionListener {
 		JTextArea noteF = new JTextArea();
 		noteF.setPreferredSize(new Dimension(200,50));
 		c.weightx = 1; c.gridx = 1; c.gridy = 8;
+		panel.add(noteF, c);
+		
+		revalidate();
+	}
+	
+	private void showMisc() {
+		panel.removeAll();
+		panel.repaint();
+		Dimension dim = new Dimension(200,25);
+		
+		JLabel titleL = new JLabel("Title: ");
+		JTextField titleF = new JTextField();
+		titleF.setPreferredSize(dim);
+	    c.weightx = 0; c.gridx = 0; c.gridy = 0; c.insets = new Insets(0,0,0,0);
+		panel.add(titleL, c);
+		c.weightx = 1; c.gridx = 1; c.gridy = 0;
+		panel.add(titleF, c);
+		
+		JLabel authorL = new JLabel("Author(s): ");
+		JTextField authorF = new JTextField();
+		authorF.setPreferredSize(dim);
+		c.weightx = 0; c.gridx = 0; c.gridy = 1;
+		panel.add(authorL, c);
+		c.weightx = 1; c.gridx = 1; c.gridy = 1;
+		panel.add(authorF, c);
+		
+		JLabel hpL = new JLabel("How published: ");
+		c.weightx = 0; c.gridx = 0; c.gridy = 2;
+		panel.add(hpL, c);
+		JTextField hpF = new JTextField();
+		hpF.setPreferredSize(dim);
+		c.weightx = 1; c.gridx = 1; c.gridy = 2;
+		panel.add(hpF, c);
+		
+		JLabel monthL = new JLabel("Month: ");
+		c.weightx = 0; c.gridx = 0; c.gridy = 3;
+		panel.add(monthL, c);
+		JTextField monthF = new JTextField();
+		monthF.setPreferredSize(dim);
+		c.weightx = 1; c.gridx = 1; c.gridy = 3;
+		panel.add(monthF, c);
+		
+		JLabel yearL = new JLabel("Year: ");
+		c.weightx = 0; c.gridx = 0; c.gridy = 4;
+		panel.add(yearL, c);
+		JTextField yearF = new JTextField(Year.now().toString());
+		yearF.setPreferredSize(dim);
+		c.weightx = 1; c.gridx = 1; c.gridy = 4;
+		panel.add(yearF, c);
+		
+		JLabel keyL = new JLabel("Key: ");
+		c.weightx = 0; c.gridx = 0; c.gridy = 5;
+		panel.add(keyL, c);
+		JTextField keyF = new JTextField();
+		keyF.setPreferredSize(dim);
+		c.weightx = 1; c.gridx = 1; c.gridy = 5;
+		panel.add(keyF, c);
+		
+		JLabel noteL = new JLabel("Note: ");
+		c.weightx = 0; c.gridx = 0; c.gridy = 6; c.insets = new Insets(5,0,0,0);
+		panel.add(noteL, c);
+		JTextArea noteF = new JTextArea();
+		noteF.setPreferredSize(new Dimension(200,50));
+		c.weightx = 1; c.gridx = 1; c.gridy = 6;
 		panel.add(noteF, c);
 		
 		revalidate();
