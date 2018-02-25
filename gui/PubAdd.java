@@ -1,5 +1,6 @@
 package gui;
 
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -59,6 +60,7 @@ public class PubAdd extends JPanel implements ActionListener {
 		if (pubClassSel.equals("article")) showArticle();
 		if (pubClassSel.equals("book")) showBook();
 		if (pubClassSel.equals("booklet")) showBooklet();
+		if (pubClassSel.equals("inbook")) showInbook();
 	}
 	
 	private void showArticle() {
@@ -291,7 +293,6 @@ public class PubAdd extends JPanel implements ActionListener {
 		// now the optional fields
 		c.insets = new Insets(10,0,0,0);
 		
-		// note, key
 		JLabel authorL = new JLabel("Author(s): ");
 		JTextField authorF = new JTextField();
 		authorF.setPreferredSize(dim);
@@ -349,6 +350,170 @@ public class PubAdd extends JPanel implements ActionListener {
 		panel.add(noteF, c);
 		
 		revalidate();
+	}
+	
+	private void showInbook() {
+		panel.removeAll();
+		panel.repaint();
+		Dimension dim = new Dimension(200,25);
+				
+		JLabel titleL = new JLabel("Title: ");
+		JTextField titleF = new JTextField();
+		titleF.setPreferredSize(dim);
+	    c.weightx = 0; c.gridx = 0; c.gridy = 0;
+		panel.add(titleL, c);
+		c.weightx = 1; c.gridx = 1; c.gridy = 0;
+		panel.add(titleF, c);
+		
+		String[] authed = {"Author(s)", "Editor(s)"};
+		JComboBox<String> aeBox = new JComboBox<String>(authed);
+		aeBox.setPreferredSize(new Dimension(90, 23));
+		aeBox.setSelectedIndex(0);
+	    c.weightx = 0; c.gridx = 0; c.gridy = 1; c.insets = new Insets(0,0,0,5);
+		panel.add(aeBox, c);
+		JTextField authedF = new JTextField();
+		authedF.setPreferredSize(dim);
+		c.weightx = 1; c.gridx = 1; c.gridy = 1; c.insets = new Insets(0,0,0,0);
+		panel.add(authedF, c);
+		
+		String[] chapa = {"Chapter", "Pages"};
+		JComboBox<String> cpBox = new JComboBox<String>(chapa);
+		JPanel cpPanel = new JPanel();
+		cpPanel.setPreferredSize(dim);
+		JTextField chapF = new JTextField();
+		chapF.setPreferredSize(dim);
+		cpPanel.add(chapF);
+		cpBox.setPreferredSize(new Dimension(90, 23));
+		cpBox.setSelectedIndex(0);
+		cpBox.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				c.weightx = 1; c.gridx = 1; c.gridy = 2; c.insets = new Insets(0,0,0,0);
+				int sel = cpBox.getSelectedIndex();
+				if (containsComponent(panel, cpPanel)) panel.remove(cpPanel);
+				if (containsComponent(panel, chapF)) panel.remove(chapF);
+				if (sel == 0) { // chapter
+					panel.add(chapF, c);
+				} else { // pages
+					if (cpPanel.getComponentCount() == 0){
+						JTextField pagesF1 = new JTextField();
+						pagesF1.setPreferredSize(new Dimension(50,25));
+						cpPanel.add(pagesF1);
+						JLabel minus = new JLabel(" - ");
+						cpPanel.add(minus);
+						JTextField pagesF2 = new JTextField();
+						pagesF2.setPreferredSize(new Dimension(50,25));
+						cpPanel.add(pagesF2);
+						}
+					panel.add(cpPanel, c);
+				}
+				panel.revalidate();
+				panel.repaint();
+			}
+		});
+	    c.weightx = 0; c.gridx = 0; c.gridy = 2; c.insets = new Insets(0,0,0,5);
+		panel.add(cpBox, c);
+		c.weightx = 1; c.gridx = 1; c.gridy = 2; c.insets = new Insets(0,0,0,0);
+		panel.add(chapF, c);
+		
+		JLabel publL = new JLabel("Publisher: ");
+		c.weightx = 0; c.gridx = 0; c.gridy = 3;
+		panel.add(publL, c);
+		JTextField publF = new JTextField();
+		publF.setPreferredSize(dim);
+		c.weightx = 1; c.gridx = 1; c.gridy = 3;
+		panel.add(publF, c);
+		
+		JLabel yearL = new JLabel("Year: ");
+		c.weightx = 0; c.gridx = 0; c.gridy = 4;
+		panel.add(yearL, c);
+		JTextField yearF = new JTextField(Year.now().toString());
+		yearF.setPreferredSize(dim);
+		c.weightx = 1; c.gridx = 1; c.gridy = 4;
+		panel.add(yearF, c);
+		
+		//edition, month, note, key
+		// now the optional fields
+		c.insets = new Insets(10,0,0,0);
+		
+		String[] volnum = {"Volume", "Number"};
+		JComboBox<String> vnBox = new JComboBox<String>(volnum);
+		vnBox.setPreferredSize(new Dimension(90, 23));
+		vnBox.setSelectedIndex(0);
+	    c.weightx = 0; c.gridx = 0; c.gridy = 5; c.insets = new Insets(0,0,0,5);
+		panel.add(vnBox, c);
+		JTextField volNumF = new JTextField();
+		volNumF.setPreferredSize(dim);
+		c.weightx = 1; c.gridx = 1; c.gridy = 5; c.insets = new Insets(0,0,0,0);
+		panel.add(volNumF, c);
+		
+		JLabel seriesL = new JLabel("Series: ");
+		c.weightx = 0; c.gridx = 0; c.gridy = 6;
+		panel.add(seriesL, c);
+		JTextField seriesF = new JTextField();
+		seriesF.setPreferredSize(dim);
+		c.weightx = 1; c.gridx = 1; c.gridy = 6;
+		panel.add(seriesF, c);
+		
+		JLabel typeL = new JLabel("Type: ");
+		c.weightx = 0; c.gridx = 0; c.gridy = 7;
+		panel.add(typeL, c);
+		JTextField typeF = new JTextField();
+		typeF.setPreferredSize(dim);
+		c.weightx = 1; c.gridx = 1; c.gridy = 7;
+		panel.add(typeF, c);
+		
+		JLabel addressL = new JLabel("Address: ");
+		c.weightx = 0; c.gridx = 0; c.gridy = 8;
+		panel.add(addressL, c);
+		JTextField addressF = new JTextField();
+		addressF.setPreferredSize(dim);
+		c.weightx = 1; c.gridx = 1; c.gridy = 8;
+		panel.add(addressF, c);
+
+		JLabel editionL = new JLabel("Edition: ");
+		c.weightx = 0; c.gridx = 0; c.gridy = 9;
+		panel.add(editionL, c);
+		JTextField editionF = new JTextField();
+		editionF.setPreferredSize(dim);
+		c.weightx = 1; c.gridx = 1; c.gridy = 9;
+		panel.add(editionF, c);
+		
+		JLabel monthL = new JLabel("Month: ");
+		c.weightx = 0; c.gridx = 0; c.gridy = 10;
+		panel.add(monthL, c);
+		JTextField monthF = new JTextField();
+		monthF.setPreferredSize(dim);
+		c.weightx = 1; c.gridx = 1; c.gridy = 10;
+		panel.add(monthF, c);
+		
+		JLabel keyL = new JLabel("Key: ");
+		c.weightx = 0; c.gridx = 0; c.gridy = 11;
+		panel.add(keyL, c);
+		JTextField keyF = new JTextField();
+		keyF.setPreferredSize(dim);
+		c.weightx = 1; c.gridx = 1; c.gridy = 11;
+		panel.add(keyF, c);
+		
+		JLabel noteL = new JLabel("Note: ");
+		c.weightx = 0; c.gridx = 0; c.gridy = 12; c.insets = new Insets(5,0,0,0);
+		panel.add(noteL, c);
+		JTextArea noteF = new JTextArea();
+		noteF.setPreferredSize(new Dimension(200,50));
+		c.weightx = 1; c.gridx = 1; c.gridy = 12;
+		panel.add(noteF, c);
+		
+		revalidate();
+	}
+	
+	boolean containsComponent(JPanel p, Component c) {
+		Component[] components = p.getComponents();
+		for (Component component : components) {
+			if (c == component) {
+				return true;
+			}
+		}
+		return false;
 	}
 	
 }
