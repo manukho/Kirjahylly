@@ -10,6 +10,7 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.KeyStroke;
 
@@ -49,11 +50,20 @@ public class Kirjahylly extends JFrame {
 	private void addMenuBar() {
 		JMenuBar mb = new JMenuBar();
 		JMenu mfile = new JMenu("File");
+		JMenuItem miaddbibit = new JMenuItem("Add Bibliographic Item");
+		miaddbibit.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				//int option = JOptionPane.showConfirmDialog(matrices, message, "Dimension of " + s, JOptionPane.OK_CANCEL_OPTION);
+				int option = JOptionPane.showConfirmDialog(kh, new PubAdd(), "", JOptionPane.OK_CANCEL_OPTION);
+			}
+		});
+		mfile.add(miaddbibit);
 		JMenuItem miquit = new JMenuItem("Quit");
         miquit.setAccelerator(KeyStroke.getKeyStroke("control Q"));
 		miquit.addActionListener(new ActionListener() {
 			@Override
-			public void actionPerformed(ActionEvent arg0) {
+			public void actionPerformed(ActionEvent e) {
 				dispose();
 			}
 		});
