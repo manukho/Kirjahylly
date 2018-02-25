@@ -24,7 +24,6 @@ public class PubAdd extends JPanel implements ActionListener {
 	JPanel panel;
 	GridBagConstraints c;
 	private Dimension dim;
-	private Insets zeroInsets;
 	private JComboBox<String> pubClassList;
 	private JTextField titleF;
 	private JTextField authorF;
@@ -55,6 +54,7 @@ public class PubAdd extends JPanel implements ActionListener {
 	private JTextField typeF;
 	private JTextField edF;
 	private JTextField orgF;
+	private JTextField instF;
 	
 	PubAdd(){
 		Dimension d = new Dimension(600,600);
@@ -74,7 +74,6 @@ public class PubAdd extends JPanel implements ActionListener {
 		panel.setLayout(new GridBagLayout());
 		c = new GridBagConstraints();
 		dim = new Dimension(350,25);
-		zeroInsets = new Insets(0,0,0,0);
 		
 		c.fill = GridBagConstraints.HORIZONTAL;
 		c.anchor = GridBagConstraints.NORTH;
@@ -100,6 +99,8 @@ public class PubAdd extends JPanel implements ActionListener {
 		if (pubClassSel.equals("misc")) showMisc();
 		if (pubClassSel.equals("phdthesis")) showPhdthesis();
 		if (pubClassSel.equals("proceedings")) showProceedings();
+		if (pubClassSel.equals("techreport")) showTechreport();
+		if (pubClassSel.equals("unpublished")) showUnpublished();
 	}
 	
 	private void showArticle() {
@@ -250,7 +251,6 @@ public class PubAdd extends JPanel implements ActionListener {
 		addAuthorFields(1, true);
 		addSchoolFields(2, true);
 		addYearFields(3, true);
-		
 		addTypeFields(4, false);
 		addAddressFields(5, false);
 		addMonthFields(6, false);
@@ -307,6 +307,38 @@ public class PubAdd extends JPanel implements ActionListener {
 		addOrgFields(8, false);
 		addKeyFields(9, false);
 		addNoteFields(10, false);
+		
+		panel.revalidate();
+	}
+	
+	private void showTechreport() {
+		panel.removeAll();
+		panel.repaint();
+		
+		addTitleFields(0, true);
+		addAuthorFields(1, true);
+		addInstitutionFields(2, true);
+		addYearFields(3, true);
+		addTypeFields(4, false);
+		addNumberFields(5, false);
+		addAddressFields(6, false);
+		addMonthFields(7, false);
+		addKeyFields(8, false);
+		addNoteFields(9, false);
+		
+		panel.revalidate();
+	}
+	
+	private void showUnpublished() {
+		panel.removeAll();
+		panel.repaint();
+		
+		addTitleFields(0, true);
+		addAuthorFields(1, true);
+		addNoteFields(2, true);
+		addMonthFields(3, false);
+		addYearFields(4, false);
+		addKeyFields(5, false);
 		
 		panel.revalidate();
 	}
@@ -458,7 +490,7 @@ public class PubAdd extends JPanel implements ActionListener {
 		panel.add(aeBox, c);
 		authedF = new JTextField();
 		authedF.setPreferredSize(dim);
-		c.weightx = 1; c.gridx = 1; c.gridy = row; c.insets = zeroInsets;
+		c.weightx = 1; c.gridx = 1; c.gridy = row; c.insets = new Insets(0,0,0,0);
 		panel.add(authedF, c);
 	}
 	
@@ -504,7 +536,7 @@ public class PubAdd extends JPanel implements ActionListener {
 		panel.add(vnBox, c);
 		volNumF = new JTextField();
 		volNumF.setPreferredSize(dim);
-		c.weightx = 1; c.gridx = 1; c.gridy = row; c.insets = zeroInsets;
+		c.weightx = 1; c.gridx = 1; c.gridy = row; c.insets = new Insets(0,0,0,0);
 		panel.add(volNumF, c);
 	}
 	
@@ -589,7 +621,7 @@ public class PubAdd extends JPanel implements ActionListener {
 		});
 	    c.weightx = 0; c.gridx = 0; c.gridy = row; c.insets = new Insets(0,0,0,5);
 		panel.add(cpBox, c);
-		c.weightx = 1; c.gridx = 1; c.gridy = row; c.insets = zeroInsets;
+		c.weightx = 1; c.gridx = 1; c.gridy = row; c.insets = new Insets(0,0,0,0);
 		panel.add(chapF, c);
 	}
 	
@@ -635,5 +667,16 @@ public class PubAdd extends JPanel implements ActionListener {
 		orgF.setPreferredSize(dim);
 		c.weightx = 1; c.gridx = 1; c.gridy = row;
 		panel.add(orgF, c);
+	}
+	
+	private void addInstitutionFields(int row, boolean req) {
+		JLabel instL = new JLabel("Institution: ");
+		if (req) instL.setForeground(Color.RED);
+		c.weightx = 0; c.gridx = 0; c.gridy = row;
+		panel.add(instL, c);
+		instF = new JTextField();
+		instF.setPreferredSize(dim);
+		c.weightx = 1; c.gridx = 1; c.gridy = row;
+		panel.add(instF, c);
 	}
 }
