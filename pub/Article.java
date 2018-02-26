@@ -6,6 +6,7 @@ public class Article extends Publication {
 	
 	String title;
 	ArrayList<Person> authors;
+	String author;
 	String journal;
 	int year;
 	int volume;
@@ -24,15 +25,15 @@ public class Article extends Publication {
 		if (id == 0) generateId();
 	}
 	
-	void addNumber(int n) {
+	public void addNumber(int n) {
 		number = n;
 	}
 	
-	void addPages(int first, int second) {
+	public void addPages(int first, int second) {
 		pages = new int[]{first, second};
 	}
 	
-	void addMonth(String m) {
+	public void addMonth(String m) {
 		month = m;
 	}
 	

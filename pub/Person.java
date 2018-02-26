@@ -5,7 +5,7 @@ public class Person {
 	int id;
 	String name;
 	
-	Person(String s){
+	public Person(String s){
 		name = s;
 		id = LitManagement.getLitManagementInstance().getPersID();
 	}
@@ -17,6 +17,10 @@ public class Person {
 	
 	void setPersID(int persID) {
 		id = persID;
+	}
+	
+	public String toString() {
+		return id + ": " + name;
 	}
 
 }

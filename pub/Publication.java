@@ -13,11 +13,11 @@ public abstract class Publication {
 		return id;
 	}
 	
-	void setNote(String s) {
+	public void setNote(String s) {
 		note = s;
 	}
 	
-	void setKey(String s) {
+	public void setKey(String s) {
 		key = s;
 	}
 	
@@ -37,9 +37,12 @@ public abstract class Publication {
 				k.append(p.name.substring(0, 1).toUpperCase());
 			}
 		}
-		String year = String.valueOf(y);
-		k.append(year.substring(year.length() - 2));
+		if (y != 0) {
+			String year = String.valueOf(y);
+			k.append(year.substring(year.length() - 2));
+		}
 		
+		// now make sure the key is unique
 		int counter = 0;
 		while (!LitManagement.getLitManagementInstance().isKeyUnique(k.append(counter).toString())) {
 			k.replace(k.length() - String.valueOf(counter).length(), k.length(), "");

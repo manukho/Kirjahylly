@@ -9,6 +9,7 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.time.Year;
+import java.util.ArrayList;
 
 import javax.swing.BoxLayout;
 import javax.swing.JComboBox;
@@ -16,6 +17,10 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+
+import pub.Article;
+import pub.Person;
+import pub.Publication;
 
 public class PubAdd extends JPanel implements ActionListener {
 	
@@ -100,7 +105,8 @@ public class PubAdd extends JPanel implements ActionListener {
 		if (pubClassSel.equals("phdthesis")) showPhdthesis();
 		if (pubClassSel.equals("proceedings")) showProceedings();
 		if (pubClassSel.equals("techreport")) showTechreport();
-		if (pubClassSel.equals("unpublished")) showUnpublished();
+		if (pubClassSel.equals("unpublished")) showUnpublished();	
+		
 	}
 	
 	private void showArticle() {
@@ -678,5 +684,73 @@ public class PubAdd extends JPanel implements ActionListener {
 		instF.setPreferredSize(dim);
 		c.weightx = 1; c.gridx = 1; c.gridy = row;
 		panel.add(instF, c);
+	}
+	
+	Publication getPublication() {
+		pubClassSel = (String) pubClassList.getSelectedItem();
+		if (pubClassSel.equals("article")) {
+			String title = titleF.getText();
+			String auth = authorF.getText();
+			ArrayList<Person> authors = constructList(auth);
+			String journal = journalF.getText();
+			if (!isNumeric(yearF.getText())) return null;
+			if (!isNumeric(volumeF.getText())) return null;
+			int year = Integer.parseInt(yearF.getText());
+			int volume = Integer.parseInt(volumeF.getText());
+			Article a = new Article(0, title, authors, journal, year, volume);
+			
+			if (isNumeric(numberF.getText())) a.addNumber(Integer.parseInt(numberF.getText()));
+			if (isNumeric(pagesF1.getText()) && isNumeric(pagesF2.getText()))
+				a.addPages(Integer.parseInt(pagesF1.getText()), Integer.parseInt(pagesF2.getText()));
+			if (!monthF.getText().isEmpty()) a.addMonth(monthF.getText());
+			if (!keyF.getText().isEmpty()) a.setKey(keyF.getText());
+			if (!noteF.getText().isEmpty()) a.setNote(noteF.getText());
+			return a;
+		}
+		return null;
+	}
+	
+	@SuppressWarnings("unused")
+	public static boolean isNumeric(String s){  
+	  try {  
+	    int i = Integer.parseInt(s);  
+	  }  
+	  catch(NumberFormatException e) {  
+	    return false;  
+	  }  
+	  return true;  
+	}
+	
+	ArrayList<Person> constructList(String s){
+		ArrayList<Person> al = new ArrayList<Person>();
+		s.replaceAll("AND", "and");
+		s.replaceAll(";", "and");
+		String[] sarr = s.split("and");
+		for (int i = 0; i < sarr.length; i++) {
+			String[] name = sarr[i].split(",");
+			if (name.length == 2) { 
+				Person p = new Person(sarr[i].trim());
+				al.add(p);
+			} 
+			if (name.length == 1) {
+				sarr[i] = sarr[i].trim();
+				int index = sarr[i].lastIndexOf(" ");				
+				if (index == -1) {
+					Person p = new Person(sarr[i].trim());
+					al.add(p);
+				} else {
+					String[] ss = sarr[i].split(" ");
+					String n = ss[ss.length - 1] + ", ";
+					for (int j = 0; j < ss.length - 1; j++) {
+						if (!ss[j].equals("")) n = n + ss[j];
+					}
+					Person p = new Person(n.trim());
+					al.add(p);
+				}
+				
+			}
+		}
+		System.out.println(al);
+		return al;
 	}
 }

@@ -14,6 +14,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.KeyStroke;
 
+import pub.Publication;
+
 public class Kirjahylly extends JFrame {
 	
 	static Kirjahylly kh;
@@ -54,8 +56,12 @@ public class Kirjahylly extends JFrame {
 		miaddbibit.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				//int option = JOptionPane.showConfirmDialog(matrices, message, "Dimension of " + s, JOptionPane.OK_CANCEL_OPTION);
-				int option = JOptionPane.showConfirmDialog(kh, new PubAdd(), "", JOptionPane.OK_CANCEL_OPTION);
+				PubAdd pa = new PubAdd();
+				int option = JOptionPane.showConfirmDialog(kh, pa, "", JOptionPane.OK_CANCEL_OPTION);
+				if (option == JOptionPane.OK_OPTION) {
+					Publication p = pa.getPublication();
+					System.out.println("ok clicked");
+				}
 			}
 		});
 		mfile.add(miaddbibit);

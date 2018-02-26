@@ -21,7 +21,8 @@ public class Inbook extends Publication {
 	String month;
 	
 	public Inbook(int id, ArrayList<Person> pers, boolean auth, String t, int chap, String pub, int y) {
-		this.id = id;
+		if (id == 0) generateId();
+		else this.id = id;		
 		authors = new ArrayList<Person>();
 		editors = new ArrayList<Person>();
 		if (auth) authors = pers;
@@ -30,7 +31,6 @@ public class Inbook extends Publication {
 		chapter = chap;
 		publisher = pub;
 		year = y;
-		if (id == 0) generateId();
 	}
 	
 	public Inbook(int id, ArrayList<Person> pers, boolean auth, String t, int[] p, String pub, int y) {
@@ -72,6 +72,14 @@ public class Inbook extends Publication {
 	
 	void addMonth(String m) {
 		month = m;
+	}
+	
+	void addChapter(int chap) {
+		chapter = chap;
+	}
+	
+	void addPages(int[] p) {
+		pages = p;
 	}
 
 	@Override
