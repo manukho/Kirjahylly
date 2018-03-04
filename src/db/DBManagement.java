@@ -3,7 +3,6 @@ package db;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.List;
 
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
@@ -14,6 +13,7 @@ import org.apache.log4j.Logger;
 
 import pub.Article;
 import pub.Book;
+import pub.Booklet;
 
 public class DBManagement {
 	
@@ -22,6 +22,7 @@ public class DBManagement {
 	SqlSession session;
 	ArticleMapper articleMapper;
 	BookMapper bookMapper;
+	BookletMapper bookletMapper;
 	PublicationAuthorMapper pubAuthMapper;
 	PublicationEditorMapper pubEdMapper;
 	
@@ -31,6 +32,8 @@ public class DBManagement {
 		init();
 		
 		test();
+		
+		cleanUp();
 	}
 	
     public void init() {
@@ -45,14 +48,20 @@ public class DBManagement {
         factory = new SqlSessionFactoryBuilder().build(is);
         factory.getConfiguration().addMapper(ArticleMapper.class);
         factory.getConfiguration().addMapper(BookMapper.class);
+        factory.getConfiguration().addMapper(BookletMapper.class);
+        
         factory.getConfiguration().addMapper(PublicationAuthorMapper.class);
         factory.getConfiguration().addMapper(PublicationEditorMapper.class);
+        
         
     	session = factory.openSession(true);
     	articleMapper = session.getMapper(ArticleMapper.class);
     	bookMapper = session.getMapper(BookMapper.class);
+    	bookletMapper = session.getMapper(BookletMapper.class);
+    	
     	pubAuthMapper = session.getMapper(PublicationAuthorMapper.class);
     	pubEdMapper = session.getMapper(PublicationEditorMapper.class);
+    	
     }
     
     private void configurelog4j() {
@@ -97,14 +106,24 @@ public class DBManagement {
     	
     	insertBook(b);
     	
+    	Booklet bklt = new Booklet();
+    	bklt.setTitle("The Comprehensive LaTeX Symbol List");
+    	ArrayList<String> al4 = new ArrayList<String>();
+    	al4.add("Pakin, Scott");
+    	bklt.setAuthors(al4);
+    	bklt.setHowpublished("tug.ctan.org/info/symbols/comprehensive/symbols-a4.pdf");
+    	bklt.setYear(2017);
+    	
+    	insertBooklet(bklt);
     	
     	ArrayList<Article> articleList = getAllArticles();
     	ArrayList<Book> bookList = getAllBooks();
+    	ArrayList<Booklet> bookletList = getAllBooklets();
     	
     	System.out.println(articleList.toString());
     	System.out.println(bookList.toString());
+    	System.out.println(bookletList.toString());
     	
-    	session.close();
     }  	
     
     private void insertAuthors(int id, String type, ArrayList<String> al) {
@@ -127,11 +146,16 @@ public class DBManagement {
     private void insertBook(Book book) {
     	bookMapper.insertBook(book);
     	if (!book.getAuthors().isEmpty()) {
-    		System.out.println("insertBook: authors exist.");
     		insertAuthors(book.getId(), "book", book.getAuthors());
     	} else {
-    		System.out.println("insertBook: no authors exist.");
     		insertEditors(book.getId(), "book", book.getEditors());
+    	}
+    }
+    
+    private void insertBooklet(Booklet booklet) {
+    	bookletMapper.insertBooklet(booklet);
+    	if (!booklet.getAuthors().isEmpty()) {
+    		insertAuthors(booklet.getId(), "booklet", booklet.getAuthors());
     	}
     }
     
@@ -160,10 +184,26 @@ public class DBManagement {
     	return list;
     }
     
+    private ArrayList<Booklet> getAllBooklets(){
+    	ArrayList<Booklet> list = bookletMapper.getAllBooklets();
+    	for (int i = 0; i < list.size(); i++) {
+    		Booklet b = list.get(i);
+    		ArrayList<String> al = pubAuthMapper.getAllPublicationAuthors(b.getId(), "booklet");
+    		if (!al.isEmpty()) {
+    			b.setAuthors(al);
+    		}
+    	}
+    	return list;
+    }
+    
     private void clearAll() {
     	articleMapper.clear();
     	bookMapper.clear();
     	pubAuthMapper.clear();
     	pubEdMapper.clear();
+    }
+    
+    private void cleanUp() {
+    	session.close();
     }
 }

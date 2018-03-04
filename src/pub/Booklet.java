@@ -6,46 +6,125 @@ public class Booklet extends Publication {
 	
 	String title;
 	
-	ArrayList<Person> authors;
+	ArrayList<String> authors;
 	String howpublished;
 	String address;
 	String month;
-	int year;
+	Integer year;
 	
 	public Booklet(int id, String t) {
 		if (id == 0) generateId();
 		else this.id = id;
 		title = t;
-		authors = new ArrayList<Person>();
+		authors = new ArrayList<String>();
 	}
 	
-	void addAuthors(ArrayList<Person> auth) {
-		authors.addAll(auth);
+	public Booklet() {
+		authors = new ArrayList<String>();
 	}
-	
-	void addAuthor(Person author) {
-		authors.add(author);
+
+	public String getTitle() {
+		return title;
 	}
-	
-	void addHowpublished(String s) {
-		howpublished = s;
+
+	public void setTitle(String title) {
+		this.title = title;
 	}
-	
-	void addAddress(String s) {
-		address = s;
+
+	public ArrayList<String> getAuthors() {
+		return authors;
 	}
-	
-	void addMonth(String s) {
-		month = s;
+
+	public void setAuthors(ArrayList<String> authors) {
+		this.authors = authors;
 	}
-	
-	void addYear(int y) {
-		year = y;
+
+	public String getHowpublished() {
+		return howpublished;
+	}
+
+	public void setHowpublished(String howpublished) {
+		this.howpublished = howpublished;
+	}
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
+	public String getMonth() {
+		return month;
+	}
+
+	public void setMonth(String month) {
+		this.month = month;
+	}
+
+	public Integer getYear() {
+		return year;
+	}
+
+	public void setYear(Integer year) {
+		this.year = year;
 	}
 
 	@Override
 	void generateKey() {
 
+	}
+	
+	public String toString() {
+		StringBuilder sb = new StringBuilder("\nBOOKLET { \n");
+		sb.append("ID: ");
+		sb.append(id);
+		sb.append("\nTitle: ");
+		sb.append(title);
+		
+		if (!authors.isEmpty()) {
+			sb.append("\nAuthors: ");
+			for (int i = 0; i < authors.size(); i++) {
+				if (i != 0) {
+					sb.append("\n");
+					sb.append("\t");
+				}
+				sb.append(authors.get(i));
+			}
+		}
+		
+		if (howpublished != null && !howpublished.isEmpty()) {
+			sb.append("\nHowpublished: ");
+			sb.append(howpublished);
+		}
+		
+		if (address != null && !address.isEmpty()) {
+			sb.append("\nAddress: ");
+			sb.append(address);
+		}
+		
+		if (month != null && !month.isEmpty()) {
+			sb.append("\nMonth: ");
+			sb.append(month);
+		}
+		
+		if (year != null) {
+			sb.append("\nYear: ");
+			sb.append(year);
+		}
+		
+		if (note != null && !note.isEmpty()) {
+			sb.append("\nNote: ");
+			sb.append(note);
+		}
+		if (key != null && !key.isEmpty()) {
+			sb.append("\nKey: ");
+			sb.append(key);
+		}
+		sb.append("\n}");
+		
+		return sb.toString();
 	}
 
 }
