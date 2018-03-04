@@ -8,7 +8,6 @@ import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
-import pub.Article;
 import pub.Book;
 
 public interface BookMapper {
@@ -32,7 +31,7 @@ public interface BookMapper {
 	public int insertBook(Book a);
 
 	@Update(update)
-    public int updateArticle(Article a);
+    public int updateBook(Book b);
 	
 	@Delete(delete)
 	public int deleteBook(Book a);
