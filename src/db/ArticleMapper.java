@@ -11,21 +11,31 @@ import org.apache.ibatis.annotations.Update;
 import pub.Article;
 
 public interface ArticleMapper {
-
-	@Select("SELECT * FROM articles")
+	
+	String selectAll = "SELECT * FROM articles";
+	String insert = "INSERT INTO articles(id, title, journal, year, volume, number, firstPage, lastPage, "
+			+ "month, note, key) "
+			+ "VALUES (#{id},#{title},#{journal},#{year},#{volume},#{number},#{firstPage},#{lastPage},"
+			+ "#{month},#{note},#{key})";
+	String update = "UPDATE articles SET title=#{title}, journal=#{journal}, year=#{year}, volume=#{volume}, "
+			+ "number=#{number}, firstPage=#{firstPage}, lastPage=#{lastPage}, month=#{month}, note=#{note}, key=#{key}";
+	String delete = "DELETE from articles WHERE id=#{id}";
+	String deleteAll = "DELETE from articles";
+	
+	@Select(selectAll)
     public ArrayList<Article> getAllArticles();
 
-	@Insert("INSERT INTO articles(id, title, journal, year, volume, number, firstPage, lastPage, month, note, key) VALUES (#{id},#{title},#{journal},#{year},#{volume},#{number},#{firstPage},#{lastPage},#{month},#{note},#{key})")
-	@Options(useGeneratedKeys = true, keyProperty = "id", keyColumn = "id")    
+	@Insert(insert)
+	@Options(useGeneratedKeys = true, keyProperty = "id", keyColumn = "id")
 	public int insertArticle(Article a);
 
-	@Update("UPDATE articles SET title=#{title}, journal=#{journal}, year=#{year}, volume=#{volume}, number=#{number}, firstPage=#{firstPage}, lastPage=#{lastPage}, month=#{month}, note=#{note}, key=#{key}")
+	@Update(update)
     public int updateArticle(Article a);
 	
-	@Delete("DELETE from articles WHERE id=#{id}")
+	@Delete(delete)
 	public int deleteArticle(Article a);
 	
-	@Delete("DELETE from articles")
+	@Delete(deleteAll)
 	public int clear();
 
 	

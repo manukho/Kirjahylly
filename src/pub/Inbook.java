@@ -4,88 +4,265 @@ import java.util.ArrayList;
 
 public class Inbook extends Publication {
 	
-	ArrayList<Person> authors;
-	ArrayList<Person> editors;
+	ArrayList<String> authors;
+	ArrayList<String> editors;
 	String title;
-	int chapter;
-	int[] pages;
+	Integer chapter;
+	Integer firstPage;
+	Integer lastPage;
 	String publisher;
-	int year;
+	Integer year;
 	
-	int volume;
-	int number;
+	Integer volume;
+	Integer number;
 	String series;
-	String type;
+	String IBType;
 	String address;
 	String edition;
 	String month;
 	
-	public Inbook(int id, ArrayList<Person> pers, boolean auth, String t, int chap, String pub, int y) {
-		if (id == 0) generateId();
-		else this.id = id;		
-		authors = new ArrayList<Person>();
-		editors = new ArrayList<Person>();
-		if (auth) authors = pers;
-		else editors = pers;
-		title = t;
-		chapter = chap;
-		publisher = pub;
-		year = y;
-	}
-	
-	public Inbook(int id, ArrayList<Person> pers, boolean auth, String t, int[] p, String pub, int y) {
+	public Inbook(Integer id, ArrayList<String> pers, boolean auth, String t, Integer chap, String pub, Integer y) {
 		this.id = id;
-		authors = new ArrayList<Person>();
-		editors = new ArrayList<Person>();
+		authors = new ArrayList<String>();
+		editors = new ArrayList<String>();
 		if (auth) authors = pers;
 		else editors = pers;
 		title = t;
-		pages = p;
+		chapter = chap;
 		publisher = pub;
 		year = y;
-		if (id == 0) generateId();
 	}
 	
-	void addVolume(int vol) {
-		volume = vol;
+	public Inbook(Integer id, ArrayList<String> pers, boolean auth, String t, Integer fp, Integer lp, String pub, Integer y) {
+		this.id = id;
+		authors = new ArrayList<String>();
+		editors = new ArrayList<String>();
+		if (auth) authors = pers;
+		else editors = pers;
+		title = t;
+		firstPage = fp;
+		lastPage = lp;
+		publisher = pub;
+		year = y;
 	}
 	
-	void addNumber(int n) {
-		number = n;
+	public Inbook() {
+		authors = new ArrayList<String>();
+		editors = new ArrayList<String>();
 	}
-	
-	void addSeries(String s) {
-		series = s;
+
+	public ArrayList<String> getAuthors() {
+		return authors;
 	}
-	
-	void addType(String t) {
-		type = t;
+
+	public void setAuthors(ArrayList<String> authors) {
+		this.authors = authors;
 	}
-	
-	void addAddress(String s) {
-		address = s;
+
+	public ArrayList<String> getEditors() {
+		return editors;
 	}
-	
-	void addEdition(String ed) {
-		edition = ed;
+
+	public void setEditors(ArrayList<String> editors) {
+		this.editors = editors;
 	}
-	
-	void addMonth(String m) {
-		month = m;
+
+	public String getTitle() {
+		return title;
 	}
-	
-	void addChapter(int chap) {
-		chapter = chap;
+
+	public void setTitle(String title) {
+		this.title = title;
 	}
-	
-	void addPages(int[] p) {
-		pages = p;
+
+	public Integer getChapter() {
+		return chapter;
+	}
+
+	public void setChapter(Integer chapter) {
+		this.chapter = chapter;
+	}
+
+	public Integer getFirstPage() {
+		return firstPage;
+	}
+
+	public void setFirstPage(Integer firstPage) {
+		this.firstPage = firstPage;
+	}
+
+	public Integer getLastPage() {
+		return lastPage;
+	}
+
+	public void setLastPage(Integer lastPage) {
+		this.lastPage = lastPage;
+	}
+
+	public String getPublisher() {
+		return publisher;
+	}
+
+	public void setPublisher(String publisher) {
+		this.publisher = publisher;
+	}
+
+	public Integer getYear() {
+		return year;
+	}
+
+	public void setYear(Integer year) {
+		this.year = year;
+	}
+
+	public Integer getVolume() {
+		return volume;
+	}
+
+	public void setVolume(Integer volume) {
+		this.volume = volume;
+	}
+
+	public Integer getNumber() {
+		return number;
+	}
+
+	public void setNumber(Integer number) {
+		this.number = number;
+	}
+
+	public String getSeries() {
+		return series;
+	}
+
+	public void setSeries(String series) {
+		this.series = series;
+	}
+
+	public String getIBType() {
+		return IBType;
+	}
+
+	public void setIBType(String IBType) {
+		this.IBType = IBType;
+	}
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
+	public String getEdition() {
+		return edition;
+	}
+
+	public void setEdition(String edition) {
+		this.edition = edition;
+	}
+
+	public String getMonth() {
+		return month;
+	}
+
+	public void setMonth(String month) {
+		this.month = month;
 	}
 
 	@Override
 	void generateKey() {
-		if (authors != null && !authors.isEmpty()) generateKey(authors, year);
-		else generateKey(editors, year);
+		if (authors != null && !authors.isEmpty()) generateKey2(authors, year);
+		else generateKey2(editors, year);
 	}
+	
+	public String toString() {
+		StringBuilder sb = new StringBuilder("\nINBOOK { \n");
+		sb.append("ID: ");
+		sb.append(id);
+		sb.append("\nTitle: ");
+		sb.append(title);
+		
+		if (!authors.isEmpty()) {
+			sb.append("\nAuthors: ");
+			for (int i = 0; i < authors.size(); i++) {
+				if (i != 0) {
+					sb.append("\n");
+					sb.append("\t");
+				}
+				sb.append(authors.get(i));
+			}
+		} else {
+			sb.append("\nEditors: ");
+			for (int i = 0; i < editors.size(); i++) {
+				if (i != 0) {
+					sb.append("\n");
+					sb.append("\t");
+				}
+				sb.append(editors.get(i));
+			}
+		}
+		
+		sb.append("\nChapter: ");
+		sb.append(chapter);
+		
+		sb.append("\nPages: ");
+		sb.append(firstPage);
+		sb.append(" - ");
+		sb.append(lastPage);
+		
+		sb.append("\nPublisher: ");
+		sb.append(publisher);
+		
+		sb.append("\nYear: ");
+		sb.append(year);
+		
+		if (volume != null) {
+			sb.append("\nVolume: ");
+			sb.append(volume);
+		}
 
+		if (number != null) {
+			sb.append("\nNumber: ");
+			sb.append(number);
+		}
+		
+		if (series != null && !series.isEmpty()) {
+			sb.append("\nSeries: ");
+			sb.append(series);
+		}
+		
+		if (IBType != null && !IBType.isEmpty()) {
+			sb.append("\nType: ");
+			sb.append(IBType);
+		}
+		
+		if (address != null && !address.isEmpty()) {
+			sb.append("\nAddress: ");
+			sb.append(address);
+		}
+		
+		if (edition != null && !edition.isEmpty()) {
+			sb.append("\nEdition: ");
+			sb.append(edition);
+		}
+
+		if (month != null && !month.isEmpty()) {
+			sb.append("\nMonth: ");
+			sb.append(month);
+		}
+		
+		if (note != null && !note.isEmpty()) {
+			sb.append("\nNote: ");
+			sb.append(note);
+		}
+		if (key != null && !key.isEmpty()) {
+			sb.append("\nKey: ");
+			sb.append(key);
+		}
+		sb.append("\n}");
+		
+		return sb.toString();
+	}
 }

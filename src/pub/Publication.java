@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public abstract class Publication {
 	
-	int id;
+	Integer id;
 	String note;
 	String key;
 	
@@ -21,11 +21,11 @@ public abstract class Publication {
 		key = s;
 	}
 	
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 	
-	public void setId(int ID) {
+	public void setId(Integer ID) {
 		id = ID;
 	}
 	

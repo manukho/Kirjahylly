@@ -165,6 +165,7 @@ public class Book extends Publication {
 		}
 		sb.append("\nPublisher: ");
 		sb.append(publisher);
+		
 		sb.append("\nYear: ");
 		sb.append(year);
 		

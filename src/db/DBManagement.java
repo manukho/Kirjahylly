@@ -14,6 +14,8 @@ import org.apache.log4j.Logger;
 import pub.Article;
 import pub.Book;
 import pub.Booklet;
+import pub.Inbook;
+import pub.Incollection;
 
 public class DBManagement {
 	
@@ -23,6 +25,9 @@ public class DBManagement {
 	ArticleMapper articleMapper;
 	BookMapper bookMapper;
 	BookletMapper bookletMapper;
+	InbookMapper inbookMapper;
+	IncollectionMapper incollectionMapper;
+	
 	PublicationAuthorMapper pubAuthMapper;
 	PublicationEditorMapper pubEdMapper;
 	
@@ -49,6 +54,8 @@ public class DBManagement {
         factory.getConfiguration().addMapper(ArticleMapper.class);
         factory.getConfiguration().addMapper(BookMapper.class);
         factory.getConfiguration().addMapper(BookletMapper.class);
+        factory.getConfiguration().addMapper(InbookMapper.class);
+        factory.getConfiguration().addMapper(IncollectionMapper.class);
         
         factory.getConfiguration().addMapper(PublicationAuthorMapper.class);
         factory.getConfiguration().addMapper(PublicationEditorMapper.class);
@@ -58,6 +65,8 @@ public class DBManagement {
     	articleMapper = session.getMapper(ArticleMapper.class);
     	bookMapper = session.getMapper(BookMapper.class);
     	bookletMapper = session.getMapper(BookletMapper.class);
+    	inbookMapper = session.getMapper(InbookMapper.class);
+    	incollectionMapper = session.getMapper(IncollectionMapper.class);
     	
     	pubAuthMapper = session.getMapper(PublicationAuthorMapper.class);
     	pubEdMapper = session.getMapper(PublicationEditorMapper.class);
@@ -72,20 +81,29 @@ public class DBManagement {
     private void test() {
     	clearAll();
     	
+    	Article a = new Article();
+    	a.setTitle("Efficient models for timetable information in public transportation systems");
     	ArrayList<String> al = new ArrayList<String>();
     	al.add("Pyrga, Evangelina");
     	al.add("Schulz, Frank");
     	al.add("Wagner, Dorothea");
     	al.add("Zaroliagis, Christos");
-    	Article a = new Article("Efficient models for timetable information in public transportation systems", 
-    			al, "Journal of Experimental Algorithmics", 2008, 12);
+    	a.setAuthors(al);
+    	a.setJournal("Journal of Experimental Algorithmics");
+    	a.setYear(2008);
+    	a.setVolume(12);
     	
     	insertArticle(a);
     	
+    	Article a2 = new Article();
+    	a2.setTitle("A theory of normed simulations");
     	ArrayList<String> al2 = new ArrayList<String>();
     	al2.add("Griffioen, David");
     	al2.add("Vaandrager, Frits");
-    	Article a2 = new Article("A theory of normed simulations", al2, "ACM Transactions on Computational Logic", 2004, 5);
+    	a2.setAuthors(al2);
+    	a2.setJournal("ACM Transactions on Computational Logic");
+    	a2.setYear(2004);
+    	a2.setVolume(5);
     	a2.setNumber(4);
     	a2.setPages(577, 610);
     	
@@ -116,13 +134,53 @@ public class DBManagement {
     	
     	insertBooklet(bklt);
     	
+    	Inbook ib = new Inbook();
+    	ib.setTitle("Multiagent Systems: Algorithmic, Game-Theoretic, and Logical Foundations");
+    	ArrayList<String> al5 = new ArrayList<String>();
+    	al5.add("Shoham, Yoav");
+    	al5.add("Leyton-Brown, Kevin");
+    	ib.setAuthors(al5);
+    	ib.setYear(2009);
+    	ib.setChapter(5);
+    	ib.setFirstPage(117);
+    	ib.setLastPage(146);
+    	ib.setPublisher("Cambridge University Press");
+    	
+    	insertInbook(ib);
+    	
+    	
+    	Incollection ic = new Incollection();
+    	ic.setTitle("Models for Concurrency");
+    	ic.setBooktitle("Handbook of Logic in Computer Science");
+    	ic.setVolume(4);
+    	ArrayList<String> al6 = new ArrayList<String>();
+    	al6.add("Winskel, Glynn");
+    	al6.add("Nielsen, Mogens");
+    	ic.setAuthors(al6);
+    	ArrayList<String> al7 = new ArrayList<String>();
+    	al7.add("Abramsky, S.");
+    	al7.add("Gabbay, Dov M.");
+    	al7.add("Maibaum, T.S.E.");
+    	ic.setEditors(al7);
+    	ic.setYear(1995);
+    	ic.setFirstPage(1);
+    	ic.setLastPage(148);
+    	ic.setPublisher("Oxford University Press");
+    	ic.setAddress("Oxford, UK");
+    	
+    	insertIncollection(ic);
+    	
     	ArrayList<Article> articleList = getAllArticles();
     	ArrayList<Book> bookList = getAllBooks();
     	ArrayList<Booklet> bookletList = getAllBooklets();
+    	ArrayList<Inbook> inbookList = getAllInbooks();
+    	ArrayList<Incollection> incollectionList = getAllIncollections();
     	
     	System.out.println(articleList.toString());
     	System.out.println(bookList.toString());
     	System.out.println(bookletList.toString());
+    	System.out.println(inbookList);
+    	System.out.println(incollectionList);
     	
     }  	
     
@@ -156,6 +214,23 @@ public class DBManagement {
     	bookletMapper.insertBooklet(booklet);
     	if (!booklet.getAuthors().isEmpty()) {
     		insertAuthors(booklet.getId(), "booklet", booklet.getAuthors());
+    	}
+    }
+    
+    private void insertInbook(Inbook inbook) {
+    	inbookMapper.insertInbook(inbook);
+    	if (!inbook.getAuthors().isEmpty()) {
+    		insertAuthors(inbook.getId(), "inbook", inbook.getAuthors());
+    	} else {
+    		insertEditors(inbook.getId(), "inbook", inbook.getEditors());
+    	}
+    }
+    
+    private void insertIncollection(Incollection ic) {
+    	incollectionMapper.insertIncollection(ic);
+    	insertAuthors(ic.getId(), "incollection", ic.getAuthors());
+    	if (!ic.getEditors().isEmpty()) {
+    		insertEditors(ic.getId(), "incollection", ic.getEditors());
     	}
     }
     
@@ -196,9 +271,42 @@ public class DBManagement {
     	return list;
     }
     
+    private ArrayList<Inbook> getAllInbooks(){
+    	ArrayList<Inbook> list = inbookMapper.getAllInbooks();
+    	for (int i = 0; i < list.size(); i++) {
+    		Inbook ib = list.get(i);
+    		ArrayList<String> al = pubAuthMapper.getAllPublicationAuthors(ib.getId(), "book");
+    		if (!al.isEmpty()) {
+    			ib.setAuthors(al);
+    		} else {
+    			al = pubEdMapper.getAllPublicationEditors(ib.getId(), "book");
+    			ib.setEditors(al);
+    		}
+    	}
+    	
+    	return list;
+    }
+    
+    private ArrayList<Incollection> getAllIncollections(){
+    	ArrayList<Incollection> list = incollectionMapper.getAllIncollections();
+    	for (int i = 0; i < list.size(); i++) {
+    		Incollection ic = list.get(i);
+    		ArrayList<String> al = pubAuthMapper.getAllPublicationAuthors(ic.getId(), "incollection");
+    		ic.setAuthors(al);
+    		al = pubEdMapper.getAllPublicationEditors(ic.getId(), "incollection");
+    		if (!al.isEmpty()) {
+    			ic.setEditors(al);
+    		}
+    	}
+    	return list;
+    }
+    
     private void clearAll() {
     	articleMapper.clear();
     	bookMapper.clear();
+    	bookletMapper.clear();
+    	inbookMapper.clear();
+    	
     	pubAuthMapper.clear();
     	pubEdMapper.clear();
     }

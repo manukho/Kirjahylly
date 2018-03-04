@@ -26,13 +26,6 @@ public class Article extends Publication {
 		journal = j;
 		year = y;
 		volume = vol;
-		number = null;
-		firstPage = null;
-		lastPage = null;
-		month = null;
-		note = null;
-		key = null;
-		if (id == 0) generateId();
 	}
 
 	public Article(String t, ArrayList<String> auth, String j, int y, int vol){
@@ -41,28 +34,6 @@ public class Article extends Publication {
 		journal = j;
 		year = y;
 		volume = vol;
-		number = null;
-		firstPage = null;
-		lastPage = null;		
-		month = null;
-		note = null;
-		key = null;
-		generateId();
-	}
-	
-	public Article(Integer i, String t, ArrayList<String> auth, String j, Integer y, Integer vol, Integer n, Integer fp, Integer lp, String m, String nt, String k){
-		id = i;
-		title = t;
-		authors = auth;
-		journal = j;
-		year = y;
-		volume = vol;
-		number = n;
-		firstPage = fp;
-		lastPage = lp;
-		month = m;
-		note = nt;
-		key = k;
 	}
 	
 	public String getTitle() {
@@ -156,7 +127,7 @@ public class Article extends Publication {
 			sb.append(number);
 		}
 		if (firstPage != null && lastPage != null) {
-			sb.append("\nPages; ");
+			sb.append("\nPages: ");
 			sb.append(firstPage);
 			sb.append(" - ");
 			sb.append(lastPage);
