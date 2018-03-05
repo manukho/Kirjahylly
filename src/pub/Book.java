@@ -36,6 +36,7 @@ public class Book extends Publication {
 		editors = new ArrayList<String>();
 	}
 	
+	@Override
 	public ArrayList<String> getAuthors() {
 		return authors;
 	}
@@ -52,6 +53,7 @@ public class Book extends Publication {
 		this.editors = editors;
 	}
 
+	@Override
 	public String getTitle() {
 		return title;
 	}
@@ -74,6 +76,11 @@ public class Book extends Publication {
 
 	public void setYear(Integer year) {
 		this.year = year;
+	}
+	
+	@Override
+	public String getYearString() {
+		return year.toString();
 	}
 
 	public Integer getVolume() {

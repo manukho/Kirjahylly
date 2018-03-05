@@ -15,6 +15,9 @@ import javax.swing.JPanel;
 import javax.swing.KeyStroke;
 
 import db.DBManagement;
+import pub.Article;
+import pub.Book;
+import pub.Bookstack;
 import pub.Publication;
 
 public class Kirjahylly extends JFrame {
@@ -23,18 +26,22 @@ public class Kirjahylly extends JFrame {
 	String dir;
 	JPanel searchBar;
 	static DBManagement dbm;
+	private Bookstack currentBS;
+	private SearchResults sr;
+	
     private static final long serialVersionUID = 1L;
 
 	public static void main(String[] args) {		
 		dbm = new DBManagement();
 
 		new Kirjahylly();
+		
 	}
 	
 	public Kirjahylly() {
 		super("Kirjahylly");
 		kh = this;
-		
+		currentBS = new Bookstack("unnamed");
 		dir = System.getProperty("user.home") + File.separator + "Kirjahylly";
 		File f = new File(dir);
 		f.mkdirs();
@@ -49,7 +56,8 @@ public class Kirjahylly extends JFrame {
 		
 		searchBar = new SearchBar(this);
 		add(searchBar, BorderLayout.NORTH);
-		add(new SearchResults(), BorderLayout.CENTER);
+		sr = new SearchResults();
+		add(sr, BorderLayout.CENTER);
 		
 		pack();
 		
@@ -66,7 +74,22 @@ public class Kirjahylly extends JFrame {
 				int option = JOptionPane.showConfirmDialog(kh, pa, "", JOptionPane.OK_CANCEL_OPTION);
 				if (option == JOptionPane.OK_OPTION) {
 					Publication p = pa.getPublication();
-					
+					if (p != null) {
+						currentBS.addPub(p);
+						System.out.println(p.getClass().toString());
+						System.out.println(p.toString());
+						if (p.getClass() == Article.class) {
+							dbm.insertArticle((Article) p);
+						} 
+						if (p.getClass() == Book.class) {
+							dbm.insertBook((Book) p);
+						}
+						sr.addRow(p);
+					} else {
+						System.out.println("publication was null.");
+					}
+				} else {
+					System.out.println("option: " + option);
 				}
 			}
 		});
@@ -99,5 +122,13 @@ public class Kirjahylly extends JFrame {
 		searchBar = sb;
 		add(sb, BorderLayout.NORTH);
 		pack();
+	}
+	
+	public void setBookstack(Bookstack bs) {
+		currentBS = bs;
+	}
+	
+	public Bookstack getCurrBS() {
+		return currentBS;
 	}
 }

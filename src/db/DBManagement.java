@@ -2,6 +2,8 @@ package db;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 import org.apache.ibatis.io.Resources;
@@ -10,6 +12,7 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Logger;
+import org.h2.jdbcx.JdbcConnectionPool;
 
 import pub.Article;
 import pub.Book;
@@ -19,37 +22,63 @@ import pub.Incollection;
 
 public class DBManagement {
 	
-	public SqlSessionFactory factory = null;
-	private Logger logger;
-	SqlSession session;
-	ArticleMapper articleMapper;
-	BookMapper bookMapper;
-	BookletMapper bookletMapper;
-	InbookMapper inbookMapper;
-	IncollectionMapper incollectionMapper;
+    private static final String DRIVER = "org.h2.Driver";
+    private static final String JDBC_URL = "jdbc:h2:~/Kirjahylly/database/db";
+    private static final String USER = "";
+    private static final String PASSWORD = "";
 	
-	PublicationAuthorMapper pubAuthMapper;
-	PublicationEditorMapper pubEdMapper;
+    private static DBManagement instance;
+    private Connection connection;
+	public SqlSessionFactory factory = null;
+	private SqlSession session;
+	private ArticleMapper articleMapper;
+	private BookMapper bookMapper;
+	private BookletMapper bookletMapper;
+	private InbookMapper inbookMapper;
+	private IncollectionMapper incollectionMapper;
+	
+	private PublicationAuthorMapper pubAuthMapper;
+	private PublicationEditorMapper pubEdMapper;
 	
 	
 	public DBManagement() {
 		configurelog4j();
 		init();
-		
 		test();
-		
-		cleanUp();
+		//cleanUp();
 	}
 	
     public void init() {
-        String resource = "Configuration.xml";
+    	JdbcConnectionPool cp = null;
+    	try {
+			Class.forName(DRIVER);
+		} catch (ClassNotFoundException e) {
+			System.err.println("Driver class not found");
+			e.printStackTrace();
+		}
+    	cp = JdbcConnectionPool.create(JDBC_URL, USER, PASSWORD);
+    	try {
+			connection = cp.getConnection();
+		} catch (SQLException e) {
+			System.err.println("Could not get connection.");
+			e.printStackTrace();
+		}
+    	try {
+			connection.setAutoCommit(true);
+		} catch (SQLException e) {
+			System.err.println("could not set autocommit to true.");
+			e.printStackTrace();
+		}
+    	
+        String config = "Configuration.xml";
         InputStream is;
         try {
-            is = Resources.getResourceAsStream(resource);
+            is = Resources.getResourceAsStream(config);
         } catch (IOException e) {
             e.printStackTrace();
             return;
         }
+        
         factory = new SqlSessionFactoryBuilder().build(is);
         factory.getConfiguration().addMapper(ArticleMapper.class);
         factory.getConfiguration().addMapper(BookMapper.class);
@@ -70,11 +99,10 @@ public class DBManagement {
     	
     	pubAuthMapper = session.getMapper(PublicationAuthorMapper.class);
     	pubEdMapper = session.getMapper(PublicationEditorMapper.class);
-    	
     }
     
     private void configurelog4j() {
-    	logger = Logger.getLogger(DBManagement.class);
+    	Logger.getLogger(DBManagement.class);
     	BasicConfigurator.configure();
     }
     
@@ -121,6 +149,17 @@ public class DBManagement {
     	b.setYear(2006);
     	b.setSeries("Monographs in Theoretical Computer Science");
     	b.setAddress("Berlin [u.a.]");
+    	
+    	insertBook(b);
+    	
+    	b = new Book();
+    	al3.clear();
+    	al3.add("Pepper, Peter");
+    	b.setAuthors(al3);
+    	b.setTitle("Funktionale Programmierung in OPAL, ML, HASKELL und GOFER");
+    	b.setPublisher("Springer");
+    	b.setYear(1999);
+    	b.setAddress("Berlin");
     	
     	insertBook(b);
     	
@@ -196,12 +235,12 @@ public class DBManagement {
     	}
     }
     
-    private void insertArticle(Article article) {
+    public void insertArticle(Article article) {
     	articleMapper.insertArticle(article);
     	insertAuthors(article.getId(), "article", article.getAuthors());
     }
     
-    private void insertBook(Book book) {
+    public void insertBook(Book book) {
     	bookMapper.insertBook(book);
     	if (!book.getAuthors().isEmpty()) {
     		insertAuthors(book.getId(), "book", book.getAuthors());
@@ -210,14 +249,14 @@ public class DBManagement {
     	}
     }
     
-    private void insertBooklet(Booklet booklet) {
+    public void insertBooklet(Booklet booklet) {
     	bookletMapper.insertBooklet(booklet);
     	if (!booklet.getAuthors().isEmpty()) {
     		insertAuthors(booklet.getId(), "booklet", booklet.getAuthors());
     	}
     }
     
-    private void insertInbook(Inbook inbook) {
+    public void insertInbook(Inbook inbook) {
     	inbookMapper.insertInbook(inbook);
     	if (!inbook.getAuthors().isEmpty()) {
     		insertAuthors(inbook.getId(), "inbook", inbook.getAuthors());
@@ -226,7 +265,7 @@ public class DBManagement {
     	}
     }
     
-    private void insertIncollection(Incollection ic) {
+    public void insertIncollection(Incollection ic) {
     	incollectionMapper.insertIncollection(ic);
     	insertAuthors(ic.getId(), "incollection", ic.getAuthors());
     	if (!ic.getEditors().isEmpty()) {
@@ -306,6 +345,7 @@ public class DBManagement {
     	bookMapper.clear();
     	bookletMapper.clear();
     	inbookMapper.clear();
+    	incollectionMapper.clear();
     	
     	pubAuthMapper.clear();
     	pubEdMapper.clear();
@@ -313,5 +353,10 @@ public class DBManagement {
     
     private void cleanUp() {
     	session.close();
+    }
+    
+    public static DBManagement getInstance() {
+    	if (instance == null) instance = new DBManagement();
+    	return instance;
     }
 }

@@ -6,15 +6,23 @@ public abstract class Publication {
 	
 	Integer id;
 	String note;
-	String key;
+	String key;	
 	
 	int generateId(){
 		id = LitManagement.getLitManagementInstance().getPubID();
 		return id;
 	}
 	
+	public String getNote() {
+		return note;
+	}
+	
 	public void setNote(String s) {
 		note = s;
+	}
+	
+	public String getKey() {
+		return key;
 	}
 	
 	public void setKey(String s) {
@@ -89,4 +97,32 @@ public abstract class Publication {
 		return key;
 	}
 
+
+	/**
+	 * This method will be overridden by most subclasses.
+	 * If the subclass has a title, then the title should be returned.
+	 * Otherwise, the return value is an empty string.
+	 */
+	public String getTitle() {
+		return "";
+	}
+	
+	/**
+	 * This method will be overridden by most subclasses.
+	 * If the subclass has authors, then the list of authors should be returned.
+	 * Otherwise, the return value is null.
+	 */
+	public ArrayList<String> getAuthors(){
+		return null;
+	}
+	
+	/**
+	 * This method will be overridden by most subclasses.
+	 * If the subclass has a year, then the year should be returned as a String
+	 * Otherwise, the return value is an empty String.
+	 */
+	public String getYearString() {
+		return "";
+	}
+	
 }

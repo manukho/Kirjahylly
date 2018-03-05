@@ -18,8 +18,9 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
+import db.DBManagement;
 import pub.Article;
-import pub.Person;
+import pub.Book;
 import pub.Publication;
 
 public class PubAdd extends JPanel implements ActionListener {
@@ -62,6 +63,8 @@ public class PubAdd extends JPanel implements ActionListener {
 	private JTextField edF;
 	private JTextField orgF;
 	private JTextField instF;
+	private JComboBox monthBox;
+	private String[] months = {"", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
 	
 	PubAdd(){
 		Dimension d = new Dimension(600,600);
@@ -450,10 +453,11 @@ public class PubAdd extends JPanel implements ActionListener {
 		if (req) monthL.setForeground(Color.RED);
 		c.weightx = 0; c.gridx = 0; c.gridy = row; 
 		panel.add(monthL, c);
-		monthF = new JTextField();
-		monthF.setPreferredSize(dim);
+		monthBox = new JComboBox<String>(months);
+		monthBox.setPreferredSize(dim);
+		monthBox.setSelectedIndex(0);
 		c.weightx = 1; c.gridx = 1; c.gridy = row;
-		panel.add(monthF, c);
+		panel.add(monthBox, c);
 	}
 	
 	private void addKeyFields(int row, boolean req) {
@@ -690,26 +694,86 @@ public class PubAdd extends JPanel implements ActionListener {
 		panel.add(instF, c);
 	}
 	
+	// TODO: error message if required fields are not set
+	// TODO: check inputs
 	Publication getPublication() {
 		pubClassSel = (String) pubClassList.getSelectedItem();
 		if (pubClassSel.equals("article")) {
-			String title = titleF.getText();
-			String auth = authorF.getText();
-			ArrayList<String> authors = constructList(auth);
-			String journal = journalF.getText();
-			if (!isNumeric(yearF.getText())) return null;
-			if (!isNumeric(volumeF.getText())) return null;
-			int year = Integer.parseInt(yearF.getText());
-			int volume = Integer.parseInt(volumeF.getText());
-			Article a = new Article(0, title, authors, journal, year, volume);
+			Article a = new Article();
+			a.setTitle(titleF.getText());
 			
-			if (isNumeric(numberF.getText())) a.setNumber(Integer.parseInt(numberF.getText()));
+			ArrayList<String> authors = constructList(authorF.getText());
+			a.setAuthors(authors);
+			
+			a.setJournal(journalF.getText());
+			
+			if (!isNumeric(yearF.getText())) return null;
+			a.setYear(Integer.parseInt(yearF.getText()));
+			
+			if (!isNumeric(volumeF.getText())) return null;
+			a.setVolume(Integer.parseInt(volumeF.getText()));
+						
+			if (isNumeric(numberF.getText())) 
+				a.setNumber(Integer.parseInt(numberF.getText()));
+			
 			if (isNumeric(pagesF1.getText()) && isNumeric(pagesF2.getText()))
 				a.setPages(Integer.parseInt(pagesF1.getText()), Integer.parseInt(pagesF2.getText()));
-			if (!monthF.getText().isEmpty()) a.setMonth(monthF.getText());
-			if (!keyF.getText().isEmpty()) a.setKey(keyF.getText());
-			if (!noteF.getText().isEmpty()) a.setNote(noteF.getText());
+
+			if (monthBox.getSelectedIndex() != 0) 
+				a.setMonth(months[monthBox.getSelectedIndex()]);
+			
+			if (!keyF.getText().isEmpty()) 
+				a.setKey(keyF.getText());
+			
+			if (!noteF.getText().isEmpty()) 
+				a.setNote(noteF.getText());
+			
 			return a;
+		}
+		if (pubClassSel.equals("book")) {
+			Book b = new Book();
+			b.setTitle(titleF.getText());
+			
+			ArrayList<String> al = constructList(authedF.getText());
+			if (aeBox.getSelectedIndex() == 0) { // author
+				b.setAuthors(al);
+			} else { // editors
+				b.setEditors(al);
+			}
+			
+			b.setPublisher(publF.getText());
+			
+			if (!isNumeric(yearF.getText())) return null;
+			b.setYear(Integer.parseInt(yearF.getText()));	
+			
+			if (isNumeric(volumeF.getText()))
+				b.setVolume(Integer.parseInt(volumeF.getText()));
+						
+			if (isNumeric(numberF.getText())) 
+				b.setNumber(Integer.parseInt(numberF.getText()));
+			
+			if (!seriesF.getText().isEmpty())
+				b.setSeries(seriesF.getText());
+			
+			if (!addressF.getText().isEmpty())
+				b.setAddress(addressF.getText());
+			
+			if (!editionF.getText().isEmpty())
+				b.setEdition(editionF.getText());
+			
+			if (monthBox.getSelectedIndex() != 0) 
+				b.setMonth(months[monthBox.getSelectedIndex()]);
+			
+			if (!urlF.getText().isEmpty())
+				b.setUrl(urlF.getText());
+			
+			if (!keyF.getText().isEmpty()) // TODO: check
+				b.setKey(keyF.getText());
+			
+			if (!noteF.getText().isEmpty())
+				b.setNote(noteF.getText());
+			
+			return b;
 		}
 		return null;
 	}

@@ -36,6 +36,7 @@ public class Article extends Publication {
 		volume = vol;
 	}
 	
+	@Override
 	public String getTitle() {
 		return title;
 	}
@@ -44,6 +45,7 @@ public class Article extends Publication {
 		title = s;
 	}
 	
+	@Override
 	public ArrayList<String> getAuthors(){
 		return authors;
 	}
@@ -56,8 +58,17 @@ public class Article extends Publication {
 		journal = j;
 	}
 	
+	public Integer getYear() {
+		return year;
+	}
+	
 	public void setYear(int y) {
 		year = y;
+	}
+	
+	@Override
+	public String getYearString() {
+		return year.toString();
 	}
 	
 	public void setVolume(int vol) {
@@ -102,6 +113,7 @@ public class Article extends Publication {
 		generateKey2(authors, year);
 	}
 	
+	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder("\nARTICLE { \n");
 		sb.append("ID: ");
