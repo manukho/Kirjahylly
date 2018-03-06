@@ -3,6 +3,7 @@ package gui;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -21,6 +22,7 @@ public class SearchResults extends JPanel {
 		setLayout(new GridLayout());
 		String[] columnNames = {"Title", "Author(s)", "Year"};
 		table = new JTable(new DefaultTableModel(columnNames, 0));
+		((JLabel)table.getTableHeader().getDefaultRenderer()).setHorizontalAlignment( JLabel.LEFT );
 		
 		table.getColumnModel().getColumn(2).setMaxWidth(50);
 		model = (DefaultTableModel) table.getModel();
