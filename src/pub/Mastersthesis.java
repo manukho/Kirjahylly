@@ -4,59 +4,92 @@ import java.util.ArrayList;
 
 public class Mastersthesis extends Publication {
 	
-	ArrayList<Person> authors;
+	ArrayList<String> authors;
 	String title;
 	String school;
-	int year;
+	Integer year;
 	
 	String type;
 	String address;
 	String month;
 	
-	public Mastersthesis(int id, ArrayList<Person> auth, String t, String s, int y) {
-		if (id == 0) generateId();
-		else this.id = id;
+	public Mastersthesis(Integer id, ArrayList<String> auth, String t, String s, Integer y) {
+		this.id = id;
 		authors = auth;
 		title = t;
 		school = s;
 		year = y;
 	}
 	
-	void addAuthors(ArrayList<Person> auth) {
-		authors.addAll(auth);
+	public Mastersthesis() {
+		authors = new ArrayList<String>();
 	}
-	
-	void addAuthor(Person auth) {
-		authors.add(auth);
+
+	public ArrayList<String> getAuthors() {
+		return authors;
 	}
-	
-	void setTitle(String t) {
-		title = t;
-	}
-	
-	void setSchool(String s) {
-		school = s;
-	}
-	
-	void setYear(int y) {
-		year = y;
-	}
-	
-	void setType(String t) {
-		type = t;
-	}
-	
-	void setAddress(String s) {
-		address = s;
-	}
-	
-	void setMonth(String m) {
-		month = m;
+
+	public void setAuthors(ArrayList<String> authors) {
+		this.authors = authors;
 	}
 
 	@Override
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	public String getSchool() {
+		return school;
+	}
+
+	public void setSchool(String school) {
+		this.school = school;
+	}
+
+	public Integer getYear() {
+		return year;
+	}
+
+	public void setYear(Integer year) {
+		this.year = year;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
+	public String getMonth() {
+		return month;
+	}
+
+	public void setMonth(String month) {
+		this.month = month;
+	}
+	
+	@Override
+	public String getYearString() {
+		return year.toString();
+	}	
+
+	@Override
 	void generateKey() {
-		generateKey(authors, year);
+		generateKey2(authors, year);
 	}
 
 }

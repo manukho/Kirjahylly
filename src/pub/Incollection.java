@@ -23,8 +23,7 @@ public class Incollection extends Publication {
 	String month;
 	
 	public Incollection(int id, ArrayList<String> auth, String t, String bt, String pub, int y) {
-		if (id == 0) generateId();
-		else this.id = id;		
+		this.id = id;		
 		authors = auth;
 		title = t;
 		booktitle = bt;
@@ -46,6 +45,7 @@ public class Incollection extends Publication {
 		this.authors = authors;
 	}
 
+	@Override
 	public String getTitle() {
 		return title;
 	}
@@ -165,6 +165,11 @@ public class Incollection extends Publication {
 	public void setMonth(String month) {
 		this.month = month;
 	}
+	
+	@Override
+	public String getYearString() {
+		return year.toString();
+	}	
 
 	@Override
 	void generateKey() {

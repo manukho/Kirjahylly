@@ -67,6 +67,7 @@ public class Inbook extends Publication {
 		this.editors = editors;
 	}
 
+	@Override
 	public String getTitle() {
 		return title;
 	}
@@ -169,6 +170,11 @@ public class Inbook extends Publication {
 
 	public void setMonth(String month) {
 		this.month = month;
+	}
+	
+	@Override
+	public String getYearString() {
+		return year.toString();
 	}
 
 	@Override

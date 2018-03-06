@@ -8,14 +8,10 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
-import pub.Article;
-import pub.Book;
-import pub.Booklet;
 import pub.Publication;
 
 public class SearchResults extends JPanel {
 	
-	private Object[][] data;
 	JTable table;
 	DefaultTableModel model;
     private static final long serialVersionUID = 1L;

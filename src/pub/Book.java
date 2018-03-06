@@ -28,7 +28,6 @@ public class Book extends Publication {
 		title = t;
 		publisher = pub;
 		year = y;
-		if (id == 0) generateId();
 	}
 	
 	public Book() {

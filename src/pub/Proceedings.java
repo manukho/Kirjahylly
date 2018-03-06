@@ -5,67 +5,112 @@ import java.util.ArrayList;
 public class Proceedings extends Publication {
 	
 	String title;
-	int year;
+	Integer year;
 	
-	ArrayList<Person> editors;
-	int volume;
-	int number;
+	ArrayList<String> editors;
+	Integer volume;
+	Integer number;
 	String series;
 	String address;
 	String month;
 	String publisher;
 	String organization;
 	
-	public Proceedings(int id, String t, int y) {
-		if (id == 0) generateId();
-		else this.id = id;
+	public Proceedings(Integer id, String t, Integer y) {
+		this.id = id;
 		title = t;
 		year = y;
-		editors = new ArrayList<Person>();
+		editors = new ArrayList<String>();
 	}
 	
-	void setTitle(String t) {
-		title = t;
+	public Proceedings() {
+		editors = new ArrayList<String>();
 	}
 	
-	void setYear(int y) {
-		year = y;
+	@Override
+	public String getTitle() {
+		return title;
 	}
-	
-	void addEditors(ArrayList<Person> ed) {
-		editors.addAll(ed);
+
+	public void setTitle(String title) {
+		this.title = title;
 	}
-	
-	void addEditor(Person ed) {
-		editors.add(ed);
+
+	public Integer getYear() {
+		return year;
 	}
-	
-	void setVolume(int vol) {
-		volume = vol;
+
+	public void setYear(Integer year) {
+		this.year = year;
 	}
-	
-	void setNumber(int n) {
-		number = n;
+
+	public ArrayList<String> getEditors() {
+		return editors;
 	}
-	
-	void setSeries(String s) {
-		series = s;
+
+	public void setEditors(ArrayList<String> editors) {
+		this.editors = editors;
 	}
-	
-	void setAddress(String s) {
-		address = s;
+
+	public Integer getVolume() {
+		return volume;
 	}
-	
-	void setMonth(String m) {
-		month = m;
+
+	public void setVolume(Integer volume) {
+		this.volume = volume;
 	}
-	
-	void setPublisher(String pub) {
-		publisher = pub;
+
+	public Integer getNumber() {
+		return number;
 	}
-	
-	void setOrganization(String org) {
-		organization = org;
+
+	public void setNumber(Integer number) {
+		this.number = number;
+	}
+
+	public String getSeries() {
+		return series;
+	}
+
+	public void setSeries(String series) {
+		this.series = series;
+	}
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
+	public String getMonth() {
+		return month;
+	}
+
+	public void setMonth(String month) {
+		this.month = month;
+	}
+
+	public String getPublisher() {
+		return publisher;
+	}
+
+	public void setPublisher(String publisher) {
+		this.publisher = publisher;
+	}
+
+	public String getOrganization() {
+		return organization;
+	}
+
+	public void setOrganization(String organization) {
+		this.organization = organization;
+	}
+
+	@Override
+	public String getYearString() {
+		return year.toString();
 	}
 
 	@Override

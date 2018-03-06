@@ -4,44 +4,65 @@ import java.util.ArrayList;
 
 public class Unpublished extends Publication {
 	
-	ArrayList<Person> authors;
+	ArrayList<String> authors;
 	String title;
 	
-	int year;
+	Integer year;
 	String month;
 	
-	public Unpublished(int id, ArrayList<Person> auth, String t, String n) {
-		if (id == 0) generateId();
-		else this.id = id;
+	public Unpublished(int id, ArrayList<String> auth, String t, String n) {
+		this.id = id;
 		authors = auth;
 		title = t;
 		note = n;
 	}
-	
-	void addAuthors(ArrayList<Person> auth) {
-		authors.addAll(auth);
+
+	public Unpublished() {
+		authors = new ArrayList<String>();
+	}
+
+	public ArrayList<String> getAuthors() {
+		return authors;
+	}
+
+	public void setAuthors(ArrayList<String> authors) {
+		this.authors = authors;
+	}
+
+	@Override
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	public Integer getYear() {
+		return year;
+	}
+
+	public void setYear(Integer year) {
+		this.year = year;
+	}
+
+	public String getMonth() {
+		return month;
+	}
+
+	public void setMonth(String month) {
+		this.month = month;
 	}
 	
-	void addAuthor(Person auth) {
-		authors.add(auth);
-	}
-	
-	void setTitle(String t) {
-		title = t;
-	}
-	
-	void setMonth(String m) {
-		month = m;
-	}
-	
-	void setYear(int y) {
-		year = y;
+	public String getYearString() {
+		if (year == null) return "";
+		return year.toString();
 	}
 
 	@Override
 	void generateKey() {
-		if (year != 0) generateKey(authors, year); 
-		else generateKey(authors, 0);
+		if (year != 0) generateKey2(authors, year); 
+		else generateKey2(authors, 0);
 	}
 
 }

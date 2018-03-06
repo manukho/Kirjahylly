@@ -4,74 +4,157 @@ import java.util.ArrayList;
 
 public class Inproceedings extends Publication {
 	
-	ArrayList<Person> authors;
+	ArrayList<String> authors;
 	String title;
 	String booktitle;
-	int year;
+	Integer year;
 	
-	ArrayList<Person> editors;
-	int volume;
-	int number;
+	ArrayList<String> editors;
+	Integer volume;
+	Integer number;
 	String series;
-	int[] pages;
+	Integer firstPage;
+	Integer lastPage;
 	String address;
 	String month;
 	String organization;
 	String publisher;
 	
-	public Inproceedings(int id, ArrayList<Person> auth, String t, String bt, int y) {
-		if (id == 0) generateId();
-		else this.id = id;
+	public Inproceedings(Integer id, ArrayList<String> auth, String t, String bt, Integer y) {
+		this.id = id;
 		authors = auth;
 		title = t;
 		booktitle = bt;
 		year = y;
-		editors = new ArrayList<Person>();
+		editors = new ArrayList<String>();
 	}
 	
-	void addEditors(ArrayList<Person> ed) {
-		editors.addAll(ed);
+	public Inproceedings() {
+		authors = new ArrayList<String>();
+		editors = new ArrayList<String>();
 	}
-	
-	void addEditors(Person ed) {
-		editors.add(ed);
+
+	public ArrayList<String> getAuthors() {
+		return authors;
 	}
-	
-	void addVolume(int vol) {
-		volume = vol;
-	}
-	
-	void addNumber(int n) {
-		number = n;
-	}
-	
-	void addSeries(String s) {
-		series = s;
-	}
-	
-	void addPages(int[] p) {
-		pages = p;
-	}
-	
-	void addAddress(String s) {
-		address = s;
-	}
-	
-	void addMonth(String m) {
-		month = m;
-	}
-	
-	void addOrganization(String org) {
-		organization = org;
-	}
-	
-	void addPublisher(String pub) {
-		publisher = pub;
+
+	public void setAuthors(ArrayList<String> authors) {
+		this.authors = authors;
 	}
 
 	@Override
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	public String getBooktitle() {
+		return booktitle;
+	}
+
+	public void setBooktitle(String booktitle) {
+		this.booktitle = booktitle;
+	}
+
+	public Integer getYear() {
+		return year;
+	}
+
+	public void setYear(Integer year) {
+		this.year = year;
+	}
+
+	public ArrayList<String> getEditors() {
+		return editors;
+	}
+
+	public void setEditors(ArrayList<String> editors) {
+		this.editors = editors;
+	}
+
+	public Integer getVolume() {
+		return volume;
+	}
+
+	public void setVolume(Integer volume) {
+		this.volume = volume;
+	}
+
+	public Integer getNumber() {
+		return number;
+	}
+
+	public void setNumber(Integer number) {
+		this.number = number;
+	}
+
+	public String getSeries() {
+		return series;
+	}
+
+	public void setSeries(String series) {
+		this.series = series;
+	}
+
+	public Integer getFirstPage() {
+		return firstPage;
+	}
+
+	public void setFirstPage(Integer firstPage) {
+		this.firstPage = firstPage;
+	}
+
+	public Integer getLastPage() {
+		return lastPage;
+	}
+
+	public void setLastPage(Integer lastPage) {
+		this.lastPage = lastPage;
+	}
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
+	public String getMonth() {
+		return month;
+	}
+
+	public void setMonth(String month) {
+		this.month = month;
+	}
+
+	public String getOrganization() {
+		return organization;
+	}
+
+	public void setOrganization(String organization) {
+		this.organization = organization;
+	}
+
+	public String getPublisher() {
+		return publisher;
+	}
+
+	public void setPublisher(String publisher) {
+		this.publisher = publisher;
+	}
+	
+	@Override
+	public String getYearString() {
+		return year.toString();
+	}	
+
+	@Override
 	void generateKey() {
-		generateKey(authors, year);
+		generateKey2(authors, year);
 	}
 
 }

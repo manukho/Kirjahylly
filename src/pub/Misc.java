@@ -4,46 +4,72 @@ import java.util.ArrayList;
 
 public class Misc extends Publication {
 	
-	ArrayList<Person> authors;
+	ArrayList<String> authors;
 	String title;
 	String howpublished;
 	String month;
-	int year;
+	Integer year;
 	
 	public Misc(int id) {
-		if (id == 0) generateId();
-		else this.id = id;	
-		authors = new ArrayList<Person>();
+		this.id = id;	
+		authors = new ArrayList<String>();
 	}
 	
-	void addAuthors(ArrayList<Person> auth) {
-		authors.addAll(auth);
+	public Misc() {
+		authors = new ArrayList<String>();
 	}
 	
-	void addAuthor(Person auth) {
-		authors.add(auth);
+	public ArrayList<String> getAuthors() {
+		return authors;
 	}
-	
-	void setTitle(String t) {
-		title = t;
-	}
-	
-	void setHowpublished(String s) {
-		howpublished = s;
-	}
-	
-	void setMonth(String m) {
-		month = m;
-	}
-	
-	void setYear(int y) {
-		year = y;
+
+	public void setAuthors(ArrayList<String> authors) {
+		this.authors = authors;
 	}
 
 	@Override
+	public String getTitle() {
+		if (title == null) return "";
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	public String getHowpublished() {
+		return howpublished;
+	}
+
+	public void setHowpublished(String howpublished) {
+		this.howpublished = howpublished;
+	}
+
+	public String getMonth() {
+		return month;
+	}
+
+	public void setMonth(String month) {
+		this.month = month;
+	}
+
+	public Integer getYear() {
+		return year;
+	}
+
+	public void setYear(Integer year) {
+		this.year = year;
+	}
+	
+	@Override
+	public String getYearString() {
+		if (year != null) return year.toString();
+		return "";
+	}	
+	
+	@Override
 	void generateKey() {
-		if (!authors.isEmpty() && year != 0) generateKey(authors, year);
+		if (!authors.isEmpty() && year != 0) generateKey2(authors, year);
 		else key = Integer.toString(id);
 	}	
-
 }

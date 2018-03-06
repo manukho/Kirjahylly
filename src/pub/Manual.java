@@ -6,55 +6,92 @@ public class Manual extends Publication {
 	
 	String title;
 	
-	ArrayList<Person> authors;
+	ArrayList<String> authors;
 	String organization;
 	String address;
 	String edition;
 	String month;
-	int year;
+	Integer year;
 	
 	public Manual(int id, String t) {
-		if (id == 0) generateId();
-		else this.id = id;
+		this.id = id;
 		title = t;
-		authors = new ArrayList<Person>();
+		authors = new ArrayList<String>();
 	}
 	
-	void setTitle(String t) {
-		title = t;
+	public Manual() {
+		authors = new ArrayList<String>();
 	}
 	
-	void addAuthors(ArrayList<Person> auth) {
-		authors.addAll(auth);
+	@Override
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	public ArrayList<String> getAuthors() {
+		return authors;
+	}
+
+	public void setAuthors(ArrayList<String> authors) {
+		this.authors = authors;
+	}
+
+	public String getOrganization() {
+		return organization;
+	}
+
+	public void setOrganization(String organization) {
+		this.organization = organization;
+	}
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
+	public String getEdition() {
+		return edition;
+	}
+
+	public void setEdition(String edition) {
+		this.edition = edition;
+	}
+
+	public String getMonth() {
+		return month;
+	}
+
+	public void setMonth(String month) {
+		this.month = month;
+	}
+
+	public Integer getYear() {
+		return year;
+	}
+
+	public void setYear(Integer year) {
+		this.year = year;
 	}
 	
-	void addAuthor(Person auth) {
-		authors.add(auth);
-	}
-	
-	void addOrganization(String org) {
-		organization = org;
-	}
-	
-	void addAddress(String s) {
-		address = s;
-	}
-	
-	void addMonth(String s) {
-		month = s;
-	}
-	
-	void addYear(int y) {
-		year = y;
+	@Override
+	public String getYearString() {
+		if (year != null) return year.toString();
+		return "";
 	}
 
 	@Override
 	void generateKey() {
 		if (!authors.isEmpty() && year != 0) {
-			generateKey(authors, year);
+			generateKey2(authors, year);
 		} else {
 			key = Integer.toString(id);
 		}
 	}
-
 }

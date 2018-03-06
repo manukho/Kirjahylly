@@ -13,8 +13,7 @@ public class Booklet extends Publication {
 	Integer year;
 	
 	public Booklet(int id, String t) {
-		if (id == 0) generateId();
-		else this.id = id;
+		this.id = id;
 		title = t;
 		authors = new ArrayList<String>();
 	}
@@ -23,6 +22,7 @@ public class Booklet extends Publication {
 		authors = new ArrayList<String>();
 	}
 
+	@Override
 	public String getTitle() {
 		return title;
 	}
@@ -70,6 +70,12 @@ public class Booklet extends Publication {
 	public void setYear(Integer year) {
 		this.year = year;
 	}
+	
+	@Override
+	public String getYearString() {
+		if (year != null) return year.toString();
+		return "";
+	}	
 
 	@Override
 	void generateKey() {
