@@ -9,7 +9,7 @@ public class Mastersthesis extends Publication {
 	String school;
 	Integer year;
 	
-	String type;
+	String MTType;
 	String address;
 	String month;
 	
@@ -58,12 +58,12 @@ public class Mastersthesis extends Publication {
 		this.year = year;
 	}
 
-	public String getType() {
-		return type;
+	public String getMTType() {
+		return MTType;
 	}
 
-	public void setType(String type) {
-		this.type = type;
+	public void setMTType(String type) {
+		this.MTType = type;
 	}
 
 	public String getAddress() {

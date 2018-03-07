@@ -18,7 +18,6 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
-import db.DBManagement;
 import pub.*;
 
 /**
@@ -242,6 +241,96 @@ public class PubAdd extends JPanel implements ActionListener {
 			if (ip.getPublisher() != null && !ip.getPublisher().isEmpty()) publF.setText(ip.getPublisher());
 			if (ip.getNote() != null && !ip.getNote().isEmpty()) noteF.setText(ip.getNote());
 			if (ip.getKey() != null && !ip.getKey().isEmpty()) keyF.setText(ip.getKey());	
+		}
+		if (p.getType().equals("manual")) {
+			Manual m = (Manual) p;
+			showManual();
+			titleF.setText(m.getTitle());
+			authorF.setText(m.getAuthorString());
+			if (m.getOrganization() != null && !m.getOrganization().isEmpty()) orgF.setText(m.getOrganization());
+			if (m.getAddress() != null && !m.getAddress().isEmpty()) addressF.setText(m.getAddress());
+			if (m.getEdition() != null && !m.getEdition().isEmpty()) editionF.setText(m.getEdition());
+			if (m.getMonth() != null && !m.getMonth().isEmpty()) monthBox.setSelectedIndex(getMonthIndex(m.getMonth()));
+			yearF.setText(m.getYearString());
+			if (m.getNote() != null && !m.getNote().isEmpty()) noteF.setText(m.getNote());
+			if (m.getKey() != null && !m.getKey().isEmpty()) keyF.setText(m.getKey());	
+		}
+		if (p.getType().equals("mastersthesis")) {
+			Mastersthesis m = (Mastersthesis) p;
+			showMastersthesis();
+			titleF.setText(m.getTitle());
+			authorF.setText(m.getAuthorString());
+			schoolF.setText(m.getSchool());
+			yearF.setText(m.getYearString());
+			if (m.getMTType() != null && !m.getMTType().isEmpty()) typeF.setText(m.getMTType());
+			if (m.getAddress() != null && !m.getAddress().isEmpty()) addressF.setText(m.getAddress());
+			if (m.getMonth() != null && !m.getMonth().isEmpty()) monthBox.setSelectedIndex(getMonthIndex(m.getMonth()));
+			if (m.getNote() != null && !m.getNote().isEmpty()) noteF.setText(m.getNote());
+			if (m.getKey() != null && !m.getKey().isEmpty()) keyF.setText(m.getKey());	
+		}
+		if (p.getType().equals("misc")) {
+			Misc m = (Misc) p;
+			showMisc();
+			titleF.setText(m.getTitle());
+			authorF.setText(m.getAuthorString());
+			if (m.getHowpublished() != null && !m.getHowpublished().isEmpty()) hpF.setText(m.getHowpublished());
+			if (m.getMonth() != null && !m.getMonth().isEmpty()) monthBox.setSelectedIndex(getMonthIndex(m.getMonth()));
+			yearF.setText(m.getYearString());
+			if (m.getNote() != null && !m.getNote().isEmpty()) noteF.setText(m.getNote());
+			if (m.getKey() != null && !m.getKey().isEmpty()) keyF.setText(m.getKey());	
+		}
+		if (p.getType().equals("phdthesis")) {
+			Phdthesis pt = (Phdthesis) p;
+			showPhdthesis();
+			titleF.setText(pt.getTitle());
+			authorF.setText(pt.getAuthorString());
+			schoolF.setText(pt.getSchool());
+			yearF.setText(pt.getYearString());
+			if (pt.getPTType() != null && !pt.getPTType().isEmpty()) typeF.setText(pt.getPTType());
+			if (pt.getAddress() != null && !pt.getAddress().isEmpty()) addressF.setText(pt.getAddress());
+			if (pt.getMonth() != null && !pt.getMonth().isEmpty()) monthBox.setSelectedIndex(getMonthIndex(pt.getMonth()));
+			if (pt.getNote() != null && !pt.getNote().isEmpty()) noteF.setText(pt.getNote());
+			if (pt.getKey() != null && !pt.getKey().isEmpty()) keyF.setText(pt.getKey());	
+		}
+		if (p.getType().equals("proceedings")) {
+			Proceedings pr = (Proceedings) p;
+			showProceedings();
+			titleF.setText(pr.getTitle());
+			yearF.setText(pr.getYearString());
+			edF.setText(pr.getEditorString());
+			if (pr.getVolume() != null) volumeF.setText(pr.getVolume().toString());
+			if (pr.getNumber() != null) numberF.setText(pr.getNumber().toString());
+			if (pr.getSeries() != null && !pr.getSeries().isEmpty()) seriesF.setText(pr.getSeries());
+			if (pr.getAddress() != null && !pr.getAddress().isEmpty()) addressF.setText(pr.getAddress());
+			if (pr.getMonth() != null && !pr.getMonth().isEmpty()) monthBox.setSelectedIndex(getMonthIndex(pr.getMonth()));
+			if (pr.getOrganization() != null && !pr.getOrganization().isEmpty()) orgF.setText(pr.getOrganization());
+			if (pr.getPublisher() != null && !pr.getPublisher().isEmpty()) publF.setText(pr.getPublisher());
+			if (pr.getNote() != null && !pr.getNote().isEmpty()) noteF.setText(pr.getNote());
+			if (pr.getKey() != null && !pr.getKey().isEmpty()) keyF.setText(pr.getKey());	
+		}
+		if (p.getType().equals("techreport")) {
+			Techreport tr = (Techreport) p;
+			showTechreport();
+			titleF.setText(tr.getTitle());
+			authorF.setText(tr.getAuthorString());
+			instF.setText(tr.getInstitution());
+			yearF.setText(tr.getYearString());
+			if (tr.getTRType() != null && !tr.getTRType().isEmpty()) typeF.setText(tr.getTRType());
+			if (tr.getNumber() != null) numberF.setText(tr.getNumber().toString());
+			if (tr.getAddress() != null && !tr.getAddress().isEmpty()) addressF.setText(tr.getAddress());
+			if (tr.getMonth() != null && !tr.getMonth().isEmpty()) monthBox.setSelectedIndex(getMonthIndex(tr.getMonth()));
+			if (tr.getNote() != null && !tr.getNote().isEmpty()) noteF.setText(tr.getNote());
+			if (tr.getKey() != null && !tr.getKey().isEmpty()) keyF.setText(tr.getKey());	
+		}
+		if (p.getType().equals("unpublished")) {
+			Unpublished u = (Unpublished) p;
+			showUnpublished();
+			titleF.setText(u.getTitle());
+			authorF.setText(u.getAuthorString());
+			yearF.setText(u.getYearString());
+			if (u.getMonth() != null && !u.getMonth().isEmpty()) monthBox.setSelectedIndex(getMonthIndex(u.getMonth()));
+			if (u.getNote() != null && !u.getNote().isEmpty()) noteF.setText(u.getNote());
+			if (u.getKey() != null && !u.getKey().isEmpty()) keyF.setText(u.getKey());	
 		}
 	}
 
