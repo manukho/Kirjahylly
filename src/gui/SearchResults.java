@@ -57,6 +57,7 @@ public class SearchResults extends JPanel {
 		/* make header left aligned */
 		((JLabel)table.getTableHeader().getDefaultRenderer()).setHorizontalAlignment( JLabel.LEFT );
 
+		/* set maximum width for the year column */
 		table.getColumnModel().getColumn(2).setMaxWidth(50);
 		
 //		model.addRow(new Object[] {0, "Algebrization: A New Barrier in Complexity Theory", "Scott Aaronson, Avi Wigderson", "2009"});
@@ -76,7 +77,7 @@ public class SearchResults extends JPanel {
     			@Override
     			public void actionPerformed(ActionEvent e) {
     				int row = table.getSelectedRow();
-                    JOptionPane.showMessageDialog(table, "add item in row " + row + " to stack " + s);
+                    //JOptionPane.showMessageDialog(table, "add item in row " + row + " to stack " + s);
                     lm.getBSByName(s).addPub(getById((Integer)table.getModel().getValueAt(row, 0)));;
     			}
         	});
@@ -95,9 +96,9 @@ public class SearchResults extends JPanel {
 				int option = JOptionPane.showConfirmDialog(null, pa, "", JOptionPane.OK_CANCEL_OPTION);
 				if (option == JOptionPane.OK_OPTION) { // otherwise do nothing
 					p = pa.getPublication();
-					table.getModel().setValueAt(p.getTitle(), row, 0);
-					table.getModel().setValueAt(p.getAuthorString(), row, 1);
-					table.getModel().setValueAt(p.getYearString(), row, 2);
+					model.setValueAt(p.getTitle(), row, 0);
+					model.setValueAt(p.getAuthorString(), row, 1);
+					model.setValueAt(p.getYearString(), row, 2);
 					dbm.updatePublication(p);
 					tmp.set(row, p);
 				}
@@ -110,9 +111,10 @@ public class SearchResults extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
             	int row = table.getSelectedRow();
-                JOptionPane.showMessageDialog(table, "Right-click performed on table and choose DELETE on row " + row);
-
-                
+                Publication p = tmp.get(row);
+                model.removeRow(row);
+                dbm.deletePublication(p);
+                tmp.remove(row);
             }
         });
         popupMenu.add(deleteItem);
@@ -150,7 +152,6 @@ public class SearchResults extends JPanel {
 	public void addRow(Publication p) {
 		tmp.add(p);
 		model.addRow(new Object[] {p.getTitle(), p.getAuthorString(), p.getYearString()});
-		table.revalidate();
 	}
 	
 	private Publication getById(int id) {

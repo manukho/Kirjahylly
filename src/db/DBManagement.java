@@ -19,15 +19,7 @@ import pub.Book;
 import pub.Booklet;
 import pub.Inbook;
 import pub.Incollection;
-import pub.Inproceedings;
-import pub.Manual;
-import pub.Mastersthesis;
-import pub.Misc;
-import pub.Phdthesis;
-import pub.Proceedings;
 import pub.Publication;
-import pub.Techreport;
-import pub.Unpublished;
 
 public class DBManagement {
 	
@@ -129,7 +121,7 @@ public class DBManagement {
     	a.setYear(2008);
     	a.setVolume(12);
     	
-    	insertArticle(a);
+    	insertPublication(a);
     	
     	Article a2 = new Article();
     	a2.setTitle("A theory of normed simulations");
@@ -143,7 +135,7 @@ public class DBManagement {
     	a2.setNumber(4);
     	a2.setPages(577, 610);
     	
-    	insertArticle(a2);
+    	insertPublication(a2);
 
     	Book b = new Book();
     	ArrayList<String> al3 = new ArrayList<String>();
@@ -158,7 +150,7 @@ public class DBManagement {
     	b.setSeries("Monographs in Theoretical Computer Science");
     	b.setAddress("Berlin [u.a.]");
     	
-    	insertBook(b);
+    	insertPublication(b);
     	
     	b = new Book();
     	al3.clear();
@@ -169,7 +161,7 @@ public class DBManagement {
     	b.setYear(1999);
     	b.setAddress("Berlin");
     	
-    	insertBook(b);
+    	insertPublication(b);
     	
     	Booklet bklt = new Booklet();
     	bklt.setTitle("The Comprehensive LaTeX Symbol List");
@@ -179,7 +171,7 @@ public class DBManagement {
     	bklt.setHowpublished("tug.ctan.org/info/symbols/comprehensive/symbols-a4.pdf");
     	bklt.setYear(2017);
     	
-    	insertBooklet(bklt);
+    	insertPublication(bklt);
     	
     	Inbook ib = new Inbook();
     	ib.setTitle("Multiagent Systems: Algorithmic, Game-Theoretic, and Logical Foundations");
@@ -193,7 +185,7 @@ public class DBManagement {
     	ib.setLastPage(146);
     	ib.setPublisher("Cambridge University Press");
     	
-    	insertInbook(ib);
+    	insertPublication(ib);
     	
     	
     	Incollection ic = new Incollection();
@@ -215,7 +207,7 @@ public class DBManagement {
     	ic.setPublisher("Oxford University Press");
     	ic.setAddress("Oxford, UK");
     	
-    	insertIncollection(ic);
+    	insertPublication(ic);
     	
     	ArrayList<Article> articleList = getAllArticles();
     	ArrayList<Book> bookList = getAllBooks();
@@ -232,72 +224,16 @@ public class DBManagement {
     }  	
     
     private void insertAuthors(int id, String type, ArrayList<String> al) {
+    	if (al == null || al.isEmpty()) return;
     	for (int i = 0; i < al.size(); i++) {
     		pubAuthMapper.insertPublicationAuthor(id, type, al.get(i));
     	}
     }
     
     private void insertEditors(int id, String type, ArrayList<String> al) {
+    	if (al == null || al.isEmpty()) return;
     	for (int i = 0; i < al.size(); i++) {
     		pubEdMapper.insertPublicationEditor(id, type, al.get(i));
-    	}
-    }
-    
-    public void insertArticle(Article article) {
-    	articleMapper.insertArticle(article);
-    	insertAuthors(article.getId(), "article", article.getAuthors());
-    }
-    
-    public void insertBook(Book book) {
-    	bookMapper.insertBook(book);
-    	if (!book.getAuthors().isEmpty()) {
-    		insertAuthors(book.getId(), "book", book.getAuthors());
-    	} else {
-    		insertEditors(book.getId(), "book", book.getEditors());
-    	}
-    }
-    
-    public void insertBooklet(Booklet booklet) {
-    	bookletMapper.insertBooklet(booklet);
-    	if (!booklet.getAuthors().isEmpty()) {
-    		insertAuthors(booklet.getId(), "booklet", booklet.getAuthors());
-    	}
-    }
-    
-    public void insertInbook(Inbook inbook) {
-    	inbookMapper.insertInbook(inbook);
-    	if (!inbook.getAuthors().isEmpty()) {
-    		insertAuthors(inbook.getId(), "inbook", inbook.getAuthors());
-    	} else {
-    		insertEditors(inbook.getId(), "inbook", inbook.getEditors());
-    	}
-    }
-    
-    public void insertIncollection(Incollection ic) {
-    	incollectionMapper.insertIncollection(ic);
-    	insertAuthors(ic.getId(), "incollection", ic.getAuthors());
-    	if (!ic.getEditors().isEmpty()) {
-    		insertEditors(ic.getId(), "incollection", ic.getEditors());
-    	}
-    }
-    
-    public void updateArticle(Article a) {
-    	articleMapper.updateArticle(a);
-    	System.out.println("article updated, now the authors.");
-    	System.out.println(a.getId());
-    	System.out.println(pubAuthMapper.toString());
-    	pubAuthMapper.deleteAllPublicationAuthors(a.getId(), "article");
-    	insertAuthors(a.getId(), "article", a.getAuthors());
-    }
-    
-    public void updateBook(Book b) {
-    	bookMapper.updateBook(b);
-    	pubAuthMapper.deleteAllPublicationAuthors(b.getId(), "book");
-    	pubEdMapper.deleteAllPublicationEditors(b.getId(), "book");
-    	if (b.getAuthors() != null && b.getAuthors().isEmpty()) {
-    		insertAuthors(b.getId(), "book", b.getAuthors());
-    	} else {
-    		insertEditors(b.getId(), "book", b.getEditors());
     	}
     }
     
@@ -350,7 +286,6 @@ public class DBManagement {
     			ib.setEditors(al);
     		}
     	}
-    	
     	return list;
     }
     
@@ -395,41 +330,70 @@ public class DBManagement {
     	return instance;
     }
     
-    /* for convenience */
     public void insertPublication(Publication p) {
     	Class<? extends Publication> c = p.getClass();
-    	if (c == Article.class) insertArticle((Article) p);
-    	if (c == Book.class) insertBook((Book) p);
-    	if (c == Booklet.class) insertBooklet((Booklet) p);
-    	if (c == Inbook.class) insertInbook((Inbook) p);
-    	if (c == Incollection.class) insertIncollection((Incollection) p);
-//    	if (c == Inproceedings.class) insertInproceedings((insertInproceedings) p);
-//    	if (c == Manual.class) insertManual((Manual) p);
-//    	if (c == Mastersthesis.class) insertMastersthesis((Mastersthesis) p);
-//    	if (c == Misc.class) insertMisc((Misc) p);
-//    	if (c == Phdthesis.class) insertPhdthesis((Phdthesis) p);
-//    	if (c == Proceedings.class) insertProceedings((Proceedings) p);
-//    	if (c == Techreport.class) insertTechreport((Techreport) p);
-//    	if (c == Unpublished.class) insertUnpublished((Unpublished) p);
+    	if (c == Article.class) articleMapper.insertArticle((Article) p);
+    	if (c == Book.class) bookMapper.insertBook((Book) p);
+    	if (c == Booklet.class) bookletMapper.insertBooklet((Booklet) p);
+    	if (c == Inbook.class) inbookMapper.insertInbook((Inbook) p);
+    	if (c == Incollection.class) incollectionMapper.insertIncollection((Incollection) p);
+//    	if (c == Inproceedings.class) inproceedingsMapper.insertInproceedings((insertInproceedings) p);
+//    	if (c == Manual.class) manualMapper.insertManual((Manual) p);
+//    	if (c == Mastersthesis.class) mastersthesisMapper.insertMastersthesis((Mastersthesis) p);
+//    	if (c == Misc.class) miscMapper.insertMisc((Misc) p);
+//    	if (c == Phdthesis.class) phdthesisMapper.insertPhdthesis((Phdthesis) p);
+//    	if (c == Proceedings.class) proceedingsMapper.insertProceedings((Proceedings) p);
+//    	if (c == Techreport.class) techreportMapper.insertTechreport((Techreport) p);
+//    	if (c == Unpublished.class) unpublishedMapper.insertUnpublished((Unpublished) p);
+    	insertAuthors(p.getId(), p.getType(), p.getAuthors());
+    	insertEditors(p.getId(), p.getType(), p.getEditors());
     }
     
-    /* for convenience */
     public void updatePublication(Publication p) {
     	Class<? extends Publication> c = p.getClass();
-    	if (c == Article.class) updateArticle((Article) p);
-    	if (c == Book.class) updateBook((Book) p);
-//    	if (c == Booklet.class) updateBooklet((Booklet) p);
-//    	if (c == Inbook.class) updateInbook((Inbook) p);
-//    	if (c == Incollection.class) updateIncollection((Incollection) p);
-//    	if (c == Inproceedings.class) insertInproceedings((insertInproceedings) p);
-//    	if (c == Manual.class) insertManual((Manual) p);
-//    	if (c == Mastersthesis.class) insertMastersthesis((Mastersthesis) p);
-//    	if (c == Misc.class) insertMisc((Misc) p);
-//    	if (c == Phdthesis.class) insertPhdthesis((Phdthesis) p);
-//    	if (c == Proceedings.class) insertProceedings((Proceedings) p);
-//    	if (c == Techreport.class) insertTechreport((Techreport) p);
-//    	if (c == Unpublished.class) insertUnpublished((Unpublished) p);
+    	if (c == Article.class) articleMapper.updateArticle((Article) p);
+    	if (c == Book.class) bookMapper.updateBook((Book) p);
+    	if (c == Booklet.class) bookletMapper.updateBooklet((Booklet) p);
+    	if (c == Inbook.class) inbookMapper.updateInbook((Inbook) p);
+    	if (c == Incollection.class) incollectionMapper.updateIncollection((Incollection) p);
+//    	if (c == Inproceedings.class) inproceedingsMapper.insertInproceedings((insertInproceedings) p);
+//    	if (c == Manual.class) manualMapper.insertManual((Manual) p);
+//    	if (c == Mastersthesis.class) mastersthesisMapper.insertMastersthesis((Mastersthesis) p);
+//    	if (c == Misc.class) miscMapper.insertMisc((Misc) p);
+//    	if (c == Phdthesis.class) phdthesisMapper.insertPhdthesis((Phdthesis) p);
+//    	if (c == Proceedings.class) proceedingsMapper.insertProceedings((Proceedings) p);
+//    	if (c == Techreport.class) techreportMapper.insertTechreport((Techreport) p);
+//    	if (c == Unpublished.class) unpublishedMapper.insertUnpublished((Unpublished) p);
+    	pubAuthMapper.deleteAllPublicationAuthors(p.getId(), p.getType());
+    	pubEdMapper.deleteAllPublicationEditors(p.getId(), p.getType());
+    	if (p.getAuthors() != null && !p.getAuthors().isEmpty()) {
+    		insertAuthors(p.getId(), p.getType(), p.getAuthors());
+    	} 
+    	if (p.getEditors() != null && !p.getEditors().isEmpty()) {
+    		insertEditors(p.getId(), p.getType(), p.getEditors());
+    	}
     }
+    
+    public void deletePublication(Publication p) {
+    	Class<? extends Publication> c = p.getClass();
+    	if (c == Article.class) articleMapper.deleteArticle((Article) p);
+    	if (c == Book.class) bookMapper.deleteBook((Book) p);
+    	if (c == Booklet.class) bookletMapper.deleteBooklet((Booklet) p);
+    	if (c == Inbook.class) inbookMapper.deleteInbook((Inbook) p);
+    	if (c == Incollection.class) incollectionMapper.deleteIncollection((Incollection) p);
+//    	if (c == Inproceedings.class) inproceedingsMapper.deleteInproceedings((insertInproceedings) p);
+//    	if (c == Manual.class) manualMapper.deleteManual((Manual) p);
+//    	if (c == Mastersthesis.class) mastersthesisMapper.deleteMastersthesis((Mastersthesis) p);
+//    	if (c == Misc.class) miscMapper.deleteMisc((Misc) p);
+//    	if (c == Phdthesis.class) phdthesisMapper.deletePhdthesis((Phdthesis) p);
+//    	if (c == Proceedings.class) proceedingsMapper.deleteProceedings((Proceedings) p);
+//    	if (c == Techreport.class) techreportMapper.deleteTechreport((Techreport) p);
+//    	if (c == Unpublished.class) unpublishedMapper.deleteUnpublished((Unpublished) p);
+    	
+    	pubAuthMapper.deleteAllPublicationAuthors(p.getId(), p.getType());
+    	pubEdMapper.deleteAllPublicationEditors(p.getId(), p.getType());
+    }
+    
     
     public Publication getById(int i, String ttype) {
     	if (ttype.equals("article")) return getArticle(i);

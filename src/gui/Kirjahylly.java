@@ -75,16 +75,7 @@ public class Kirjahylly extends JFrame {
 					Publication p = pa.getPublication();
 					if (p != null) {
 						defaultBS.addPub(p);
-						Class<? extends Publication> c = p.getClass();
-						if (c == Article.class) {
-							dbm.insertArticle((Article) p);
-						} 
-						if (c == Book.class) {
-							dbm.insertBook((Book) p);
-						}
-						if (c == Booklet.class) {
-							dbm.insertBooklet((Booklet) p);
-						}
+						dbm.insertPublication(p);
 						sr.addRow(p);
 					} else {
 						System.out.println("publication was null.");

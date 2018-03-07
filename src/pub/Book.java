@@ -44,6 +44,7 @@ public class Book extends Publication {
 		this.authors = authors;
 	}
 
+	@Override
 	public ArrayList<String> getEditors() {
 		return editors;
 	}

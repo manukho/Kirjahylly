@@ -84,6 +84,14 @@ public abstract class Publication {
 	}
 	
 	/**
+	 * If the subclass has editors, then the list of editors should be returned.
+	 * Otherwise, the return value is null.
+	 */
+	public ArrayList<String> getEditors(){
+		return null;
+	}
+	
+	/**
 	 * This method will be overridden by most subclasses.
 	 * If the subclass has a year, then the year should be returned as a String
 	 * Otherwise, the return value is an empty String.
@@ -100,6 +108,19 @@ public abstract class Publication {
 			s = getAuthors().get(0);
 			for (int i = 1; i < getAuthors().size(); i++) {
 				s = s + " and " + getAuthors().get(i);
+			}
+		}
+		return s;
+	}
+	
+	public String getEditorString() {
+		String s;
+		if (getEditors() == null || getEditors().isEmpty()) {
+			s = "";
+		} else {			
+			s = getEditors().get(0);
+			for (int i = 1; i < getEditors().size(); i++) {
+				s = s + " and " + getEditors().get(i);
 			}
 		}
 		return s;

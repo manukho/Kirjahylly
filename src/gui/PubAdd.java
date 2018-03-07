@@ -21,6 +21,9 @@ import javax.swing.JTextField;
 import db.DBManagement;
 import pub.Article;
 import pub.Book;
+import pub.Booklet;
+import pub.Inbook;
+import pub.Incollection;
 import pub.Publication;
 
 /**
@@ -107,12 +110,12 @@ public class PubAdd extends JPanel implements ActionListener {
 	
 	/**
 	 * constructor for the form for modifying an existing bibliographic item
-	 * @param the type of publication to be modified
+	 * @param the publication to be modified
 	 */
 	PubAdd(Publication p){
 		modify = true;
-		System.out.println("PubAdd, p.id=" + p.getId());
 		id = p.getId();
+		pubClassSel = p.getType();
 		panel = this;		
 		Dimension d = new Dimension(600,600);
 		setPreferredSize(d);
@@ -127,25 +130,103 @@ public class PubAdd extends JPanel implements ActionListener {
 		c.ipadx = 5;
 		c.ipady = 5;
 		
-		if (p.getClass() == Article.class) {
+		if (p.getType().equals("article")) {
 			Article a = (Article) p;
-			pubClassSel = "article";
 			showArticle();
 			titleF.setText(a.getTitle());
-			authorF.setText(p.getAuthorString());
+			authorF.setText(a.getAuthorString());
 			journalF.setText(a.getJournal());
-			yearF.setText(p.getYearString());
+			yearF.setText(a.getYearString());
 			volumeF.setText(a.getVolume().toString());
 			if (a.getNumber() != null) numberF.setText(a.getNumber().toString());
 			if (a.getFirstPage() != null) pagesF1.setText(a.getFirstPage().toString());
 			if (a.getFirstPage() != null) pagesF2.setText(a.getLastPage().toString());
 			if (a.getMonth() != null && !a.getMonth().isEmpty()) monthBox.setSelectedIndex(getMonthIndex(a.getMonth()));
+			if (a.getNote() != null && !a.getNote().isEmpty()) noteF.setText(a.getNote());
+			if (a.getKey() != null && !a.getKey().isEmpty()) keyF.setText(a.getKey());
 		}
-		if (p.getClass() == Book.class) {
+		if (p.getType().equals("book")) {
 			Book b = (Book) p;
-			pubClassSel = "book";
-			
 			showBook();
+			titleF.setText(b.getTitle());
+			if (!b.getAuthors().isEmpty()) {
+				aeBox.setSelectedIndex(0);
+				authedF.setText(b.getAuthorString());
+			} else {
+				aeBox.setSelectedIndex(1);
+				authedF.setText(b.getEditorString());
+			}
+			publF.setText(b.getPublisher());
+			yearF.setText(p.getYearString());
+			if (b.getVolume() != null) volumeF.setText(b.getVolume().toString());
+			if (b.getNumber() != null) numberF.setText(b.getNumber().toString());
+			if (b.getSeries() != null && !b.getSeries().isEmpty()) seriesF.setText(b.getSeries());
+			if (b.getAddress() != null && !b.getAddress().isEmpty()) addressF.setText(b.getAddress());
+			if (b.getEdition() != null && !b.getEdition().isEmpty()) editionF.setText(b.getEdition());
+			if (b.getMonth() != null && !b.getMonth().isEmpty()) monthBox.setSelectedIndex(getMonthIndex(b.getMonth()));
+			if (b.getUrl() != null && !b.getUrl().isEmpty()) urlF.setText(b.getUrl());
+			if (b.getNote() != null && !b.getNote().isEmpty()) noteF.setText(b.getNote());
+			if (b.getKey() != null && !b.getKey().isEmpty()) keyF.setText(b.getKey());
+		}
+		if (p.getType().equals("booklet")) {
+			Booklet b = (Booklet) p;
+			showBooklet();
+			titleF.setText(b.getTitle());
+			authorF.setText(b.getAuthorString());
+			if (b.getHowpublished() != null && !b.getHowpublished().isEmpty()) hpF.setText(b.getHowpublished());
+			if (b.getAddress() != null && !b.getAddress().isEmpty()) addressF.setText(b.getAddress());
+			if (b.getMonth() != null && !b.getMonth().isEmpty()) monthBox.setSelectedIndex(getMonthIndex(b.getMonth()));
+			if (b.getYear() != null) yearF.setText(b.getYearString());
+			if (b.getNote() != null && !b.getNote().isEmpty()) noteF.setText(b.getNote());
+			if (b.getKey() != null && !b.getKey().isEmpty()) keyF.setText(b.getKey());		
+		}
+		if (p.getType().equals("inbook")) {
+			Inbook ib = (Inbook) p;
+			showInbook();
+			titleF.setText(ib.getTitle());
+			if (!ib.getAuthors().isEmpty()) {
+				aeBox.setSelectedIndex(0);
+				authedF.setText(ib.getAuthorString());
+			} else {
+				aeBox.setSelectedIndex(1);
+				authedF.setText(ib.getEditorString());
+			}
+			chapF.setText(ib.getChapter().toString());
+			pagesF1.setText(ib.getFirstPage().toString());
+			pagesF2.setText(ib.getLastPage().toString());
+			publF.setText(ib.getPublisher());
+			yearF.setText(ib.getYearString());
+			if (ib.getVolume() != null) volumeF.setText(ib.getVolume().toString());
+			if (ib.getNumber() != null) numberF.setText(ib.getNumber().toString());
+			if (ib.getSeries() != null && !ib.getSeries().isEmpty()) seriesF.setText(ib.getSeries());
+			if (ib.getIBType() != null) typeF.setText(ib.getIBType());
+			if (ib.getAddress() != null && !ib.getAddress().isEmpty()) addressF.setText(ib.getAddress());
+			if (ib.getEdition() != null && !ib.getEdition().isEmpty()) editionF.setText(ib.getEdition());
+			if (ib.getMonth() != null && !ib.getMonth().isEmpty()) monthBox.setSelectedIndex(getMonthIndex(ib.getMonth()));
+			if (ib.getNote() != null && !ib.getNote().isEmpty()) noteF.setText(ib.getNote());
+			if (ib.getKey() != null && !ib.getKey().isEmpty()) keyF.setText(ib.getKey());		
+		}
+		if (p.getType().equals("incollection")) {
+			Incollection ic = (Incollection) p;
+			showIncollection();
+			titleF.setText(ic.getTitle());
+			authorF.setText(ic.getAuthorString());
+			booktitleF.setText(ic.getBooktitle());
+			publF.setText(ic.getPublisher());
+			yearF.setText(ic.getYearString());
+			edF.setText(ic.getEditorString());
+			if (ic.getVolume() != null) volumeF.setText(ic.getVolume().toString());
+			if (ic.getNumber() != null) numberF.setText(ic.getNumber().toString());
+			if (ic.getSeries() != null && !ic.getSeries().isEmpty()) seriesF.setText(ic.getSeries());
+			if (ic.getICType() != null) typeF.setText(ic.getICType());
+			if (ic.getChapter() != null) chapF.setText(ic.getChapter().toString());
+			if (ic.getFirstPage() != null) pagesF1.setText(ic.getFirstPage().toString());
+			if (ic.getFirstPage() != null) pagesF2.setText(ic.getLastPage().toString());
+			if (ic.getAddress() != null && !ic.getAddress().isEmpty()) addressF.setText(ic.getAddress());
+			if (ic.getEdition() != null && !ic.getEdition().isEmpty()) editionF.setText(ic.getEdition());
+			if (ic.getMonth() != null && !ic.getMonth().isEmpty()) monthBox.setSelectedIndex(getMonthIndex(ic.getMonth()));
+			if (ic.getNote() != null && !ic.getNote().isEmpty()) noteF.setText(ic.getNote());
+			if (ic.getKey() != null && !ic.getKey().isEmpty()) keyF.setText(ic.getKey());		
 		}
 	}
 
