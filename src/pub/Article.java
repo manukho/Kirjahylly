@@ -54,6 +54,10 @@ public class Article extends Publication {
 		authors = auth;
 	}
 	
+	public String getJournal() {
+		return journal;
+	}
+	
 	public void setJournal(String j) {
 		journal = j;
 	}
@@ -71,8 +75,16 @@ public class Article extends Publication {
 		return year.toString();
 	}
 	
+	public Integer getVolume() {
+		return volume;
+	}
+	
 	public void setVolume(int vol) {
 		volume = vol;
+	}
+	
+	public Integer getNumber() {
+		return number;
 	}
 	
 	public void setNumber(int n) {
@@ -111,6 +123,10 @@ public class Article extends Publication {
 	@Override
 	void generateKey() {
 		generateKey2(authors, year);
+	}
+	
+	public Integer getId(){
+		return id;
 	}
 	
 	@Override

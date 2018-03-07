@@ -15,6 +15,7 @@ public class LitManagement {
 	
 	private LitManagement(){
 		bookstacks = new ArrayList<Bookstack>();
+		bookstacks.add(new Bookstack("default"));
 		keys = new ArrayList<String>();
 	}
 	
@@ -24,6 +25,21 @@ public class LitManagement {
 
 	void addBookstacks(ArrayList<Bookstack> bs) {
 		bookstacks.addAll(bs);
+	}
+	
+	public ArrayList<String> getBSNames() {
+		ArrayList<String> list = new ArrayList<String>();
+		for (Bookstack bs : bookstacks) {
+			list.add(bs.name);
+		}
+		return list;
+	}
+	
+	public Bookstack getBSByName(String s) {
+		for (Bookstack bs: bookstacks) {
+			if (s.equals(bs.name)) return bs;
+		}
+		return null;
 	}
 	
 	boolean isKeyUnique(String key) {

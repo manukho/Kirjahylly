@@ -13,6 +13,7 @@ import pub.Article;
 public interface ArticleMapper {
 	
 	String selectAll = "SELECT * FROM articles";
+	String selectByID = "SELECT id, title, journal, year, volume, number, firstPage, lastPage, month, note key FROM ARTICLES WHERE id=#{id}";
 	String insert = "INSERT INTO articles(id, title, journal, year, volume, number, firstPage, lastPage, "
 			+ "month, note, key) "
 			+ "VALUES (#{id},#{title},#{journal},#{year},#{volume},#{number},#{firstPage},#{lastPage},"
@@ -24,6 +25,9 @@ public interface ArticleMapper {
 	
 	@Select(selectAll)
     public ArrayList<Article> getAllArticles();
+	
+	@Select(selectByID)
+	public Article getArticle(int id);
 
 	@Insert(insert)
 	@Options(useGeneratedKeys = true, keyProperty = "id", keyColumn = "id")

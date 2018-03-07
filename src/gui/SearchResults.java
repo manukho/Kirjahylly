@@ -5,8 +5,10 @@ import java.awt.GridLayout;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.JLabel;
+import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -18,37 +20,87 @@ import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
 import javax.swing.table.DefaultTableModel;
 
+import db.DBManagement;
+import pub.LitManagement;
 import pub.Publication;
 
 public class SearchResults extends JPanel {
 	
 	JTable table;
 	DefaultTableModel model;
+	ArrayList<Publication> tmp;
+	DBManagement dbm;
+	LitManagement lm;
     private static final long serialVersionUID = 1L;
 	
 	SearchResults(){
 		super();
+		
+		dbm = DBManagement.getInstance();
+		lm = LitManagement.getLitManagementInstance();
+		tmp = new ArrayList<Publication>();
+		
 		setLayout(new GridLayout());
-		String[] columnNames = {"id", "Title", "Author(s)", "Year"};
-		table = new JTable(new DefaultTableModel(columnNames, 0));
+		String[] columnNames = {"Title", "Author(s)", "Year"};
+		
+		/* make cells non-editable */
+		model = new DefaultTableModel(columnNames, 0){
+			private static final long serialVersionUID = 1L;
+			@Override 
+		    public boolean isCellEditable(int row, int column){
+		        return false;
+		    }
+		};
+
+		table = new JTable(model);
+		
+		/* make header left aligned */
 		((JLabel)table.getTableHeader().getDefaultRenderer()).setHorizontalAlignment( JLabel.LEFT );
 
-		table.getColumnModel().getColumn(0).setMaxWidth(50);
-		table.getColumnModel().getColumn(3).setMaxWidth(50);
-		model = (DefaultTableModel) table.getModel();
-		model.addRow(new Object[] {0, "Algebrization: A New Barrier in Complexity Theory", "Scott Aaronson, Avi Wigderson", "2009"});
-		model.addRow(new Object[] {1, "Reactive search, a history-sensitive heuristic for MAX-SAT", "Roberto Battiti, Marco Protasi", "1997"});
+		table.getColumnModel().getColumn(2).setMaxWidth(50);
+		
+//		model.addRow(new Object[] {0, "Algebrization: A New Barrier in Complexity Theory", "Scott Aaronson, Avi Wigderson", "2009"});
+//		model.addRow(new Object[] {1, "Reactive search, a history-sensitive heuristic for MAX-SAT", "Roberto Battiti, Marco Protasi", "1997"});
 		
 		
 		/* add popup menu on table */
         final JPopupMenu popupMenu = new JPopupMenu();
         
+        JMenu addToStack = new JMenu("Add to Stack");
+        
+        ArrayList<String> stacklist = new ArrayList<String>();
+        stacklist.addAll(lm.getBSNames());
+        for (String s: stacklist) {
+        	JMenuItem stackItem = new JMenuItem(s);
+        	stackItem.addActionListener(new ActionListener() {
+    			@Override
+    			public void actionPerformed(ActionEvent e) {
+    				int row = table.getSelectedRow();
+                    JOptionPane.showMessageDialog(table, "add item in row " + row + " to stack " + s);
+                    lm.getBSByName(s).addPub(getById((Integer)table.getModel().getValueAt(row, 0)));;
+    			}
+        	});
+        	addToStack.add(stackItem);
+        }
+        
+        popupMenu.add(addToStack);
+                
         JMenuItem modifyItem = new JMenuItem("Modify");
         modifyItem.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				int row = table.getSelectedRow();
-                JOptionPane.showMessageDialog(table, "Right-click performed on table and choose MODIFY on row " + row);
+                Publication p = tmp.get(row);
+				PubAdd pa = new PubAdd(p);
+				int option = JOptionPane.showConfirmDialog(null, pa, "", JOptionPane.OK_CANCEL_OPTION);
+				if (option == JOptionPane.OK_OPTION) { // otherwise do nothing
+					p = pa.getPublication();
+					table.getModel().setValueAt(p.getTitle(), row, 0);
+					table.getModel().setValueAt(p.getAuthorString(), row, 1);
+					table.getModel().setValueAt(p.getYearString(), row, 2);
+					dbm.updatePublication(p);
+					tmp.set(row, p);
+				}
 			}
         });
         popupMenu.add(modifyItem);
@@ -59,6 +111,8 @@ public class SearchResults extends JPanel {
             public void actionPerformed(ActionEvent e) {
             	int row = table.getSelectedRow();
                 JOptionPane.showMessageDialog(table, "Right-click performed on table and choose DELETE on row " + row);
+
+                
             }
         });
         popupMenu.add(deleteItem);
@@ -94,18 +148,15 @@ public class SearchResults extends JPanel {
 	}
 	
 	public void addRow(Publication p) {
-		String authors;
-		if (p.getAuthors() == null || p.getAuthors().isEmpty()) {
-			authors = "";
-		} else {			
-			authors = p.getAuthors().get(0);
-			for (int i = 1; i < p.getAuthors().size(); i++) {
-				authors = authors + " and " + p.getAuthors().get(i);
-			}
-		}
-		model.addRow(new Object[] {p.getId(), p.getTitle(), authors, p.getYearString()});
+		tmp.add(p);
+		model.addRow(new Object[] {p.getTitle(), p.getAuthorString(), p.getYearString()});
 		table.revalidate();
 	}
-
-
+	
+	private Publication getById(int id) {
+		for (Publication pub : tmp) {
+			if (pub.getId() == id) return pub;
+		}
+		return null;
+	}
 }

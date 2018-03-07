@@ -25,6 +25,7 @@ public abstract class Publication {
 	}
 	
 	public Integer getId() {
+		System.out.println("getId: " + id);
 		return id;
 	}
 	
@@ -89,6 +90,37 @@ public abstract class Publication {
 	 */
 	public String getYearString() {
 		return "";
+	}
+	
+	public String getAuthorString() {
+		String s;
+		if (getAuthors() == null || getAuthors().isEmpty()) {
+			s = "";
+		} else {			
+			s = getAuthors().get(0);
+			for (int i = 1; i < getAuthors().size(); i++) {
+				s = s + " and " + getAuthors().get(i);
+			}
+		}
+		return s;
+	}
+	
+	public String getType() {
+    	Class<? extends Publication> c = getClass();
+    	if (c == Article.class) 		return "article";
+    	if (c == Book.class) 			return "book";
+    	if (c == Booklet.class) 		return "booklet";
+    	if (c == Inbook.class) 			return "inbook";
+    	if (c == Incollection.class) 	return "incollection";
+    	if (c == Inproceedings.class) 	return "inproceedings";
+    	if (c == Manual.class) 			return "manual";
+    	if (c == Mastersthesis.class) 	return "mastersthesis";
+    	if (c == Misc.class) 			return "misc";
+    	if (c == Phdthesis.class) 		return "phdthesis";
+    	if (c == Proceedings.class) 	return "proceedings";
+    	if (c == Techreport.class) 		return "techreport";
+    	if (c == Unpublished.class) 	return "unpublished";
+    	return null;
 	}
 	
 }

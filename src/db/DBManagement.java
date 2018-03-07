@@ -19,6 +19,15 @@ import pub.Book;
 import pub.Booklet;
 import pub.Inbook;
 import pub.Incollection;
+import pub.Inproceedings;
+import pub.Manual;
+import pub.Mastersthesis;
+import pub.Misc;
+import pub.Phdthesis;
+import pub.Proceedings;
+import pub.Publication;
+import pub.Techreport;
+import pub.Unpublished;
 
 public class DBManagement {
 	
@@ -45,7 +54,6 @@ public class DBManagement {
 		configurelog4j();
 		init();
 		test();
-		//cleanUp();
 	}
 	
     public void init() {
@@ -273,6 +281,26 @@ public class DBManagement {
     	}
     }
     
+    public void updateArticle(Article a) {
+    	articleMapper.updateArticle(a);
+    	System.out.println("article updated, now the authors.");
+    	System.out.println(a.getId());
+    	System.out.println(pubAuthMapper.toString());
+    	pubAuthMapper.deleteAllPublicationAuthors(a.getId(), "article");
+    	insertAuthors(a.getId(), "article", a.getAuthors());
+    }
+    
+    public void updateBook(Book b) {
+    	bookMapper.updateBook(b);
+    	pubAuthMapper.deleteAllPublicationAuthors(b.getId(), "book");
+    	pubEdMapper.deleteAllPublicationEditors(b.getId(), "book");
+    	if (b.getAuthors() != null && b.getAuthors().isEmpty()) {
+    		insertAuthors(b.getId(), "book", b.getAuthors());
+    	} else {
+    		insertEditors(b.getId(), "book", b.getEditors());
+    	}
+    }
+    
     private ArrayList<Article> getAllArticles() {
     	ArrayList<Article> list = articleMapper.getAllArticles();
     	for (int i = 0; i < list.size(); i++) {
@@ -340,6 +368,13 @@ public class DBManagement {
     	return list;
     }
     
+    private Article getArticle(int id) {
+    	Article a = articleMapper.getArticle(id);
+    	ArrayList<String> al = pubAuthMapper.getAllPublicationAuthors(id, "article");
+    	a.setAuthors(al);
+    	return a;
+    }
+    
     private void clearAll() {
     	articleMapper.clear();
     	bookMapper.clear();
@@ -351,12 +386,53 @@ public class DBManagement {
     	pubEdMapper.clear();
     }
     
-    private void cleanUp() {
+    public void cleanUp() {
     	session.close();
     }
     
     public static DBManagement getInstance() {
     	if (instance == null) instance = new DBManagement();
     	return instance;
+    }
+    
+    /* for convenience */
+    public void insertPublication(Publication p) {
+    	Class<? extends Publication> c = p.getClass();
+    	if (c == Article.class) insertArticle((Article) p);
+    	if (c == Book.class) insertBook((Book) p);
+    	if (c == Booklet.class) insertBooklet((Booklet) p);
+    	if (c == Inbook.class) insertInbook((Inbook) p);
+    	if (c == Incollection.class) insertIncollection((Incollection) p);
+//    	if (c == Inproceedings.class) insertInproceedings((insertInproceedings) p);
+//    	if (c == Manual.class) insertManual((Manual) p);
+//    	if (c == Mastersthesis.class) insertMastersthesis((Mastersthesis) p);
+//    	if (c == Misc.class) insertMisc((Misc) p);
+//    	if (c == Phdthesis.class) insertPhdthesis((Phdthesis) p);
+//    	if (c == Proceedings.class) insertProceedings((Proceedings) p);
+//    	if (c == Techreport.class) insertTechreport((Techreport) p);
+//    	if (c == Unpublished.class) insertUnpublished((Unpublished) p);
+    }
+    
+    /* for convenience */
+    public void updatePublication(Publication p) {
+    	Class<? extends Publication> c = p.getClass();
+    	if (c == Article.class) updateArticle((Article) p);
+    	if (c == Book.class) updateBook((Book) p);
+//    	if (c == Booklet.class) updateBooklet((Booklet) p);
+//    	if (c == Inbook.class) updateInbook((Inbook) p);
+//    	if (c == Incollection.class) updateIncollection((Incollection) p);
+//    	if (c == Inproceedings.class) insertInproceedings((insertInproceedings) p);
+//    	if (c == Manual.class) insertManual((Manual) p);
+//    	if (c == Mastersthesis.class) insertMastersthesis((Mastersthesis) p);
+//    	if (c == Misc.class) insertMisc((Misc) p);
+//    	if (c == Phdthesis.class) insertPhdthesis((Phdthesis) p);
+//    	if (c == Proceedings.class) insertProceedings((Proceedings) p);
+//    	if (c == Techreport.class) insertTechreport((Techreport) p);
+//    	if (c == Unpublished.class) insertUnpublished((Unpublished) p);
+    }
+    
+    public Publication getById(int i, String ttype) {
+    	if (ttype.equals("article")) return getArticle(i);
+    	return null;
     }
 }

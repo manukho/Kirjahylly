@@ -17,6 +17,7 @@ import javax.swing.KeyStroke;
 import db.DBManagement;
 import pub.Article;
 import pub.Book;
+import pub.Booklet;
 import pub.Bookstack;
 import pub.Publication;
 
@@ -26,22 +27,20 @@ public class Kirjahylly extends JFrame {
 	String dir;
 	JPanel searchBar;
 	static DBManagement dbm;
-	private Bookstack currentBS;
+	private Bookstack defaultBS;
 	private SearchResults sr;
 	
     private static final long serialVersionUID = 1L;
 
 	public static void main(String[] args) {		
 		dbm = new DBManagement();
-
-		new Kirjahylly();
-		
+		kh = new Kirjahylly();
 	}
 	
 	public Kirjahylly() {
 		super("Kirjahylly");
 		kh = this;
-		currentBS = new Bookstack("unnamed");
+		defaultBS = new Bookstack("unnamed");
 		dir = System.getProperty("user.home") + File.separator + "Kirjahylly";
 		File f = new File(dir);
 		f.mkdirs();
@@ -75,14 +74,16 @@ public class Kirjahylly extends JFrame {
 				if (option == JOptionPane.OK_OPTION) {
 					Publication p = pa.getPublication();
 					if (p != null) {
-						currentBS.addPub(p);
-						System.out.println(p.getClass().toString());
-						System.out.println(p.toString());
-						if (p.getClass() == Article.class) {
+						defaultBS.addPub(p);
+						Class<? extends Publication> c = p.getClass();
+						if (c == Article.class) {
 							dbm.insertArticle((Article) p);
 						} 
-						if (p.getClass() == Book.class) {
+						if (c == Book.class) {
 							dbm.insertBook((Book) p);
+						}
+						if (c == Booklet.class) {
+							dbm.insertBooklet((Booklet) p);
 						}
 						sr.addRow(p);
 					} else {
@@ -93,12 +94,14 @@ public class Kirjahylly extends JFrame {
 				}
 			}
 		});
+		
 		mfile.add(miaddbibit);
 		JMenuItem miquit = new JMenuItem("Quit");
         miquit.setAccelerator(KeyStroke.getKeyStroke("control Q"));
 		miquit.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				dbm.cleanUp();
 				dispose();
 			}
 		});
@@ -125,10 +128,10 @@ public class Kirjahylly extends JFrame {
 	}
 	
 	public void setBookstack(Bookstack bs) {
-		currentBS = bs;
+		defaultBS = bs;
 	}
 	
 	public Bookstack getCurrBS() {
-		return currentBS;
+		return defaultBS;
 	}
 }

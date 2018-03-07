@@ -23,10 +23,16 @@ import pub.Article;
 import pub.Book;
 import pub.Publication;
 
+/**
+ * @author Manuela Hopp
+ *
+ */
 public class PubAdd extends JPanel implements ActionListener {
 	
     private static final long serialVersionUID = 1L;
 	
+    boolean modify;
+    int id;
 	String[] pubClasses;
 	String pubClassSel;
 	JPanel panel;
@@ -42,7 +48,6 @@ public class PubAdd extends JPanel implements ActionListener {
 	private JPanel pagesPanel;
 	private JTextField pagesF1;
 	private JTextField pagesF2;
-	private JTextField monthF;
 	private JTextField keyF;
 	private JTextArea noteF;
 	private JTextField schoolF;
@@ -63,10 +68,14 @@ public class PubAdd extends JPanel implements ActionListener {
 	private JTextField edF;
 	private JTextField orgF;
 	private JTextField instF;
-	private JComboBox monthBox;
+	private JComboBox<String> monthBox;
 	private String[] months = {"", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
 	
+	/**
+	 * constructor for the form for adding a new bibliographic item
+	 */
 	PubAdd(){
+		modify = false;
 		Dimension d = new Dimension(600,600);
 		setPreferredSize(d);
 		setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
@@ -94,10 +103,63 @@ public class PubAdd extends JPanel implements ActionListener {
 		
 		showArticle();
 	}
+	
+	
+	/**
+	 * constructor for the form for modifying an existing bibliographic item
+	 * @param the type of publication to be modified
+	 */
+	PubAdd(Publication p){
+		modify = true;
+		System.out.println("PubAdd, p.id=" + p.getId());
+		id = p.getId();
+		panel = this;		
+		Dimension d = new Dimension(600,600);
+		setPreferredSize(d);
+		setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
+		
+		setLayout(new GridBagLayout());
+		c = new GridBagConstraints();
+		dim = new Dimension(350,25);
+		
+		c.fill = GridBagConstraints.HORIZONTAL;
+		c.anchor = GridBagConstraints.NORTH;
+		c.ipadx = 5;
+		c.ipady = 5;
+		
+		if (p.getClass() == Article.class) {
+			Article a = (Article) p;
+			pubClassSel = "article";
+			showArticle();
+			titleF.setText(a.getTitle());
+			authorF.setText(p.getAuthorString());
+			journalF.setText(a.getJournal());
+			yearF.setText(p.getYearString());
+			volumeF.setText(a.getVolume().toString());
+			if (a.getNumber() != null) numberF.setText(a.getNumber().toString());
+			if (a.getFirstPage() != null) pagesF1.setText(a.getFirstPage().toString());
+			if (a.getFirstPage() != null) pagesF2.setText(a.getLastPage().toString());
+			if (a.getMonth() != null && !a.getMonth().isEmpty()) monthBox.setSelectedIndex(getMonthIndex(a.getMonth()));
+		}
+		if (p.getClass() == Book.class) {
+			Book b = (Book) p;
+			pubClassSel = "book";
+			
+			showBook();
+		}
+	}
+
+	private int getMonthIndex(String month) {
+		for (int i = 0; i < months.length; i++) {
+			if (month.equals(months[i])) return i;
+		}
+		return 0;
+	}
+
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		pubClassSel = (String) pubClassList.getSelectedItem();
+		if (!modify) pubClassSel = (String) pubClassList.getSelectedItem();
 		if (pubClassSel.equals("article")) showArticle();
 		if (pubClassSel.equals("book")) showBook();
 		if (pubClassSel.equals("booklet")) showBooklet();
@@ -697,9 +759,10 @@ public class PubAdd extends JPanel implements ActionListener {
 	// TODO: error message if required fields are not set
 	// TODO: check inputs
 	Publication getPublication() {
-		pubClassSel = (String) pubClassList.getSelectedItem();
+		if (!modify) pubClassSel = (String) pubClassList.getSelectedItem();
 		if (pubClassSel.equals("article")) {
 			Article a = new Article();
+			if (modify) a.setId(id);
 			a.setTitle(titleF.getText());
 			
 			ArrayList<String> authors = constructList(authorF.getText());
@@ -818,7 +881,6 @@ public class PubAdd extends JPanel implements ActionListener {
 				
 			}
 		}
-		System.out.println(al);
 		return al;
 	}
 }
