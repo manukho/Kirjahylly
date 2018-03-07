@@ -19,12 +19,7 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 import db.DBManagement;
-import pub.Article;
-import pub.Book;
-import pub.Booklet;
-import pub.Inbook;
-import pub.Incollection;
-import pub.Publication;
+import pub.*;
 
 /**
  * @author Manuela Hopp
@@ -227,6 +222,26 @@ public class PubAdd extends JPanel implements ActionListener {
 			if (ic.getMonth() != null && !ic.getMonth().isEmpty()) monthBox.setSelectedIndex(getMonthIndex(ic.getMonth()));
 			if (ic.getNote() != null && !ic.getNote().isEmpty()) noteF.setText(ic.getNote());
 			if (ic.getKey() != null && !ic.getKey().isEmpty()) keyF.setText(ic.getKey());		
+		}
+		if (p.getType().equals("inproceedings")) {
+			Inproceedings ip = (Inproceedings) p;
+			showInproceedings();
+			titleF.setText(ip.getTitle());
+			authorF.setText(ip.getAuthorString());
+			booktitleF.setText(ip.getBooktitle());
+			yearF.setText(ip.getYearString());
+			edF.setText(ip.getEditorString());
+			if (ip.getVolume() != null) volumeF.setText(ip.getVolume().toString());
+			if (ip.getNumber() != null) numberF.setText(ip.getNumber().toString());
+			if (ip.getSeries() != null && !ip.getSeries().isEmpty()) seriesF.setText(ip.getSeries());
+			if (ip.getFirstPage() != null) pagesF1.setText(ip.getFirstPage().toString());
+			if (ip.getFirstPage() != null) pagesF2.setText(ip.getLastPage().toString());
+			if (ip.getAddress() != null && !ip.getAddress().isEmpty()) addressF.setText(ip.getAddress());
+			if (ip.getMonth() != null && !ip.getMonth().isEmpty()) monthBox.setSelectedIndex(getMonthIndex(ip.getMonth()));
+			if (ip.getOrganization() != null && !ip.getOrganization().isEmpty()) orgF.setText(ip.getOrganization());
+			if (ip.getPublisher() != null && !ip.getPublisher().isEmpty()) publF.setText(ip.getPublisher());
+			if (ip.getNote() != null && !ip.getNote().isEmpty()) noteF.setText(ip.getNote());
+			if (ip.getKey() != null && !ip.getKey().isEmpty()) keyF.setText(ip.getKey());	
 		}
 	}
 
