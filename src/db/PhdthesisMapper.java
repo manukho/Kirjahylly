@@ -34,7 +34,7 @@ public interface PhdthesisMapper {
 	public int insertPhdthesis(Phdthesis a);
 
 	@Update(update)
-	public int updateIncollection(Phdthesis b);
+	public int updatePhdthesis(Phdthesis b);
 		
 	@Delete(delete)
 	public int deletePhdthesis(Phdthesis b);

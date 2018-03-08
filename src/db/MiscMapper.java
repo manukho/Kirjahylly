@@ -32,7 +32,7 @@ public interface MiscMapper {
 	public int insertMisc(Misc a);
 
 	@Update(update)
-	public int updateIncollection(Misc b);
+	public int updateMisc(Misc b);
 		
 	@Delete(delete)
 	public int deleteMisc(Misc b);

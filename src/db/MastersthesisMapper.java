@@ -34,7 +34,7 @@ public interface MastersthesisMapper {
 	public int insertMastersthesis(Mastersthesis a);
 
 	@Update(update)
-	public int updateIncollection(Mastersthesis b);
+	public int updateMastersthesis(Mastersthesis b);
 		
 	@Delete(delete)
 	public int deleteMastersthesis(Mastersthesis b);

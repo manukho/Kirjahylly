@@ -37,7 +37,7 @@ public interface InproceedingsMapper {
 		public int insertInproceedings(Inproceedings a);
 
 		@Update(update)
-	    public int updateIncollection(Inproceedings b);
+	    public int updateInproceedings(Inproceedings b);
 		
 		@Delete(delete)
 		public int deleteInproceedings(Inproceedings b);

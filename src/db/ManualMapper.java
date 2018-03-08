@@ -30,7 +30,7 @@ public interface ManualMapper {
 	public int insertManual(Manual a);
 
 	@Update(update)
-	public int updateIncollection(Manual b);
+	public int updateManual(Manual b);
 			
 	@Delete(delete)
 	public int deleteManual(Manual b);
