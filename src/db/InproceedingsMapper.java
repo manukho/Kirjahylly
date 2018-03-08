@@ -22,7 +22,7 @@ public interface InproceedingsMapper {
 	String update = "UPDATE incollections SET id=#{id}, title=#{title}, booktitle=#{booktitle}, year=#{year}, "
 			+ "volume=#{volume}, number=#{number}, series=#{series}, firstPage=#{firstPage}, "
 			+ "lastPage=#{lastPage}, address=#{address}, month=#{month}, organization=#{organization}, "
-			+ "publisher=#{publisher}, note=#{note}, key#={key}";;
+			+ "publisher=#{publisher}, note=#{note}, key#={key}";
 	String delete = "DELETE FROM inproceedings WHERE id = #{id}";
 	String deleteAll = "DELETE from inproceedings";
 		
