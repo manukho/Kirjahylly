@@ -12,13 +12,15 @@ import pub.Techreport;
 
 public interface TechreportMapper {
 
-	String selectAll = "SELECT * FROM techreports";
-	String selectByID = "SELECT id, title, institution, year, TRType, number, address, month, key FROM techreports WHERE id=#{id}";
-	String insert = "INSERT INTO techreports(id, title, institution, year, TRType, number, address, month, key) "
-			+ "VALUES (#{id}, #{title}, #{institution}, #{year}, #{PType}, #{number}, #{address}, #{month}, #{note}, #{key}";
-    String update = "UPDATE phdthesis SET id=#{id}, title=#{title}, institution=#{institution}, year=#{year}, TRType=#{PType}, number=#{number}, address=#{address}, month=#{month}, note=#{note}, key=#{key}";
-	String delete = "DELETE FROM techreports WHERE id = #{id}";
-	String deleteAll = "DELETE from techreports";
+	String selectAll = "SELECT * FROM techreport";
+	String selectByID = "SELECT id, title, institution, year, TType, number, address, month, key "
+			+ "FROM techreports WHERE id=#{id}";
+	String insert = "INSERT INTO techreport(id, title, institution, year, TType, number, address, month, note, key) "
+			+ "VALUES (#{id}, #{title}, #{institution}, #{year}, #{PType}, #{number}, #{address}, #{month}, #{note}, #{key})";
+    String update = "UPDATE techreport SET id=#{id}, title=#{title}, institution=#{institution}, year=#{year}, "
+    		+ "TType=#{PType}, number=#{number}, address=#{address}, month=#{month}, note=#{note}, key=#{key}";
+	String delete = "DELETE FROM techreport WHERE id = #{id}";
+	String deleteAll = "DELETE from techreport";
 
 		
 	@Select(selectAll)

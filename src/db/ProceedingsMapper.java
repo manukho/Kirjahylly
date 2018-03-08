@@ -14,7 +14,7 @@ public interface ProceedingsMapper {
 
 	String selectAll = "SELECT * FROM proceedings";
 	String selectByID = "SELECT id, title, year, volume, number, series, address, month, publisher, organization, note, key FROM proceedings WHERE id=#{id}";
-	String insert = "INSERT INTO proceedings(id, title, year, volume, number, series, address, month, publisher, organization, note, key) VALUES (#{id}, #{title}, #{year}, #{volume}, #{number}, #{series}, #{address}, #{month}, #{publisher}, #{organization}, #{note}, #{key}";
+	String insert = "INSERT INTO proceedings(id, title, year, volume, number, series, address, month, publisher, organization, note, key) VALUES (#{id}, #{title}, #{year}, #{volume}, #{number}, #{series}, #{address}, #{month}, #{publisher}, #{organization}, #{note}, #{key})";
     String update = "UPDATE phdthesis SET id=#{id}, title=#{title}, year=#{year}, volume=#{volume}, number=#{number}, series=#{series}, address=#{address}, month=#{month}, publisher=#{publisher}, organization=#{organization}, note=#{note}, key=#{key}";
 	String delete = "DELETE FROM proceedings WHERE id = #{id}";
 	String deleteAll = "DELETE from proceedings";

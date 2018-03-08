@@ -80,6 +80,7 @@ public class Inbook extends Publication {
 		return chapter;
 	}
 
+	@Override
 	public void setChapter(Integer chapter) {
 		this.chapter = chapter;
 	}
@@ -175,6 +176,12 @@ public class Inbook extends Publication {
 	@Override
 	public String getYearString() {
 		return year.toString();
+	}
+	
+	@Override
+	public void setPages(Integer first, Integer last) {
+		firstPage = first;
+		lastPage = last;
 	}
 
 	@Override

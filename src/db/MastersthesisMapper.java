@@ -13,12 +13,12 @@ import pub.Mastersthesis;
 public interface MastersthesisMapper {
 
 	String selectAll = "SELECT * FROM mastersthesis";
-	String selectByID = "SELECT id, title, organization, year, MTType, address, month, note, key "
+	String selectByID = "SELECT id, title, school, year, MSType, address, month, note, key "
 			+ "FROM mastersthesis WHERE id=#{id}";
-	String insert = "INSERT INTO mastersthesis(id, title, organization, year, MTType, address, month, note, key) "
+	String insert = "INSERT INTO mastersthesis(id, title, school, year, MSType, address, month, note, key) "
 			+ "VALUES (#{id}, #{title}, #{school}, #{year}, #{PType}, #{address}, #{month}, #{note}, #{key})";
-	String update = "UPDATE mastersthesis SET id=#{id}, title=#{title}, organization=#{school}, year=#{year}, "
-			+ "MTType=#{PType}, address=#{address}, month=#{month}, note=#{note}, key=#{key}";
+	String update = "UPDATE mastersthesis SET id=#{id}, title=#{title}, school=#{school}, year=#{year}, "
+			+ "MSType=#{PType}, address=#{address}, month=#{month}, note=#{note}, key=#{key}";
 	String delete = "DELETE FROM mastersthesis WHERE id = #{id}";
 	String deleteAll = "DELETE from mastersthesis";
 

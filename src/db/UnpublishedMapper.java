@@ -14,7 +14,7 @@ public interface UnpublishedMapper {
 
 	String selectAll = "SELECT * FROM unpublished";
 	String selectByID = "SELECT id, title, year, month, note, key FROM unpublished WHERE id=#{id}";
-	String insert = "INSERT INTO unpublished(id, title, year, month, note, key) VALUES (#{id}, #{title}, #{year}, #{month}, #{note}, #{key}";
+	String insert = "INSERT INTO unpublished(id, title, year, month, note, key) VALUES (#{id}, #{title}, #{year}, #{month}, #{note}, #{key})";
     String update = "UPDATE phdthesis SET id=#{id}, title=#{title}, year=#{year}, month=#{month}, note=#{note}, key=#{key}";
 	String delete = "DELETE FROM unpublished WHERE id = #{id}";
 	String deleteAll = "DELETE from unpublished";

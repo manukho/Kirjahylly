@@ -1216,11 +1216,16 @@ public class PubAdd extends JPanel implements ActionListener {
 	
 	private boolean setYear(Publication p, boolean req) {
 		String s = yearF.getText();
-		if (req && (s == null || s.isEmpty())) {
+		boolean empty = (s == null || s.isEmpty());
+		if (req && empty) {
 			errMsg.append(p.getType() + "must have a year.\n");
 			return false;
 		}
-		if (!isNumeric(s)) {
+		if (!req && empty) {
+			p.setVolume(null);
+			return true;
+		}
+		if (!empty && !isNumeric(s)) {
 			errMsg.append("year must be a number.\n");
 			return false;
 		}
@@ -1452,10 +1457,11 @@ public class PubAdd extends JPanel implements ActionListener {
 			return false;
 		}
 		if (!req && empty) {
+			System.out.println("!req && empty");
 			p.setChapter(null);
 			return true;
 		}
-		p.setNumber(Integer.valueOf(s));
+		p.setChapter(Integer.valueOf(s));
 		return true;
 	}
 	
@@ -1470,6 +1476,11 @@ public class PubAdd extends JPanel implements ActionListener {
 		if (!empty && !isNumeric(s)) {
 			errMsg.append(t + " must be numeric.\n");
 			return false;
+		}
+		if (!req && empty) {
+			if (vnBox.getSelectedIndex() == 0) p.setVolume(null);
+			else p.setNumber(null);
+			return true;
 		}
 		if (vnBox.getSelectedIndex() == 0) {
 			p.setVolume(Integer.valueOf(s));

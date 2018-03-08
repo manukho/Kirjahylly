@@ -12,12 +12,14 @@ import pub.Manual;
 
 public interface ManualMapper {
 	
-	String selectAll = "SELECT * FROM manuals";
-	String selectByID = "SELECT id, title, organization, address, edition, month, year, note, key FROM manuals WHERE id=#{id}";
-	String insert = "INSERT INTO manuals(id, title, organization, address, edition, month, year, note, key) VALUES (#{id}, #{title}, #{organization}, #{address}, #{edition}, #{month}, #{year}, #{note}, #{key})";
-	String update = "UPDATE manuals SET id=#{id}, title=#{title}, organization=#{organization}, address=#{address}, edition=#{edition}, month=#{month}, year=#{year}, note=#{note}, key=#{key}";
-	String delete = "DELETE FROM manuals WHERE id = #{id}";
-	String deleteAll = "DELETE from manuals";
+	String selectAll = "SELECT * FROM manual";
+	String selectByID = "SELECT id, title, organization, address, edition, month, year, note, key FROM manual "
+			+ "WHERE id=#{id}";
+	String insert = "INSERT INTO manual(id, title, organization, address, edition, month, year, note, key) "
+			+ "VALUES (#{id}, #{title}, #{organization}, #{address}, #{edition}, #{month}, #{year}, #{note}, #{key})";
+	String update = "UPDATE manual SET id=#{id}, title=#{title}, organization=#{organization}, address=#{address}, edition=#{edition}, month=#{month}, year=#{year}, note=#{note}, key=#{key}";
+	String delete = "DELETE FROM manual WHERE id = #{id}";
+	String deleteAll = "DELETE from manual";
 	
 	@Select(selectAll)
 	public ArrayList<Manual> getAllManuals();

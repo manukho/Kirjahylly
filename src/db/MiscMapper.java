@@ -15,7 +15,7 @@ public interface MiscMapper {
 	String selectAll = "SELECT * FROM misc";
 	String selectByID = "SELECT id, title, howpublished, month, year, note, key FROM misc WHERE id=#{id}";
 	String insert = "INSERT INTO misc(id, title, howpublished, month, year, note, key) "
-			+ "VALUES (#{id}, #{title}, #{howpublished}, #{month}, #{year}, #{note}, #{key}";
+			+ "VALUES (#{id}, #{title}, #{howpublished}, #{month}, #{year}, #{note}, #{key})";
     String update = "UPDATE phdthesis SET id=#{id}, title=#{title}, howpublished=#{howpublished}, month=#{month}, year=#{year}, note=#{note}, key=#{key}";
 	String delete = "DELETE FROM misc WHERE id = #{id}";
 	String deleteAll = "DELETE from misc";

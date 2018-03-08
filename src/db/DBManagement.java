@@ -364,6 +364,7 @@ public class DBManagement {
     	if (c == Proceedings.class) proceedingsMapper.insertProceedings((Proceedings) p);
     	if (c == Techreport.class) techreportMapper.insertTechreport((Techreport) p);
     	if (c == Unpublished.class) unpublishedMapper.insertUnpublished((Unpublished) p);
+    	
     	insertAuthors(p.getId(), p.getType(), p.getAuthors());
     	insertEditors(p.getId(), p.getType(), p.getEditors());
     }
@@ -383,8 +384,10 @@ public class DBManagement {
     	if (c == Proceedings.class) proceedingsMapper.updateProceedings((Proceedings) p);
     	if (c == Techreport.class) techreportMapper.updateTechreport((Techreport) p);
     	if (c == Unpublished.class) unpublishedMapper.updateUnpublished((Unpublished) p);
+    	
     	pubAuthMapper.deleteAllPublicationAuthors(p.getId(), p.getType());
     	pubEdMapper.deleteAllPublicationEditors(p.getId(), p.getType());
+    	
     	if (p.getAuthors() != null && !p.getAuthors().isEmpty()) {
     		insertAuthors(p.getId(), p.getType(), p.getAuthors());
     	} 
