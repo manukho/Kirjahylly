@@ -33,6 +33,10 @@ public class DBManagement {
 	private InbookMapper inbookMapper;
 	private IncollectionMapper incollectionMapper;
 	private InproceedingsMapper inproceedingsMapper;
+	private ManualMapper manualMapper;
+	private MastersthesisMapper mastersthesisMapper;
+	private MiscMapper miscMapper;
+	private PhdthesisMapper phdthesisMapper;
 	
 	private PublicationAuthorMapper pubAuthMapper;
 	private PublicationEditorMapper pubEdMapper;
@@ -82,6 +86,10 @@ public class DBManagement {
         factory.getConfiguration().addMapper(InbookMapper.class);
         factory.getConfiguration().addMapper(IncollectionMapper.class);
         factory.getConfiguration().addMapper(InproceedingsMapper.class);
+        factory.getConfiguration().addMapper(ManualMapper.class);
+        factory.getConfiguration().addMapper(MastersthesisMapper.class);
+        factory.getConfiguration().addMapper(MiscMapper.class);
+        factory.getConfiguration().addMapper(PhdthesisMapper.class);
         
         factory.getConfiguration().addMapper(PublicationAuthorMapper.class);
         factory.getConfiguration().addMapper(PublicationEditorMapper.class);
@@ -94,6 +102,10 @@ public class DBManagement {
     	inbookMapper = session.getMapper(InbookMapper.class);
     	incollectionMapper = session.getMapper(IncollectionMapper.class);
     	inproceedingsMapper = session.getMapper(InproceedingsMapper.class);
+    	manualMapper = session.getMapper(ManualMapper.class);
+    	mastersthesisMapper = session.getMapper(MastersthesisMapper.class);
+    	miscMapper = session.getMapper(MiscMapper.class);
+    	phdthesisMapper = session.getMapper(PhdthesisMapper.class);
     	
     	pubAuthMapper = session.getMapper(PublicationAuthorMapper.class);
     	pubEdMapper = session.getMapper(PublicationEditorMapper.class);
@@ -336,10 +348,10 @@ public class DBManagement {
     	if (c == Inbook.class) inbookMapper.insertInbook((Inbook) p);
     	if (c == Incollection.class) incollectionMapper.insertIncollection((Incollection) p);
     	if (c == Inproceedings.class) inproceedingsMapper.insertInproceedings((Inproceedings) p);
-//    	if (c == Manual.class) manualMapper.insertManual((Manual) p);
-//    	if (c == Mastersthesis.class) mastersthesisMapper.insertMastersthesis((Mastersthesis) p);
-//    	if (c == Misc.class) miscMapper.insertMisc((Misc) p);
-//    	if (c == Phdthesis.class) phdthesisMapper.insertPhdthesis((Phdthesis) p);
+    	if (c == Manual.class) manualMapper.insertManual((Manual) p);
+    	if (c == Mastersthesis.class) mastersthesisMapper.insertMastersthesis((Mastersthesis) p);
+    	if (c == Misc.class) miscMapper.insertMisc((Misc) p);
+    	if (c == Phdthesis.class) phdthesisMapper.insertPhdthesis((Phdthesis) p);
 //    	if (c == Proceedings.class) proceedingsMapper.insertProceedings((Proceedings) p);
 //    	if (c == Techreport.class) techreportMapper.insertTechreport((Techreport) p);
 //    	if (c == Unpublished.class) unpublishedMapper.insertUnpublished((Unpublished) p);
@@ -355,10 +367,10 @@ public class DBManagement {
     	if (c == Inbook.class) inbookMapper.updateInbook((Inbook) p);
     	if (c == Incollection.class) incollectionMapper.updateIncollection((Incollection) p);
     	if (c == Inproceedings.class) inproceedingsMapper.insertInproceedings((Inproceedings) p);
-//    	if (c == Manual.class) manualMapper.insertManual((Manual) p);
-//    	if (c == Mastersthesis.class) mastersthesisMapper.insertMastersthesis((Mastersthesis) p);
-//    	if (c == Misc.class) miscMapper.insertMisc((Misc) p);
-//    	if (c == Phdthesis.class) phdthesisMapper.insertPhdthesis((Phdthesis) p);
+    	if (c == Manual.class) manualMapper.insertManual((Manual) p);
+    	if (c == Mastersthesis.class) mastersthesisMapper.insertMastersthesis((Mastersthesis) p);
+    	if (c == Misc.class) miscMapper.insertMisc((Misc) p);
+    	if (c == Phdthesis.class) phdthesisMapper.insertPhdthesis((Phdthesis) p);
 //    	if (c == Proceedings.class) proceedingsMapper.insertProceedings((Proceedings) p);
 //    	if (c == Techreport.class) techreportMapper.insertTechreport((Techreport) p);
 //    	if (c == Unpublished.class) unpublishedMapper.insertUnpublished((Unpublished) p);
@@ -380,10 +392,10 @@ public class DBManagement {
     	if (c == Inbook.class) inbookMapper.deleteInbook((Inbook) p);
     	if (c == Incollection.class) incollectionMapper.deleteIncollection((Incollection) p);
     	if (c == Inproceedings.class) inproceedingsMapper.deleteInproceedings((Inproceedings) p);
-//    	if (c == Manual.class) manualMapper.deleteManual((Manual) p);
-//    	if (c == Mastersthesis.class) mastersthesisMapper.deleteMastersthesis((Mastersthesis) p);
-//    	if (c == Misc.class) miscMapper.deleteMisc((Misc) p);
-//    	if (c == Phdthesis.class) phdthesisMapper.deletePhdthesis((Phdthesis) p);
+    	if (c == Manual.class) manualMapper.deleteManual((Manual) p);
+    	if (c == Mastersthesis.class) mastersthesisMapper.deleteMastersthesis((Mastersthesis) p);
+    	if (c == Misc.class) miscMapper.deleteMisc((Misc) p);
+    	if (c == Phdthesis.class) phdthesisMapper.deletePhdthesis((Phdthesis) p);
 //    	if (c == Proceedings.class) proceedingsMapper.deleteProceedings((Proceedings) p);
 //    	if (c == Techreport.class) techreportMapper.deleteTechreport((Techreport) p);
 //    	if (c == Unpublished.class) unpublishedMapper.deleteUnpublished((Unpublished) p);
