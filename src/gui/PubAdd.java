@@ -197,7 +197,7 @@ public class PubAdd extends JPanel implements ActionListener {
 			if (ib.getVolume() != null) volumeF.setText(ib.getVolume().toString());
 			if (ib.getNumber() != null) numberF.setText(ib.getNumber().toString());
 			if (ib.getSeries() != null && !ib.getSeries().isEmpty()) seriesF.setText(ib.getSeries());
-			if (ib.getIBType() != null) typeF.setText(ib.getIBType());
+			if (ib.getPType() != null) typeF.setText(ib.getPType());
 			if (ib.getAddress() != null && !ib.getAddress().isEmpty()) addressF.setText(ib.getAddress());
 			if (ib.getEdition() != null && !ib.getEdition().isEmpty()) editionF.setText(ib.getEdition());
 			if (ib.getMonth() != null && !ib.getMonth().isEmpty()) monthBox.setSelectedIndex(getMonthIndex(ib.getMonth()));
@@ -216,7 +216,7 @@ public class PubAdd extends JPanel implements ActionListener {
 			if (ic.getVolume() != null) volumeF.setText(ic.getVolume().toString());
 			if (ic.getNumber() != null) numberF.setText(ic.getNumber().toString());
 			if (ic.getSeries() != null && !ic.getSeries().isEmpty()) seriesF.setText(ic.getSeries());
-			if (ic.getICType() != null) typeF.setText(ic.getICType());
+			if (ic.getPType() != null) typeF.setText(ic.getPType());
 			if (ic.getChapter() != null) chapF.setText(ic.getChapter().toString());
 			if (ic.getFirstPage() != null) pagesF1.setText(ic.getFirstPage().toString());
 			if (ic.getFirstPage() != null) pagesF2.setText(ic.getLastPage().toString());
@@ -266,7 +266,7 @@ public class PubAdd extends JPanel implements ActionListener {
 			authorF.setText(m.getAuthorString());
 			schoolF.setText(m.getSchool());
 			yearF.setText(m.getYearString());
-			if (m.getMTType() != null && !m.getMTType().isEmpty()) typeF.setText(m.getMTType());
+			if (m.getPType() != null && !m.getPType().isEmpty()) typeF.setText(m.getPType());
 			if (m.getAddress() != null && !m.getAddress().isEmpty()) addressF.setText(m.getAddress());
 			if (m.getMonth() != null && !m.getMonth().isEmpty()) monthBox.setSelectedIndex(getMonthIndex(m.getMonth()));
 			if (m.getNote() != null && !m.getNote().isEmpty()) noteF.setText(m.getNote());
@@ -290,7 +290,7 @@ public class PubAdd extends JPanel implements ActionListener {
 			authorF.setText(pt.getAuthorString());
 			schoolF.setText(pt.getSchool());
 			yearF.setText(pt.getYearString());
-			if (pt.getPTType() != null && !pt.getPTType().isEmpty()) typeF.setText(pt.getPTType());
+			if (pt.getPType() != null && !pt.getPType().isEmpty()) typeF.setText(pt.getPType());
 			if (pt.getAddress() != null && !pt.getAddress().isEmpty()) addressF.setText(pt.getAddress());
 			if (pt.getMonth() != null && !pt.getMonth().isEmpty()) monthBox.setSelectedIndex(getMonthIndex(pt.getMonth()));
 			if (pt.getNote() != null && !pt.getNote().isEmpty()) noteF.setText(pt.getNote());
@@ -319,7 +319,7 @@ public class PubAdd extends JPanel implements ActionListener {
 			authorF.setText(tr.getAuthorString());
 			instF.setText(tr.getInstitution());
 			yearF.setText(tr.getYearString());
-			if (tr.getTRType() != null && !tr.getTRType().isEmpty()) typeF.setText(tr.getTRType());
+			if (tr.getPType() != null && !tr.getPType().isEmpty()) typeF.setText(tr.getPType());
 			if (tr.getNumber() != null) numberF.setText(tr.getNumber().toString());
 			if (tr.getAddress() != null && !tr.getAddress().isEmpty()) addressF.setText(tr.getAddress());
 			if (tr.getMonth() != null && !tr.getMonth().isEmpty()) monthBox.setSelectedIndex(getMonthIndex(tr.getMonth()));
@@ -724,6 +724,7 @@ public class PubAdd extends JPanel implements ActionListener {
 	
 	private void addNoteFields(int row, boolean req) {
 		JLabel noteL = new JLabel("Note: ");
+		if (req) noteL.setForeground(Color.RED);
 		c.weightx = 0; c.gridx = 0; c.gridy = row; c.insets = new Insets(5,0,0,0);
 		panel.add(noteL, c);
 		noteF = new JTextArea();
@@ -869,12 +870,12 @@ public class PubAdd extends JPanel implements ActionListener {
 					panel.add(chapF, c);
 				} else { // pages
 					if (pagesPanel.getComponentCount() == 0){
-						JTextField pagesF1 = new JTextField();
+						pagesF1 = new JTextField();
 						pagesF1.setPreferredSize(new Dimension(50,25));
 						pagesPanel.add(pagesF1);
 						JLabel minus = new JLabel(" - ");
 						pagesPanel.add(minus);
-						JTextField pagesF2 = new JTextField();
+						pagesF2 = new JTextField();
 						pagesF2.setPreferredSize(new Dimension(50,25));
 						pagesPanel.add(pagesF2);
 						}
@@ -902,7 +903,7 @@ public class PubAdd extends JPanel implements ActionListener {
 	}
 	
 	private void addEditorFields(int row, boolean req) {
-		JLabel edL = new JLabel("Editor: ");
+		JLabel edL = new JLabel("Editor(s): ");
 		if (req) edL.setForeground(Color.RED);
 		c.weightx = 0; c.gridx = 0; c.gridy = row;
 		panel.add(edL, c);
@@ -945,59 +946,201 @@ public class PubAdd extends JPanel implements ActionListener {
 		panel.add(instF, c);
 	}
 	
-	// TODO: error message if required fields are not set
-	// TODO: check inputs
 	Publication getPublication() {
 		if (!modify) pubClassSel = (String) pubClassList.getSelectedItem();
+		boolean bool = true;
 		if (pubClassSel.equals("article")) {
 			Article a = new Article();
 			if (modify) a.setId(id);
-			boolean titleB = setTitle(a, true);
-			boolean authorsB = setAuthors(a, true);
-			boolean journalB = setJournal(a, true);
-			boolean yearB = setYear(a, true);
-			boolean volumeB = setVolume(a, true);
-			boolean numberB = setNumber(a, false);
-			boolean pagesB = setPages(a, false);
-			boolean monthB = setMonth(a, false);
-			boolean noteB = setNote(a, false);
-			boolean keyB = setKey(a, false);
-			if (titleB & authorsB & journalB & yearB & volumeB & numberB & pagesB & monthB & noteB & keyB) {
+			bool &= setTitle(a, true);
+			bool &= setAuthors(a, true);
+			bool &= setJournal(a, true);
+			bool &= setYear(a, true);
+			bool &= setVolume(a, true);
+			bool &= setNumber(a, false);
+			bool &= setPages(a, false);
+			bool &= setMonth(a, false);
+			bool &= setNote(a, false);
+			bool &= setKey(a, false);
+			if (bool) {
 				return a;
 			}
 		}
 		if (pubClassSel.equals("book")) {
 			Book b = new Book();
-			boolean titleB = setTitle(b, true);
-			boolean authedB = setAuthEd(b, true);
-			boolean publB = setPublisher(b, true);
-			boolean yearB = setYear(b, true);
-			boolean volumeB = setVolume(b, false);
-			boolean numberB = setNumber(b, false);
-			boolean seriesB = setSeries(b, false);
-			boolean addressB = setAddress(b, false);
-			boolean editionB = setEdition(b, false);
-			boolean monthB = setMonth(b, false);
-			boolean urlB = setUrl(b, false);
-			boolean keyB = setKey(b, false);
-			boolean noteB = setNote(b, false);
-			if (titleB && authedB && publB && yearB && volumeB && numberB && seriesB && addressB && editionB && monthB && urlB && keyB && noteB)
-				return b;
+			bool &= setTitle(b, true);
+			bool &= setAuthEd(b, true);
+			bool &= setPublisher(b, true);
+			bool &= setYear(b, true);
+			bool &= setVolume(b, false);
+			bool &= setNumber(b, false);
+			bool &= setSeries(b, false);
+			bool &= setAddress(b, false);
+			bool &= setEdition(b, false);
+			bool &= setMonth(b, false);
+			bool &= setUrl(b, false);
+			bool &= setKey(b, false);
+			bool &= setNote(b, false);
+			if (bool) return b;
 			
 		}
 		if (pubClassSel.equals("booklet")) {
 			Booklet b = new Booklet();
-			boolean titleB = setTitle(b, true);
-			boolean authorB = setAuthors(b, false);
-			boolean hpB = setHowpublished(b, false);
-			boolean addressB = setAddress(b, false);
-			boolean monthB = setMonth(b, false);
-			boolean yearB = setYear(b, false);
-			boolean keyB = setKey(b, false);
-			boolean noteB = setNote(b, false);
-			if (titleB && authorB && hpB && addressB && monthB && yearB && keyB && noteB)
-				return b;
+			bool &= setTitle(b, true);
+			bool &= setAuthors(b, false);
+			bool &= setHowpublished(b, false);
+			bool &= setAddress(b, false);
+			bool &= setMonth(b, false);
+			bool &= setYear(b, false);
+			bool &= setKey(b, false);
+			bool &= setNote(b, false);
+			if (bool) return b;
 		}
+		if (pubClassSel.equals("inbook")) {
+			Inbook b = new Inbook();
+			bool &= setTitle(b, true);
+			bool &= setAuthEd(b, true);
+			bool &= setChaPa(b, true);
+			bool &= setPublisher(b, true);
+			bool &= setYear(b, true);
+			bool &= setVolNum(b, false);
+			bool &= setSeries(b, false);
+			bool &= setPType(b, false);
+			bool &= setAddress(b, false);
+			bool &= setEdition(b, false);
+			bool &= setMonth(b, false);
+			bool &= setKey(b, false);
+			bool &= setNote(b, false);
+			if (bool) return b;
+		}
+		if (pubClassSel.equals("incollection")) {
+			Incollection b = new Incollection();
+			bool &= setTitle(b, true);
+			bool &= setBooktitle(b, true);
+			bool &= setAuthors(b, true);
+			bool &= setPublisher(b, true);
+			bool &= setYear(b, true);
+			bool &= setEditors(b, false);
+			bool &= setVolNum(b, false);
+			bool &= setSeries(b, false);
+			bool &= setPType(b, false);
+			bool &= setChapter(b, false);
+			bool &= setPages(b, false);
+			bool &= setAddress(b, false);
+			bool &= setEdition(b, false);
+			bool &= setMonth(b, false);
+			bool &= setKey(b, false);
+			bool &= setNote(b, false);
+			if (bool) return b;
+		}
+		if (pubClassSel.equals("inproceedings")) {
+			Inproceedings b = new Inproceedings();
+			bool &= setTitle(b, true);
+			bool &= setBooktitle(b, true);
+			bool &= setAuthors(b, true);
+			bool &= setYear(b, true);
+			bool &= setEditors(b, false);
+			bool &= setVolNum(b, false);
+			bool &= setSeries(b, false);
+			bool &= setPages(b, false);
+			bool &= setAddress(b, false);
+			bool &= setMonth(b, false);
+			bool &= setOrganization(b, false);
+			bool &= setPublisher(b, false);
+			bool &= setKey(b, false);
+			bool &= setNote(b, false);
+			if (bool) return b;
+		}
+		if (pubClassSel.equals("manual")) {
+			Manual b = new Manual();
+			bool &= setTitle(b, true);
+			bool &= setAuthors(b, false);
+			bool &= setOrganization(b, false);
+			bool &= setAddress(b, false);
+			bool &= setEdition(b, false);
+			bool &= setMonth(b, false);
+			bool &= setYear(b, false);
+			bool &= setKey(b, false);
+			bool &= setNote(b, false);
+			if (bool) return b;
+		}
+		if (pubClassSel.equals("mastersthesis")) {
+			Mastersthesis b = new Mastersthesis();
+			bool &= setTitle(b, true);
+			bool &= setAuthors(b, true);
+			bool &= setSchool(b, true);
+			bool &= setYear(b, true);
+			bool &= setPType(b, false);
+			bool &= setAddress(b, false);
+			bool &= setMonth(b, false);
+			bool &= setKey(b, false);
+			bool &= setNote(b, false);
+			if (bool) return b;
+		}
+		if (pubClassSel.equals("misc")) {
+			Misc b = new Misc();
+			bool &= setTitle(b, false);
+			bool &= setAuthors(b, false);
+			bool &= setHowpublished(b, false);
+			bool &= setMonth(b, false);
+			bool &= setYear(b, false);
+			bool &= setKey(b, false);
+			bool &= setNote(b, false);
+			if (bool) return b;
+		}
+		if (pubClassSel.equals("phdthesis")) {
+			Phdthesis b = new Phdthesis();
+			bool &= setTitle(b, true);
+			bool &= setAuthors(b, true);
+			bool &= setSchool(b, true);
+			bool &= setYear(b, true);
+			bool &= setPType(b, false);
+			bool &= setAddress(b, false);
+			bool &= setMonth(b, false);
+			bool &= setKey(b, false);
+			bool &= setNote(b, false);
+			if (bool) return b;
+		}
+		if (pubClassSel.equals("proceedings")) {
+			Proceedings b = new Proceedings();
+			bool &= setTitle(b, true);
+			bool &= setYear(b, true);
+			bool &= setEditors(b, false);
+			bool &= setVolNum(b, false);
+			bool &= setSeries(b, false);
+			bool &= setAddress(b, false);
+			bool &= setMonth(b, false);
+			bool &= setPublisher(b, false);
+			bool &= setOrganization(b, false);
+			bool &= setKey(b, false);
+			bool &= setNote(b, false);
+			if (bool) return b;
+		}
+		if (pubClassSel.equals("techreport")) {
+			Techreport b = new Techreport();
+			bool &= setTitle(b, true);
+			bool &= setAuthors(b, true);
+			bool &= setInstitution(b, true);
+			bool &= setYear(b, true);
+			bool &= setPType(b, false);
+			bool &= setNumber(b, false);
+			bool &= setAddress(b, false);
+			bool &= setMonth(b, false);
+			bool &= setKey(b, false);
+			bool &= setNote(b, false);
+			if (bool) return b;
+		}
+		if (pubClassSel.equals("unpublished")) {
+			Unpublished b = new Unpublished();
+			bool &= setTitle(b, true);
+			bool &= setAuthors(b, true);
+			bool &= setNote(b, true);
+			bool &= setMonth(b, false);
+			bool &= setYear(b, false);
+			bool &= setKey(b, false);
+			if (bool) return b;
+		}		
+		
 		/* TODO: keep window open if there are errors */
 		int option = JOptionPane.showConfirmDialog(this, errMsg.toString());
 		return null;
@@ -1017,6 +1160,20 @@ public class PubAdd extends JPanel implements ActionListener {
 		return true;
 	}
 	
+	private boolean setBooktitle(Publication p, boolean req) {
+		String s = booktitleF.getText();
+		if (req && (s == null || s.isEmpty())) {
+			errMsg.append(p.getType() + " must have a booktitle.\n");
+			return false;
+		}
+		if (!req && (s == null || s.isEmpty())) {
+			p.setBooktitle(null);
+			return true;
+		}
+		p.setBooktitle(s);
+		return true;
+	}
+	
 	private boolean setAuthors(Publication p, boolean req) {
 		String s = authorF.getText();
 		if (req && (s == null || s.isEmpty())) {
@@ -1024,11 +1181,26 @@ public class PubAdd extends JPanel implements ActionListener {
 			return false;
 		}
 		if (!req && (s == null || s.isEmpty())) {
-			p.setTitle(null);
+			p.setAuthors(null);
 			return true;
 		}
 		ArrayList<String> authors = constructList(s);
 		p.setAuthors(authors);
+		return true;
+	}
+	
+	private boolean setEditors(Publication p, boolean req) {
+		String s = edF.getText();
+		if (req && (s == null || s.isEmpty())) {
+			errMsg.append(p.getType() + " must have editors.\n");
+			return false;
+		}
+		if (!req && (s == null || s.isEmpty())) {
+			p.setEditors(null);
+			return true;
+		}
+		ArrayList<String> authors = constructList(s);
+		p.setEditors(authors);
 		return true;
 	}
 	
@@ -1099,7 +1271,7 @@ public class PubAdd extends JPanel implements ActionListener {
 		String s2 = pagesF2.getText();
 		boolean p1empty = (s1 == null || s1.isEmpty());
 		boolean p2empty = (s2 == null || s2.isEmpty());
-		if (req && (p1empty || p2empty)) {
+		if (req && p1empty && p2empty) {
 			errMsg.append(p.getType() + " must have pages.\n");
 			return false;
 		}
@@ -1131,7 +1303,7 @@ public class PubAdd extends JPanel implements ActionListener {
 	private boolean setNote(Publication p, boolean req) {
 		String s = noteF.getText();
 		if (req && (s == null || s.isEmpty())) {
-			errMsg.append(p.getType() + "must have a note.\n");
+			errMsg.append(p.getType() + " must have a note.\n");
 			return false;
 		}
 		p.setNote(s);
@@ -1141,7 +1313,7 @@ public class PubAdd extends JPanel implements ActionListener {
 	private boolean setKey(Publication p, boolean req) {
 		String s = keyF.getText();
 		if (req && (s == null || s.isEmpty())) {
-			errMsg.append(p.getType() + "must have a key.\n");
+			errMsg.append(p.getType() + " must have a key.\n");
 			return false;
 		}
 		p.setKey(s);
@@ -1245,6 +1417,122 @@ public class PubAdd extends JPanel implements ActionListener {
 			return true;
 		}
 		p.setHowpublished(s);
+		return true;
+	}
+	
+	private boolean setChaPa(Publication p, boolean req) {
+		String s = chapF.getText();
+		boolean empty = (s == null || s.isEmpty());
+		String s1 = pagesF1.getText();
+		String s2 = pagesF2.getText();
+		boolean p1empty = (s1 == null || s1.isEmpty());
+		boolean p2empty = (s2 == null || s2.isEmpty());
+		if (empty && p1empty && p2empty) {
+			errMsg.append(p.getType() + " must have chapter or pages.\n");
+			return false;
+		}
+		if (cpBox.getSelectedIndex() == 0) { //chapter
+			setChapter(p, req);
+			return true;
+		} else { // pages
+			setPages(p, req);
+			return true;
+		}
+	}
+	
+	private boolean setChapter(Publication p, boolean req) {
+		String s = chapF.getText();
+		boolean empty = (s == null || s.isEmpty());
+		if (req && empty) {
+			errMsg.append(p.getType() + " must have a chapter.\n");
+			return false;
+		}
+		if (!empty && !isNumeric(s)) {
+			errMsg.append("chapter must be numeric.\n");
+			return false;
+		}
+		if (!req && empty) {
+			p.setChapter(null);
+			return true;
+		}
+		p.setNumber(Integer.valueOf(s));
+		return true;
+	}
+	
+	private boolean setVolNum(Publication p, boolean req) {
+		String s = volNumF.getText();
+		String t = (vnBox.getSelectedIndex() == 0) ? "volume" : "number";
+		boolean empty = (s == null || s.isEmpty());
+		if (req && empty) {
+			errMsg.append(p.getType() + " must have a volume or a number.\n");
+			return false;
+		}
+		if (!empty && !isNumeric(s)) {
+			errMsg.append(t + " must be numeric.\n");
+			return false;
+		}
+		if (vnBox.getSelectedIndex() == 0) {
+			p.setVolume(Integer.valueOf(s));
+			return true;
+		} else {
+			p.setNumber(Integer.valueOf(s));
+			return true;
+		}
+	}
+	
+	private boolean setPType(Publication p, boolean req) {
+		String s = typeF.getText();
+		if (req && (s == null || s.isEmpty())) {
+			errMsg.append(p.getType() + " must have a PType.\n");
+			return false;
+		}
+		if (!req && (s == null || s.isEmpty())) {
+			p.setPType(null);
+			return true;
+		}
+		p.setPType(s);
+		return true;
+	}
+	
+	private boolean setOrganization(Publication p, boolean req) {
+		String s = orgF.getText();
+		if (req && (s == null || s.isEmpty())) {
+			errMsg.append(p.getType() + " must have a organization.\n");
+			return false;
+		}
+		if (!req && (s == null || s.isEmpty())) {
+			p.setOrganization(null);
+			return true;
+		}
+		p.setOrganization(s);
+		return true;
+	}
+	
+	private boolean setSchool(Publication p, boolean req) {
+		String s = schoolF.getText();
+		if (req && (s == null || s.isEmpty())) {
+			errMsg.append(p.getType() + " must have a school.\n");
+			return false;
+		}
+		if (!req && (s == null || s.isEmpty())) {
+			p.setSchool(null);
+			return true;
+		}
+		p.setSchool(s);
+		return true;
+	}
+	
+	private boolean setInstitution(Publication p, boolean req) {
+		String s = instF.getText();
+		if (req && (s == null || s.isEmpty())) {
+			errMsg.append(p.getType() + " must have an institution.\n");
+			return false;
+		}
+		if (!req && (s == null || s.isEmpty())) {
+			p.setInstitution(null);
+			return true;
+		}
+		p.setInstitution(s);
 		return true;
 	}
 	

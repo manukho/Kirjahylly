@@ -105,6 +105,7 @@ public abstract class Publication {
 	 * if the respective fields exist in the subclass, they will be overwritten 
 	 */
 	public void setTitle(String s) {}
+	public void setBooktitle(String s) {}
 	public void setAuthors(ArrayList<String> al) {}
 	public void setEditors(ArrayList<String> al) {}
 	public void setYear(Integer i) {}
@@ -118,6 +119,12 @@ public abstract class Publication {
 	public void setEdition(String s) {}
 	public void setURL(String s) {}
 	public void setHowpublished(String s) {}
+	public void setChapter(Integer i) {}
+	public void setPType(String s) {}
+	public void setOrganization(String s) {}
+	public void setSchool(String s) {}
+	public void setInstitution(String s) {}
+
 	
 	public String getAuthorString() {
 		String s;

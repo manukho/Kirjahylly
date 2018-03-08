@@ -16,10 +16,10 @@ public interface InbookMapper {
 	String insert = "INSERT INTO inbooks(id, title, chapter, firstPage, lastPage, publisher, year, "
 			+ "volume, number, series, IBType, address, edition, month, note, key) "
 			+ "VALUES (#{id}, #{title}, #{chapter}, #{firstPage}, #{lastPage}, #{publisher}, #{year}, "
-			+ "#{volume}, #{number}, #{series}, #{IBType}, #{address}, #{edition}, #{month}, #{note}, #{key})";
+			+ "#{volume}, #{number}, #{series}, #{PType}, #{address}, #{edition}, #{month}, #{note}, #{key})";
 	String update = "UPDATE inbooks SET id=#{id}, title=#{title}, chapter=#{chapter}, "
 			+ "firstPage=#{firstPage}, lastPage=#{lastPage}, publisher=#{publisher}, year=#{year}, "
-			+ "volume=#{volume}, number=#{number}, series=#{series}, IBType=#{IBType}, "
+			+ "volume=#{volume}, number=#{number}, series=#{series}, IBType=#{PType}, "
 			+ "address=#{address}, edition=#{edition}, month=#{month}, note=#{note}, key=#{key})";
 	String delete = "DELETE FROM inbooks WHERE id = #{id}";
 	String deleteAll = "DELETE from inbooks";

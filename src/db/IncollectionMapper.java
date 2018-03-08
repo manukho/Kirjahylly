@@ -15,12 +15,12 @@ public interface IncollectionMapper {
 	
 	String selectAll = "SELECT * FROM incollections";
 	String insert = "INSERT INTO incollections(id, title, booktitle, publisher, year, volume, number, series, "
-			+ "ICtype, chapter, firstPage, lastPage, address, edition, month, note, key) "
+			+ "ICType, chapter, firstPage, lastPage, address, edition, month, note, key) "
 			+ "VALUES (#{id}, #{title}, #{booktitle}, #{publisher}, #{year}, #{volume}, #{number}, #{series}, "
-			+ "#{ICtype}, #{chapter}, #{firstPage}, #{lastPage}, #{address}, #{edition}, #{month}, #{note}, #{key})";
+			+ "#{PType}, #{chapter}, #{firstPage}, #{lastPage}, #{address}, #{edition}, #{month}, #{note}, #{key})";
 	String update = "UPDATE incollections SET id=#{id}, title=#{title}, booktitle=#{booktitle}, "
 			+ "publisher=#{publisher}, year=#{year}, volume=#{volume}, number=#{number}, series=#{series}, "
-			+ "ICtype=#{ICtype}, chapter#{chapter}, firstPage=#{firstPage}, lastPage=#{lastPage}, "
+			+ "ICType=#{PType}, chapter#{chapter}, firstPage=#{firstPage}, lastPage=#{lastPage}, "
 			+ "address=#{address}, edition=#{edition}, month=#{month}, note=#{note}, key=#{key}";
 	String delete = "DELETE FROM incollections WHERE id = #{id}";
 	String deleteAll = "DELETE from incollections";

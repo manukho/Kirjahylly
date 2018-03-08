@@ -9,7 +9,7 @@ public class Techreport extends Publication {
 	String institution;
 	Integer year;
 	
-	String TRType;
+	String PType;
 	Integer number;
 	String address;
 	String month;
@@ -59,12 +59,12 @@ public class Techreport extends Publication {
 		this.year = year;
 	}
 
-	public String getTRType() {
-		return TRType;
+	public String getPType() {
+		return PType;
 	}
 
-	public void setTRType(String type) {
-		this.TRType = type;
+	public void setPType(String type) {
+		this.PType = type;
 	}
 
 	public Integer getNumber() {

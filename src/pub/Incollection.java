@@ -14,7 +14,7 @@ public class Incollection extends Publication {
 	Integer volume;
 	Integer number;
 	String series;
-	String ICtype;
+	String PType;
 	Integer chapter;
 	Integer firstPage;
 	Integer lastPage;
@@ -110,12 +110,12 @@ public class Incollection extends Publication {
 		this.series = series;
 	}
 
-	public String getICType() {
-		return ICtype;
+	public String getPType() {
+		return PType;
 	}
 
-	public void setICType(String type) {
-		this.ICtype = type;
+	public void setPType(String type) {
+		this.PType = type;
 	}
 
 	public Integer getChapter() {
@@ -221,9 +221,9 @@ public class Incollection extends Publication {
 			sb.append(series);
 		}
 		
-		if (ICtype != null && !ICtype.isEmpty()) {
+		if (PType != null && !PType.isEmpty()) {
 			sb.append("\nType: ");
-			sb.append(ICtype);
+			sb.append(PType);
 		}
 		
 		if (chapter != null) {

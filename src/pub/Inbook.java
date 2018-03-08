@@ -16,7 +16,7 @@ public class Inbook extends Publication {
 	Integer volume;
 	Integer number;
 	String series;
-	String IBType;
+	String PType;
 	String address;
 	String edition;
 	String month;
@@ -140,12 +140,12 @@ public class Inbook extends Publication {
 		this.series = series;
 	}
 
-	public String getIBType() {
-		return IBType;
+	public String getPType() {
+		return PType;
 	}
 
-	public void setIBType(String IBType) {
-		this.IBType = IBType;
+	public void setPType(String IBType) {
+		this.PType = IBType;
 	}
 
 	public String getAddress() {
@@ -239,9 +239,9 @@ public class Inbook extends Publication {
 			sb.append(series);
 		}
 		
-		if (IBType != null && !IBType.isEmpty()) {
+		if (PType != null && !PType.isEmpty()) {
 			sb.append("\nType: ");
-			sb.append(IBType);
+			sb.append(PType);
 		}
 		
 		if (address != null && !address.isEmpty()) {
