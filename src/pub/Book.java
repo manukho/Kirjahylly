@@ -74,8 +74,9 @@ public class Book extends Publication {
 		return year;
 	}
 
-	public void setYear(Integer year) {
-		this.year = year;
+	@Override
+	public void setYear(Integer y) {
+		this.year = y;
 	}
 	
 	@Override
@@ -87,6 +88,7 @@ public class Book extends Publication {
 		return volume;
 	}
 
+	@Override
 	public void setVolume(Integer volume) {
 		this.volume = volume;
 	}

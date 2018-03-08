@@ -19,28 +19,12 @@ public class Article extends Publication {
 		authors = new ArrayList<String>();
 	}
 	
-	public Article(int id, String t, ArrayList<String> auth, String j, int y, int vol){
-		this.id = id;
-		title = t;
-		authors = auth;
-		journal = j;
-		year = y;
-		volume = vol;
-	}
-
-	public Article(String t, ArrayList<String> auth, String j, int y, int vol){
-		title = t;
-		authors = auth;
-		journal = j;
-		year = y;
-		volume = vol;
-	}
-	
 	@Override
 	public String getTitle() {
 		return title;
 	}
 	
+	@Override
 	public void setTitle(String s) {
 		title = s;
 	}
@@ -50,6 +34,7 @@ public class Article extends Publication {
 		return authors;
 	}
 	
+	@Override
 	public void setAuthors(ArrayList<String> auth) {
 		authors = auth;
 	}
@@ -66,7 +51,8 @@ public class Article extends Publication {
 		return year;
 	}
 	
-	public void setYear(int y) {
+	@Override
+	public void setYear(Integer y) {
 		year = y;
 	}
 	
@@ -79,7 +65,8 @@ public class Article extends Publication {
 		return volume;
 	}
 	
-	public void setVolume(int vol) {
+	@Override
+	public void setVolume(Integer vol) {
 		volume = vol;
 	}
 	
@@ -87,11 +74,13 @@ public class Article extends Publication {
 		return number;
 	}
 	
-	public void setNumber(int n) {
+	@Override
+	public void setNumber(Integer n) {
 		number = n;
 	}
 	
-	public void setPages(int first, int last) {
+	@Override
+	public void setPages(Integer first, Integer last) {
 		firstPage = first;
 		lastPage = last;
 	}
@@ -116,6 +105,7 @@ public class Article extends Publication {
 		lastPage = p;
 	}
 	
+	@Override
 	public void setMonth(String m) {
 		month = m;
 	}

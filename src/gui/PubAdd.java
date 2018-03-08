@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import javax.swing.BoxLayout;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
@@ -67,7 +68,7 @@ public class PubAdd extends JPanel implements ActionListener {
 	private JTextField instF;
 	private JComboBox<String> monthBox;
 	private String[] months = {"", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
-	
+	StringBuilder errMsg;
 	/**
 	 * constructor for the form for adding a new bibliographic item
 	 */
@@ -76,6 +77,7 @@ public class PubAdd extends JPanel implements ActionListener {
 		Dimension d = new Dimension(600,600);
 		setPreferredSize(d);
 		setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
+		errMsg = new StringBuilder();;
 		
 		JPanel classListPanel = new JPanel();
 		pubClasses = new String[] {"article", "book", "booklet", "inbook", "incollection", "inproceedings", "manual", "mastersthesis", "misc", "phdthesis", "proceedings", "techreport", "unpublished"};
@@ -123,6 +125,8 @@ public class PubAdd extends JPanel implements ActionListener {
 		c.anchor = GridBagConstraints.NORTH;
 		c.ipadx = 5;
 		c.ipady = 5;
+		
+		errMsg = new StringBuilder();;
 		
 		if (p.getType().equals("article")) {
 			Article a = (Article) p;
@@ -948,82 +952,300 @@ public class PubAdd extends JPanel implements ActionListener {
 		if (pubClassSel.equals("article")) {
 			Article a = new Article();
 			if (modify) a.setId(id);
-			a.setTitle(titleF.getText());
-			
-			ArrayList<String> authors = constructList(authorF.getText());
-			a.setAuthors(authors);
-			
-			a.setJournal(journalF.getText());
-			
-			if (!isNumeric(yearF.getText())) return null;
-			a.setYear(Integer.parseInt(yearF.getText()));
-			
-			if (!isNumeric(volumeF.getText())) return null;
-			a.setVolume(Integer.parseInt(volumeF.getText()));
-						
-			if (isNumeric(numberF.getText())) 
-				a.setNumber(Integer.parseInt(numberF.getText()));
-			
-			if (isNumeric(pagesF1.getText()) && isNumeric(pagesF2.getText()))
-				a.setPages(Integer.parseInt(pagesF1.getText()), Integer.parseInt(pagesF2.getText()));
-
-			if (monthBox.getSelectedIndex() != 0) 
-				a.setMonth(months[monthBox.getSelectedIndex()]);
-			
-			if (!keyF.getText().isEmpty()) 
-				a.setKey(keyF.getText());
-			
-			if (!noteF.getText().isEmpty()) 
-				a.setNote(noteF.getText());
-			
-			return a;
+			boolean titleB = setTitle(a, true);
+			boolean authorsB = setAuthors(a, true);
+			boolean journalB = setJournal(a, true);
+			boolean yearB = setYear(a, true);
+			boolean volumeB = setVolume(a, true);
+			boolean numberB = setNumber(a, false);
+			boolean pagesB = setPages(a, false);
+			boolean monthB = setMonth(a, false);
+			boolean noteB = setNote(a, false);
+			boolean keyB = setKey(a, false);
+			if (titleB & authorsB & journalB & yearB & volumeB & numberB & pagesB & monthB & noteB & keyB) {
+				return a;
+			}
 		}
 		if (pubClassSel.equals("book")) {
 			Book b = new Book();
-			b.setTitle(titleF.getText());
+			boolean titleB = setTitle(b, true);
+			boolean authedB = setAuthEd(b, true);
+			boolean publB = setPublisher(b, true);
+			boolean yearB = setYear(b, true);
+			boolean volumeB = setVolume(b, false);
+			boolean numberB = setNumber(b, false);
+			boolean seriesB = setSeries(b, false);
+			boolean addressB = setAddress(b, false);
+			boolean editionB = setEdition(b, false);
+			boolean monthB = setMonth(b, false);
+			boolean urlB = setUrl(b, false);
+			boolean keyB = setKey(b, false);
+			boolean noteB = setNote(b, false);
+			if (titleB && authedB && publB && yearB && volumeB && numberB && seriesB && addressB && editionB && monthB && urlB && keyB && noteB)
+				return b;
 			
-			ArrayList<String> al = constructList(authedF.getText());
-			if (aeBox.getSelectedIndex() == 0) { // author
-				b.setAuthors(al);
-			} else { // editors
-				b.setEditors(al);
-			}
-			
-			b.setPublisher(publF.getText());
-			
-			if (!isNumeric(yearF.getText())) return null;
-			b.setYear(Integer.parseInt(yearF.getText()));	
-			
-			if (isNumeric(volumeF.getText()))
-				b.setVolume(Integer.parseInt(volumeF.getText()));
-						
-			if (isNumeric(numberF.getText())) 
-				b.setNumber(Integer.parseInt(numberF.getText()));
-			
-			if (!seriesF.getText().isEmpty())
-				b.setSeries(seriesF.getText());
-			
-			if (!addressF.getText().isEmpty())
-				b.setAddress(addressF.getText());
-			
-			if (!editionF.getText().isEmpty())
-				b.setEdition(editionF.getText());
-			
-			if (monthBox.getSelectedIndex() != 0) 
-				b.setMonth(months[monthBox.getSelectedIndex()]);
-			
-			if (!urlF.getText().isEmpty())
-				b.setUrl(urlF.getText());
-			
-			if (!keyF.getText().isEmpty()) // TODO: check
-				b.setKey(keyF.getText());
-			
-			if (!noteF.getText().isEmpty())
-				b.setNote(noteF.getText());
-			
-			return b;
 		}
+		if (pubClassSel.equals("booklet")) {
+			Booklet b = new Booklet();
+			boolean titleB = setTitle(b, true);
+			boolean authorB = setAuthors(b, false);
+			boolean hpB = setHowpublished(b, false);
+			boolean addressB = setAddress(b, false);
+			boolean monthB = setMonth(b, false);
+			boolean yearB = setYear(b, false);
+			boolean keyB = setKey(b, false);
+			boolean noteB = setNote(b, false);
+			if (titleB && authorB && hpB && addressB && monthB && yearB && keyB && noteB)
+				return b;
+		}
+		/* TODO: keep window open if there are errors */
+		int option = JOptionPane.showConfirmDialog(this, errMsg.toString());
 		return null;
+	}
+	
+	private boolean setTitle(Publication p, boolean req) {
+		String s = titleF.getText();
+		if (req && (s == null || s.isEmpty())) {
+			errMsg.append(p.getType() + " must have a title.\n");
+			return false;
+		}
+		if (!req && (s == null || s.isEmpty())) {
+			p.setTitle(null);
+			return true;
+		}
+		p.setTitle(s);
+		return true;
+	}
+	
+	private boolean setAuthors(Publication p, boolean req) {
+		String s = authorF.getText();
+		if (req && (s == null || s.isEmpty())) {
+			errMsg.append(p.getType() + " must have authors.\n");
+			return false;
+		}
+		if (!req && (s == null || s.isEmpty())) {
+			p.setTitle(null);
+			return true;
+		}
+		ArrayList<String> authors = constructList(s);
+		p.setAuthors(authors);
+		return true;
+	}
+	
+	private boolean setJournal(Article p, boolean req) {
+		String s = journalF.getText();
+		if (s == null || s.isEmpty()) {
+			errMsg.append("article must have a journal.\n");
+			return false;
+		} 
+		p.setJournal(s);
+		return true;
+	}
+	
+	private boolean setYear(Publication p, boolean req) {
+		String s = yearF.getText();
+		if (req && (s == null || s.isEmpty())) {
+			errMsg.append(p.getType() + "must have a year.\n");
+			return false;
+		}
+		if (!isNumeric(s)) {
+			errMsg.append("year must be a number.\n");
+			return false;
+		}
+		p.setYear(Integer.valueOf(s));
+		return true;
+	}
+	
+	private boolean setVolume(Publication p, boolean req) {
+		String s = volumeF.getText();
+		boolean empty = (s == null || s.isEmpty());
+		if (req && empty) {
+			errMsg.append(p.getType() + " must have a volume.\n");
+			return false;
+		}
+		if (!empty && !isNumeric(s)) {			
+			errMsg.append("volume must be a number.\n");
+			return false;
+		}
+		if (!req && empty) {
+			p.setVolume(null);
+			return true;
+		}
+		p.setVolume(Integer.valueOf(s));
+		return true;
+	}
+	
+	private boolean setNumber(Publication p, boolean req) {
+		String s = numberF.getText();
+		boolean empty = (s == null || s.isEmpty());
+		if (req && empty) {
+			errMsg.append(p.getType() + " must have a number.\n");
+			return false;
+		}
+		if (!empty && !isNumeric(s)) {
+			errMsg.append("number must be numeric.\n");
+			return false;
+		}
+		if (!req && empty) {
+			p.setNumber(null);
+			return true;
+		}
+		p.setNumber(Integer.valueOf(s));
+		return true;
+	}
+	
+	private boolean setPages(Publication p, boolean req) {
+		String s1 = pagesF1.getText();
+		String s2 = pagesF2.getText();
+		boolean p1empty = (s1 == null || s1.isEmpty());
+		boolean p2empty = (s2 == null || s2.isEmpty());
+		if (req && (p1empty || p2empty)) {
+			errMsg.append(p.getType() + " must have pages.\n");
+			return false;
+		}
+		if ((p1empty && !p2empty) || (!p1empty && p2empty)) {
+			errMsg.append("there must be both a first and a last page.\n");
+			return false;
+		}
+		if (!p1empty && !p2empty && (!isNumeric(s1) || !isNumeric(s2))) {
+			errMsg.append("pages must be numeric.\n");
+			return false;
+		}
+		if (!req && p1empty && p2empty) {
+			p.setPages(null, null);
+			return true;
+		}
+		p.setPages(Integer.valueOf(s1), Integer.valueOf(s2));
+		return true;
+	}
+	
+	private boolean setMonth(Publication p, boolean req) {
+		if (req && monthBox.getSelectedIndex() == 0) {
+			errMsg.append(p.getType() + " must have a month.\n");
+			return false;
+		}
+		p.setMonth(months[monthBox.getSelectedIndex()]);
+		return true;
+	}
+	
+	private boolean setNote(Publication p, boolean req) {
+		String s = noteF.getText();
+		if (req && (s == null || s.isEmpty())) {
+			errMsg.append(p.getType() + "must have a note.\n");
+			return false;
+		}
+		p.setNote(s);
+		return true;
+	}
+	
+	private boolean setKey(Publication p, boolean req) {
+		String s = keyF.getText();
+		if (req && (s == null || s.isEmpty())) {
+			errMsg.append(p.getType() + "must have a key.\n");
+			return false;
+		}
+		p.setKey(s);
+		return true;
+	}
+	
+	private boolean setAuthEd(Publication p, boolean req) {
+		String s = authedF.getText();
+		if (req && s.isEmpty()) {
+			errMsg.append(p.getType() + " must have either authors or editors.\n");
+			return false;
+		}
+		if (!req && s.isEmpty()) return true;
+		ArrayList<String> al = constructList(authedF.getText());
+		if (aeBox.getSelectedIndex() == 0) { // authors
+			p.setAuthors(al);
+		} else { // editors
+			p.setEditors(al);
+		}
+		return true;
+	}
+	
+	private boolean setPublisher(Publication p, boolean req) {
+		String s = publF.getText();
+		if (req && (s == null || s.isEmpty())) {
+			errMsg.append(p.getType() + " must have a publisher.\n");
+			return false;
+		}
+		if (!req && (s == null || s.isEmpty())) {
+			p.setPublisher(null);
+			return true;
+		}
+		p.setPublisher(s);
+		return true;
+	}
+	
+	private boolean setSeries(Publication p, boolean req) {
+		String s = seriesF.getText();
+		if (req && (s == null || s.isEmpty())) {
+			errMsg.append(p.getType() + " must have a series.\n");
+			return false;
+		}
+		if (!req && (s == null || s.isEmpty())) {
+			p.setSeries(null);
+			return true;
+		}
+		p.setSeries(s);
+		return true;
+	}
+
+	private boolean setAddress(Publication p, boolean req) {
+		String s = addressF.getText();
+		if (req && (s == null || s.isEmpty())) {
+			errMsg.append(p.getType() + " must have an address.\n");
+			return false;
+		}
+		if (!req && (s == null || s.isEmpty())) {
+			p.setAddress(null);
+			return true;
+		}
+		p.setAddress(s);
+		return true;
+	}
+	
+	private boolean setEdition(Publication p, boolean req) {
+		String s = editionF.getText();
+		if (req && (s == null || s.isEmpty())) {
+			errMsg.append(p.getType() + " must have an edition.\n");
+			return false;
+		}
+		if (!req && (s == null || s.isEmpty())) {
+			p.setEdition(null);
+			return true;
+		}
+		p.setEdition(s);
+		return true;
+	}
+	
+	private boolean setUrl(Publication p, boolean req) {
+		String s = urlF.getText();
+		if (req && (s == null || s.isEmpty())) {
+			errMsg.append(p.getType() + " must have an URL.\n");
+			return false;
+		}
+		if (!req && (s == null || s.isEmpty())) {
+			p.setURL(null);
+			return true;
+		}
+		p.setURL(s);
+		return true;
+	}
+	
+	private boolean setHowpublished(Publication p, boolean req) {
+		String s = hpF.getText();
+		if (req && (s == null || s.isEmpty())) {
+			errMsg.append(p.getType() + " must have a howpublished.\n");
+			return false;
+		}
+		if (!req && (s == null || s.isEmpty())) {
+			p.setHowpublished(null);
+			return true;
+		}
+		p.setHowpublished(s);
+		return true;
 	}
 	
 	@SuppressWarnings("unused")

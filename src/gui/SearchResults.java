@@ -93,7 +93,7 @@ public class SearchResults extends JPanel {
 				int row = table.getSelectedRow();
                 Publication p = tmp.get(row);
 				PubAdd pa = new PubAdd(p);
-				int option = JOptionPane.showConfirmDialog(null, pa, "", JOptionPane.OK_CANCEL_OPTION);
+				int option = JOptionPane.showConfirmDialog(null, pa, "modify " + p.getType(), JOptionPane.OK_CANCEL_OPTION);
 				if (option == JOptionPane.OK_OPTION) { // otherwise do nothing
 					p = pa.getPublication();
 					model.setValueAt(p.getTitle(), row, 0);

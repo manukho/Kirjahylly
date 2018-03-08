@@ -100,6 +100,25 @@ public abstract class Publication {
 		return "";
 	}
 	
+	/*
+	 * the following methods do not do anything and are just here for convenience.
+	 * if the respective fields exist in the subclass, they will be overwritten 
+	 */
+	public void setTitle(String s) {}
+	public void setAuthors(ArrayList<String> al) {}
+	public void setEditors(ArrayList<String> al) {}
+	public void setYear(Integer i) {}
+	public void setVolume(Integer i) {}
+	public void setNumber(Integer i) {}
+	public void setPages(Integer first, Integer last) {}
+	public void setMonth(String s) {}
+	public void setPublisher(String s) {}
+	public void setSeries(String s) {}
+	public void setAddress(String s) {}
+	public void setEdition(String s) {}
+	public void setURL(String s) {}
+	public void setHowpublished(String s) {}
+	
 	public String getAuthorString() {
 		String s;
 		if (getAuthors() == null || getAuthors().isEmpty()) {
@@ -143,5 +162,6 @@ public abstract class Publication {
     	if (c == Unpublished.class) 	return "unpublished";
     	return null;
 	}
+
 	
 }
