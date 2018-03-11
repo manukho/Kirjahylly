@@ -16,6 +16,12 @@ import org.h2.jdbcx.JdbcConnectionPool;
 
 import pub.*;
 
+/**
+ * DBManagement is the class that manages the connection to the database.
+ * It also contains methods to select, insert, update and delete items to/from the database
+ *
+ * @author Manuela Hopp
+ */
 public class DBManagement {
 	
     private static final String DRIVER = "org.h2.Driver";
@@ -228,18 +234,8 @@ public class DBManagement {
     	
     	insertPublication(ic);
     	
-    	ArrayList<Article> articleList = getAllArticles();
-    	ArrayList<Book> bookList = getAllBooks();
-    	ArrayList<Booklet> bookletList = getAllBooklets();
-    	ArrayList<Inbook> inbookList = getAllInbooks();
-    	ArrayList<Incollection> incollectionList = getAllIncollections();
-    	
-    	System.out.println(articleList.toString());
-    	System.out.println(bookList.toString());
-    	System.out.println(bookletList.toString());
-    	System.out.println(inbookList);
-    	System.out.println(incollectionList);
-    	
+    	ArrayList<Article> list = searchArticlesByTitle("models");
+    	System.out.println(list);
     }  	
     
     private void insertAuthors(int id, String type, ArrayList<String> al) {
@@ -256,77 +252,10 @@ public class DBManagement {
     	}
     }
     
-    private ArrayList<Article> getAllArticles() {
-    	ArrayList<Article> list = articleMapper.getAllArticles();
-    	for (int i = 0; i < list.size(); i++) {
-    		Article a = list.get(i);
-    		ArrayList<String> al = pubAuthMapper.getAllPublicationAuthors(a.getId(), "article");
-    		a.setAuthors(al);
-    	}
+    private ArrayList<Article> searchArticlesByTitle(String s){
+    	s = "%" + s + "%";
+    	ArrayList<Article> list = articleMapper.searchByTitle(s);
     	return list;
-    }
-    
-    private ArrayList<Book> getAllBooks(){
-    	ArrayList<Book> list = bookMapper.getAllBooks();
-    	for (int i = 0; i < list.size(); i++) {
-    		Book b = list.get(i);
-    		ArrayList<String> al = pubAuthMapper.getAllPublicationAuthors(b.getId(), "book");
-    		if (!al.isEmpty()) {
-    			b.setAuthors(al);
-    		} else {
-    			al = pubEdMapper.getAllPublicationEditors(b.getId(), "book");
-    			b.setEditors(al);
-    		}
-    	}
-    	return list;
-    }
-    
-    private ArrayList<Booklet> getAllBooklets(){
-    	ArrayList<Booklet> list = bookletMapper.getAllBooklets();
-    	for (int i = 0; i < list.size(); i++) {
-    		Booklet b = list.get(i);
-    		ArrayList<String> al = pubAuthMapper.getAllPublicationAuthors(b.getId(), "booklet");
-    		if (!al.isEmpty()) {
-    			b.setAuthors(al);
-    		}
-    	}
-    	return list;
-    }
-    
-    private ArrayList<Inbook> getAllInbooks(){
-    	ArrayList<Inbook> list = inbookMapper.getAllInbooks();
-    	for (int i = 0; i < list.size(); i++) {
-    		Inbook ib = list.get(i);
-    		ArrayList<String> al = pubAuthMapper.getAllPublicationAuthors(ib.getId(), "book");
-    		if (!al.isEmpty()) {
-    			ib.setAuthors(al);
-    		} else {
-    			al = pubEdMapper.getAllPublicationEditors(ib.getId(), "book");
-    			ib.setEditors(al);
-    		}
-    	}
-    	return list;
-    }
-    
-    private ArrayList<Incollection> getAllIncollections(){
-    	ArrayList<Incollection> list = incollectionMapper.getAllIncollections();
-    	for (int i = 0; i < list.size(); i++) {
-    		Incollection ic = list.get(i);
-    		ArrayList<String> al = pubAuthMapper.getAllPublicationAuthors(ic.getId(), "incollection");
-    		ic.setAuthors(al);
-    		al = pubEdMapper.getAllPublicationEditors(ic.getId(), "incollection");
-    		if (!al.isEmpty()) {
-    			ic.setEditors(al);
-    		}
-    	}
-    	return list;
-    }
-    
-    private Article getArticle(int id) {
-    	Article a = articleMapper.getArticle(id);
-    	ArrayList<String> al = pubAuthMapper.getAllPublicationAuthors(id, "article");
-    	a.setAuthors(al);
-    	return a;
     }
     
     private void clearAll() {
@@ -416,9 +345,10 @@ public class DBManagement {
     	pubEdMapper.deleteAllPublicationEditors(p.getId(), p.getType());
     }
     
-    
-    public Publication getById(int i, String ttype) {
-    	if (ttype.equals("article")) return getArticle(i);
-    	return null;
+    public ArrayList<Publication> searchByTitle(String s) {
+    	ArrayList<Publication> list = new ArrayList<Publication>();
+    	
+    	
+    	return list;
     }
 }
