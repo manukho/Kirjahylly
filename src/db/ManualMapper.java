@@ -13,11 +13,13 @@ import pub.Manual;
 public interface ManualMapper {
 	
 	String selectAll = "SELECT * FROM manual";
+	String selectByTitle = "SELECT * from manual where UPPER(title) LIKE UPPER(#{s})";
 	String selectByID = "SELECT id, title, organization, address, edition, month, year, note, key FROM manual "
 			+ "WHERE id=#{id}";
 	String insert = "INSERT INTO manual(id, title, organization, address, edition, month, year, note, key) "
 			+ "VALUES (#{id}, #{title}, #{organization}, #{address}, #{edition}, #{month}, #{year}, #{note}, #{key})";
-	String update = "UPDATE manual SET id=#{id}, title=#{title}, organization=#{organization}, address=#{address}, edition=#{edition}, month=#{month}, year=#{year}, note=#{note}, key=#{key}";
+	String update = "UPDATE manual SET title=#{title}, organization=#{organization}, address=#{address}, "
+			+ "edition=#{edition}, month=#{month}, year=#{year}, note=#{note}, key=#{key} WHERE id=#{id}";
 	String delete = "DELETE FROM manual WHERE id = #{id}";
 	String deleteAll = "DELETE from manual";
 	
@@ -26,6 +28,9 @@ public interface ManualMapper {
 			
 	@Select(selectByID)
 	public Manual getManual(int id);
+	
+	@Select(selectByTitle)
+	public ArrayList<Manual> searchByTitle(String s);
 			
 	@Insert(insert)
 	@Options(useGeneratedKeys = true, keyProperty = "id", keyColumn = "id")    

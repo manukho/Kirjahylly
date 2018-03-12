@@ -13,9 +13,15 @@ import pub.Proceedings;
 public interface ProceedingsMapper {
 
 	String selectAll = "SELECT * FROM proceedings";
-	String selectByID = "SELECT id, title, year, volume, number, series, address, month, publisher, organization, note, key FROM proceedings WHERE id=#{id}";
-	String insert = "INSERT INTO proceedings(id, title, year, volume, number, series, address, month, publisher, organization, note, key) VALUES (#{id}, #{title}, #{year}, #{volume}, #{number}, #{series}, #{address}, #{month}, #{publisher}, #{organization}, #{note}, #{key})";
-    String update = "UPDATE phdthesis SET id=#{id}, title=#{title}, year=#{year}, volume=#{volume}, number=#{number}, series=#{series}, address=#{address}, month=#{month}, publisher=#{publisher}, organization=#{organization}, note=#{note}, key=#{key}";
+	String selectByID = "SELECT id, title, year, volume, number, series, address, month, publisher, organization, "
+			+ "note, key FROM proceedings WHERE id=#{id}";
+	String selectByTitle = "SELECT * from proceedings where UPPER(title) LIKE UPPER(#{s})";
+	String insert = "INSERT INTO proceedings(id, title, year, volume, number, series, address, month, publisher, "
+			+ "organization, note, key) VALUES (#{id}, #{title}, #{year}, #{volume}, #{number}, #{series}, "
+			+ "#{address}, #{month}, #{publisher}, #{organization}, #{note}, #{key})";
+    String update = "UPDATE phdthesis SET title=#{title}, year=#{year}, volume=#{volume}, number=#{number}, "
+    		+ "series=#{series}, address=#{address}, month=#{month}, publisher=#{publisher}, "
+    		+ "organization=#{organization}, note=#{note}, key=#{key} WHERE id=#{id}";
 	String delete = "DELETE FROM proceedings WHERE id = #{id}";
 	String deleteAll = "DELETE from proceedings";
 
@@ -25,6 +31,9 @@ public interface ProceedingsMapper {
 		
 	@Select(selectByID)
 	public Proceedings getProceedings(int id);
+	
+	@Select(selectByTitle)
+	public ArrayList<Proceedings> searchByTitle(String s);
 		
 	@Insert(insert)
 	@Options(useGeneratedKeys = true, keyProperty = "id", keyColumn = "id")    

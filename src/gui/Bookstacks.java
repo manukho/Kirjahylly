@@ -16,8 +16,8 @@ public class Bookstacks extends JPanel {
 	Bookstacks(){
 		super();
 		Vector<Bookstack> bkstk = new Vector<Bookstack>();
-		list = new JList(bkstk);
-		list.setModel(new DefaultListModel());
+		list = new JList<Bookstack>(bkstk);
+		list.setModel(new DefaultListModel<Bookstack>());
 	}
 
 }

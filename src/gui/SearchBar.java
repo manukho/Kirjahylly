@@ -9,6 +9,12 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+/**
+ * Searchbar is the Panel showing the search bar.
+ * clicking on "Extended Search" switches it for the ExtendedSearchBar panel.
+ *
+ * @author Manuela Hopp
+ */
 public class SearchBar extends JPanel {
 	
     private static final long serialVersionUID = 1L;

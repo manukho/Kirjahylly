@@ -14,19 +14,23 @@ public interface IncollectionMapper {
 	
 	
 	String selectAll = "SELECT * FROM incollections";
+	String selectByTitle = "SELECT * from incollections where UPPER(title) LIKE UPPER(#{s})";
 	String insert = "INSERT INTO incollections(id, title, booktitle, publisher, year, volume, number, series, "
 			+ "ICType, chapter, firstPage, lastPage, address, edition, month, note, key) "
 			+ "VALUES (#{id}, #{title}, #{booktitle}, #{publisher}, #{year}, #{volume}, #{number}, #{series}, "
 			+ "#{PType}, #{chapter}, #{firstPage}, #{lastPage}, #{address}, #{edition}, #{month}, #{note}, #{key})";
-	String update = "UPDATE incollections SET id=#{id}, title=#{title}, booktitle=#{booktitle}, "
+	String update = "UPDATE incollections SET title=#{title}, booktitle=#{booktitle}, "
 			+ "publisher=#{publisher}, year=#{year}, volume=#{volume}, number=#{number}, series=#{series}, "
 			+ "ICType=#{PType}, chapter#{chapter}, firstPage=#{firstPage}, lastPage=#{lastPage}, "
-			+ "address=#{address}, edition=#{edition}, month=#{month}, note=#{note}, key=#{key}";
+			+ "address=#{address}, edition=#{edition}, month=#{month}, note=#{note}, key=#{key} WHERE id=#{id}";
 	String delete = "DELETE FROM incollections WHERE id = #{id}";
 	String deleteAll = "DELETE from incollections";
 	
 	@Select(selectAll)
     public ArrayList<Incollection> getAllIncollections();
+	
+	@Select(selectByTitle)
+	public ArrayList<Incollection> searchByTitle(String s);
 	
 	@Insert(insert)
 	@Options(useGeneratedKeys = true, keyProperty = "id", keyColumn = "id")    

@@ -6,20 +6,32 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import db.DBManagement;
+import pub.Publication;
+
 public class ExtendedSearchBar extends JPanel {
 	
     private static final long serialVersionUID = 1L;
-	Kirjahylly kh;
+	private Kirjahylly kh;
+	private DBManagement dbm;
+	private SearchResults sr;
+	private JTextField titlef;
+	private JTextField authorf;
+	private JTextField yearf;
+	
 
 	public ExtendedSearchBar(Kirjahylly k) {
 		super();
 		kh = k;
+		dbm = kh.getDBM();
+		sr = kh.getSR();
 		setPreferredSize(new Dimension(1000, 100));
 		setLayout(new GridBagLayout());
 		GridBagConstraints c = new GridBagConstraints();
@@ -29,7 +41,7 @@ public class ExtendedSearchBar extends JPanel {
 		c.gridx = 0; c.gridy = 0;
 		add(titlel, c);
 		
-		JTextField titlef = new JTextField();
+		titlef = new JTextField();
 		titlef.setPreferredSize(new Dimension(600, 25));
 		c.gridx = 1; c.gridy = 0;
 		add(titlef, c);
@@ -50,7 +62,7 @@ public class ExtendedSearchBar extends JPanel {
 		c.gridx = 0; c.gridy = 1;
 		add(authorl, c);
 		
-		JTextField authorf = new JTextField();
+		authorf = new JTextField();
 		authorf.setPreferredSize(new Dimension(600, 25));
 		c.gridx = 1; c.gridy = 1;
 		add(authorf, c);
@@ -59,7 +71,7 @@ public class ExtendedSearchBar extends JPanel {
 		c.gridx = 0; c.gridy = 2;
 		add(yearl, c);
 
-		JTextField yearf = new JTextField();
+		yearf = new JTextField();
 		yearf.setPreferredSize(new Dimension(600, 25));
 		c.gridx = 1; c.gridy = 2;
 		add(yearf, c);
@@ -68,8 +80,16 @@ public class ExtendedSearchBar extends JPanel {
 	private class SearchButtonListener implements ActionListener {
 
 		@Override
-		public void actionPerformed(ActionEvent arg0) {
-			// TODO Auto-generated method stub
+		public void actionPerformed(ActionEvent e) {
+			String auth_s = authorf.getText();
+			String year_s = yearf.getText();
+			String title_s = titlef.getText();
+			ArrayList<Publication> list = new ArrayList<Publication>();
+			if (auth_s.isEmpty() && year_s.isEmpty() && !title_s.isEmpty()) {
+				list = dbm.searchByTitle(title_s);
+			}
+			sr.clear();
+			sr.addRows(list);
 		}
 	}
 	

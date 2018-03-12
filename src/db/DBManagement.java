@@ -54,7 +54,7 @@ public class DBManagement {
 	public DBManagement() {
 		configurelog4j();
 		init();
-		test();
+		//test();
 	}
 	
     public void init() {
@@ -233,9 +233,6 @@ public class DBManagement {
     	ic.setAddress("Oxford, UK");
     	
     	insertPublication(ic);
-    	
-    	ArrayList<Article> list = searchArticlesByTitle("models");
-    	System.out.println(list);
     }  	
     
     private void insertAuthors(int id, String type, ArrayList<String> al) {
@@ -252,9 +249,28 @@ public class DBManagement {
     	}
     }
     
-    private ArrayList<Article> searchArticlesByTitle(String s){
+    public ArrayList<Publication> searchByTitle(String s){
+    	ArrayList<Publication> list = new ArrayList<Publication>();
     	s = "%" + s + "%";
-    	ArrayList<Article> list = articleMapper.searchByTitle(s);
+    	list.addAll(articleMapper.searchByTitle(s));
+    	list.addAll(bookMapper.searchByTitle(s));
+    	list.addAll(bookletMapper.searchByTitle(s));
+    	list.addAll(inbookMapper.searchByTitle(s));
+    	list.addAll(incollectionMapper.searchByTitle(s));
+    	list.addAll(inproceedingsMapper.searchByTitle(s));
+    	list.addAll(manualMapper.searchByTitle(s));
+    	list.addAll(mastersthesisMapper.searchByTitle(s));
+    	list.addAll(miscMapper.searchByTitle(s));
+    	list.addAll(phdthesisMapper.searchByTitle(s));
+    	list.addAll(proceedingsMapper.searchByTitle(s));
+    	list.addAll(techreportMapper.searchByTitle(s));
+    	list.addAll(unpublishedMapper.searchByTitle(s));
+    	
+    	for (Publication pub : list) {
+    		pub.setAuthors(pubAuthMapper.getAllPublicationAuthors(pub.getId(), pub.getType()));
+    		pub.setEditors(pubEdMapper.getAllPublicationEditors(pub.getId(), pub.getType()));
+    	}
+    	
     	return list;
     }
     
@@ -343,12 +359,5 @@ public class DBManagement {
     	
     	pubAuthMapper.deleteAllPublicationAuthors(p.getId(), p.getType());
     	pubEdMapper.deleteAllPublicationEditors(p.getId(), p.getType());
-    }
-    
-    public ArrayList<Publication> searchByTitle(String s) {
-    	ArrayList<Publication> list = new ArrayList<Publication>();
-    	
-    	
-    	return list;
     }
 }

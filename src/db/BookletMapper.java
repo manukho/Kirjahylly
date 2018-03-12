@@ -13,15 +13,19 @@ import pub.Booklet;
 public interface BookletMapper {
 
 	String selectAll = "SELECT * FROM booklets";
+	String selectByTitle = "SELECT * from booklets where UPPER(title) LIKE UPPER(#{s})";
 	String insert = "INSERT INTO booklets(id, title, howpublished, address, month, year, note, key) "
 			+ "VALUES (#{id}, #{title}, #{howpublished}, #{address}, #{month}, #{year}, #{note}, #{key})";
-	String update = "UPDATE booklets SET id=#{id}, title=#{title}, howpublished=#{howpublished}, "
-			+ "address=#{address}, month=#{month}, year=#{year}, note=#{note}, key=#{key})";
+	String update = "UPDATE booklets SET title=#{title}, howpublished=#{howpublished}, "
+			+ "address=#{address}, month=#{month}, year=#{year}, note=#{note}, key=#{key} WHERE id=#{id}";
 	String delete = "DELETE FROM booklets WHERE id = #{id}";
 	String deleteAll = "DELETE from booklets";
 	
 	@Select(selectAll)
     public ArrayList<Booklet> getAllBooklets();
+	
+	@Select(selectByTitle)
+	public ArrayList<Booklet> searchByTitle(String s);
 	
 	@Insert(insert)
 	@Options(useGeneratedKeys = true, keyProperty = "id", keyColumn = "id")    

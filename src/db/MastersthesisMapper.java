@@ -15,10 +15,11 @@ public interface MastersthesisMapper {
 	String selectAll = "SELECT * FROM mastersthesis";
 	String selectByID = "SELECT id, title, school, year, MSType, address, month, note, key "
 			+ "FROM mastersthesis WHERE id=#{id}";
+	String selectByTitle = "SELECT * from mastersthesis where UPPER(title) LIKE UPPER(#{s})";
 	String insert = "INSERT INTO mastersthesis(id, title, school, year, MSType, address, month, note, key) "
 			+ "VALUES (#{id}, #{title}, #{school}, #{year}, #{PType}, #{address}, #{month}, #{note}, #{key})";
-	String update = "UPDATE mastersthesis SET id=#{id}, title=#{title}, school=#{school}, year=#{year}, "
-			+ "MSType=#{PType}, address=#{address}, month=#{month}, note=#{note}, key=#{key}";
+	String update = "UPDATE mastersthesis SET title=#{title}, school=#{school}, year=#{year}, "
+			+ "MSType=#{PType}, address=#{address}, month=#{month}, note=#{note}, key=#{key} WHERE id=#{id}";
 	String delete = "DELETE FROM mastersthesis WHERE id = #{id}";
 	String deleteAll = "DELETE from mastersthesis";
 
@@ -28,6 +29,9 @@ public interface MastersthesisMapper {
 		
 	@Select(selectByID)
 	public Mastersthesis getMastersthesis(int id);
+	
+	@Select(selectByTitle)
+	public ArrayList<Mastersthesis> searchByTitle(String s);
 		
 	@Insert(insert)
 	@Options(useGeneratedKeys = true, keyProperty = "id", keyColumn = "id")    

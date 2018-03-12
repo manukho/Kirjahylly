@@ -154,6 +154,16 @@ public class SearchResults extends JPanel {
 		model.addRow(new Object[] {p.getTitle(), p.getAuthorString(), p.getYearString()});
 	}
 	
+	public void addRows(ArrayList<Publication> list) {
+		for (Publication pub : list)
+			addRow(pub);
+	}
+	
+	public void clear() {
+		model.setRowCount(0);
+		tmp.clear();
+	}
+	
 	private Publication getById(int id) {
 		for (Publication pub : tmp) {
 			if (pub.getId() == id) return pub;

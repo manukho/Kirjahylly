@@ -22,8 +22,12 @@ import javax.swing.JTextField;
 import pub.*;
 
 /**
- * @author Manuela Hopp
+ * PubAdd is the Panel that gets used in a JOptionPane when adding or modifying a bibliographic item.
+ * For adding an item, the constructor PubAdd() is used where the class of the item can be chosen.
+ * For modifying an item, the constructor PubAdd(Publication p) is used where only the form for the 
+ * class of p gets shown and the textfields are pre-filled with the fields of p. 
  *
+ * @author Manuela Hopp
  */
 public class PubAdd extends JPanel implements ActionListener {
 	
@@ -1142,7 +1146,12 @@ public class PubAdd extends JPanel implements ActionListener {
 		}		
 		
 		/* TODO: keep window open if there are errors */
-		int option = JOptionPane.showConfirmDialog(this, errMsg.toString());
+		//int option = JOptionPane.showConfirmDialog(this, errMsg.toString());
+		int option = JOptionPane.showConfirmDialog(this, errMsg.toString(), "Error", JOptionPane.OK_CANCEL_OPTION);
+		if (option == JOptionPane.OK_OPTION) { // otherwise do nothing
+			System.out.println("YEAH! Should keep this open... but won't.");
+		}
+		
 		return null;
 	}
 	
@@ -1457,7 +1466,6 @@ public class PubAdd extends JPanel implements ActionListener {
 			return false;
 		}
 		if (!req && empty) {
-			System.out.println("!req && empty");
 			p.setChapter(null);
 			return true;
 		}
@@ -1558,6 +1566,7 @@ public class PubAdd extends JPanel implements ActionListener {
 	  return true;  
 	}
 	
+	/* TODO: deal with more than one first name */
 	ArrayList<String> constructList(String s){
 		ArrayList<String> al = new ArrayList<String>();
 		s.replaceAll("AND", "and");

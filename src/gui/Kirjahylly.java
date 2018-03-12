@@ -15,12 +15,14 @@ import javax.swing.JPanel;
 import javax.swing.KeyStroke;
 
 import db.DBManagement;
-import pub.Article;
-import pub.Book;
-import pub.Booklet;
 import pub.Bookstack;
 import pub.Publication;
 
+/**
+ * Kirjahylly is the class that shows the main window and adds the panels.
+ *
+ * @author Manuela Hopp
+ */
 public class Kirjahylly extends JFrame {
 	
 	static Kirjahylly kh;
@@ -59,7 +61,6 @@ public class Kirjahylly extends JFrame {
 		add(sr, BorderLayout.CENTER);
 		
 		pack();
-		
 	}
 
 	private void addMenuBar() {
@@ -107,6 +108,11 @@ public class Kirjahylly extends JFrame {
 		return kh;
 	}
 	
+	public DBManagement getDBM() {
+		if (dbm == null) dbm = new DBManagement();
+		return dbm;
+	}
+	
 	public String getDir() {
 		return dir;
 	}
@@ -124,5 +130,10 @@ public class Kirjahylly extends JFrame {
 	
 	public Bookstack getCurrBS() {
 		return defaultBS;
+	}
+	
+	public SearchResults getSR() {
+		if (sr == null) sr = new SearchResults();
+		return sr;
 	}
 }

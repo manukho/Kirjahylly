@@ -14,8 +14,11 @@ public interface UnpublishedMapper {
 
 	String selectAll = "SELECT * FROM unpublished";
 	String selectByID = "SELECT id, title, year, month, note, key FROM unpublished WHERE id=#{id}";
-	String insert = "INSERT INTO unpublished(id, title, year, month, note, key) VALUES (#{id}, #{title}, #{year}, #{month}, #{note}, #{key})";
-    String update = "UPDATE phdthesis SET id=#{id}, title=#{title}, year=#{year}, month=#{month}, note=#{note}, key=#{key}";
+	String selectByTitle = "SELECT * from unpublished where UPPER(title) LIKE UPPER(#{s})";
+	String insert = "INSERT INTO unpublished(id, title, year, month, note, key) VALUES (#{id}, #{title}, "
+			+ "#{year}, #{month}, #{note}, #{key})";
+    String update = "UPDATE phdthesis SET title=#{title}, year=#{year}, month=#{month}, note=#{note}, "
+    		+ "key=#{key} WHERE id=#{id}";
 	String delete = "DELETE FROM unpublished WHERE id = #{id}";
 	String deleteAll = "DELETE from unpublished";
 
@@ -25,6 +28,9 @@ public interface UnpublishedMapper {
 		
 	@Select(selectByID)
 	public Unpublished getUnpublished(int id);
+	
+	@Select(selectByTitle)
+	public ArrayList<Unpublished> searchByTitle(String s);
 		
 	@Insert(insert)
 	@Options(useGeneratedKeys = true, keyProperty = "id", keyColumn = "id")    

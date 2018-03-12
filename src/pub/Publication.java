@@ -2,6 +2,15 @@ package pub;
 
 import java.util.ArrayList;
 
+/**
+ * Publication represents a generic publication. 
+ * It contains the fields id, note and key that all subclasses have as well as the getters and setters for them.
+ * It also contains methods to set the fields that any of its subclasses can have.
+ * If the specific subclass has the field, the subclass should override the method.
+ * Otherwise it does nothing.
+ *
+ * @author Manuela Hopp
+ */
 public abstract class Publication {
 	
 	Integer id;
@@ -25,7 +34,6 @@ public abstract class Publication {
 	}
 	
 	public Integer getId() {
-		System.out.println("getId: " + id);
 		return id;
 	}
 	
@@ -129,25 +137,24 @@ public abstract class Publication {
 	public String getAuthorString() {
 		String s;
 		if (getAuthors() == null || getAuthors().isEmpty()) {
-			s = "";
-		} else {			
-			s = getAuthors().get(0);
-			for (int i = 1; i < getAuthors().size(); i++) {
-				s = s + " and " + getAuthors().get(i);
-			}
+			return s = "";
 		}
+		s = getAuthors().get(0);
+		for (int i = 1; i < getAuthors().size(); i++) {
+			s = s + " and " + getAuthors().get(i);
+		}
+		
 		return s;
 	}
 	
 	public String getEditorString() {
 		String s;
 		if (getEditors() == null || getEditors().isEmpty()) {
-			s = "";
-		} else {			
-			s = getEditors().get(0);
-			for (int i = 1; i < getEditors().size(); i++) {
-				s = s + " and " + getEditors().get(i);
-			}
+			return s = "";
+		} 	
+		s = getEditors().get(0);
+		for (int i = 1; i < getEditors().size(); i++) {
+			s = s + " and " + getEditors().get(i);
 		}
 		return s;
 	}

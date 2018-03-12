@@ -13,16 +13,17 @@ import pub.Inproceedings;
 public interface InproceedingsMapper {
 
 	String selectAll = "SELECT * FROM inproceedings";
+	String selectByTitle = "SELECT * from inproceedings where UPPER(title) LIKE UPPER(#{s})";
 	String selectByID = "SELECT id, title, booktitle, year, volume, number, series, firstPage, lastPage, "
 			+ "address, month, organization, publisher, note, key FROM inproceedings WHERE id=#{id}";
 	String insert = "INSERT INTO inproceedings(id, title, booktitle, year, volume, number, series, firstPage, "
 			+ "lastPage, address, month, organization, publisher, note, key) "
 			+ "VALUES (#{id}, #{title}, #{booktitle}, #{year}, #{volume}, #{number}, #{series}, #{firstPage}, "
 			+ "#{lastPage}, #{address}, #{month}, #{organization}, #{publisher}, #{note}, #{key})";
-	String update = "UPDATE incollections SET id=#{id}, title=#{title}, booktitle=#{booktitle}, year=#{year}, "
+	String update = "UPDATE incollections SET title=#{title}, booktitle=#{booktitle}, year=#{year}, "
 			+ "volume=#{volume}, number=#{number}, series=#{series}, firstPage=#{firstPage}, "
 			+ "lastPage=#{lastPage}, address=#{address}, month=#{month}, organization=#{organization}, "
-			+ "publisher=#{publisher}, note=#{note}, key#={key}";
+			+ "publisher=#{publisher}, note=#{note}, key#={key} WHERE id=#{id}";
 	String delete = "DELETE FROM inproceedings WHERE id = #{id}";
 	String deleteAll = "DELETE from inproceedings";
 		
@@ -31,6 +32,9 @@ public interface InproceedingsMapper {
 		
 		@Select(selectByID)
 		public Inproceedings getInproceedings(int id);
+		
+		@Select(selectByTitle)
+		public ArrayList<Inproceedings> searchByTitle(String s);
 		
 		@Insert(insert)
 		@Options(useGeneratedKeys = true, keyProperty = "id", keyColumn = "id")    
