@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.util.ArrayList;
 
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -88,6 +89,25 @@ public class Kirjahylly extends JFrame {
 		});
 		
 		mfile.add(miaddbibit);
+		
+		JMenuItem miaddfbibtex = new JMenuItem("Add Bibliographic Item from BibTex");
+		miaddfbibtex.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				BibImport bi = new BibImport();
+				int option = JOptionPane.showConfirmDialog(kh, bi, "", JOptionPane.OK_CANCEL_OPTION);
+				if (option == JOptionPane.OK_OPTION) {
+					System.out.println("OK clicked");
+					ArrayList<Publication> list = bi.getPublications();
+					for (Publication p : list) {
+						new PubAdd(p);
+					}
+				}
+			}
+		});
+		
+		mfile.add(miaddfbibtex);
+		
 		JMenuItem miquit = new JMenuItem("Quit");
         miquit.setAccelerator(KeyStroke.getKeyStroke("control Q"));
 		miquit.addActionListener(new ActionListener() {
