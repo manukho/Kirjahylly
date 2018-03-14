@@ -116,6 +116,7 @@ public abstract class Publication {
 	public void setBooktitle(String s) {}
 	public void setAuthors(ArrayList<String> al) {}
 	public void setEditors(ArrayList<String> al) {}
+	public void setJournal(String string) {}
 	public void setYear(Integer i) {}
 	public void setVolume(Integer i) {}
 	public void setNumber(Integer i) {}
@@ -176,6 +177,7 @@ public abstract class Publication {
     	if (c == Unpublished.class) 	return "unpublished";
     	return null;
 	}
+
 
 	
 }
