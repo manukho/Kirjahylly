@@ -8,6 +8,8 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.time.Year;
 import java.util.ArrayList;
 
@@ -29,11 +31,11 @@ import pub.*;
  *
  * @author Manuela Hopp
  */
-public class PubAdd extends JPanel implements ActionListener {
+public class PubAdd extends JPanel implements ActionListener, PropertyChangeListener {
 	
     private static final long serialVersionUID = 1L;
 	
-    boolean modify;
+    boolean modify = false;
     int id;
 	String[] pubClasses;
 	String pubClassSel;
@@ -71,6 +73,30 @@ public class PubAdd extends JPanel implements ActionListener {
 	private JTextField orgF;
 	private JTextField instF;
 	private JComboBox<String> monthBox;
+	JLabel titleL;
+	JLabel booktitleL;
+	JLabel authorL;
+	JLabel journalL;
+	JLabel yearL;
+	JLabel volumeL;
+	JLabel numberL;
+	JLabel pagesL;
+	JLabel minus;
+	JLabel monthL;
+	JLabel keyL;
+	JLabel noteL;
+	JLabel schoolL;
+	JLabel instL;
+	JLabel orgL;
+	JLabel addressL;
+	JLabel publL;
+	JLabel seriesL;
+	JLabel editionL;
+	JLabel urlL;
+	JLabel hpL;
+	JLabel typeL;
+	JLabel edL;
+	JLabel chapL;
 	private String[] months = {"", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
 	StringBuilder errMsg;
 	/**
@@ -104,6 +130,8 @@ public class PubAdd extends JPanel implements ActionListener {
 		
 		add(panel);
 		
+		createElements();
+		
 		showArticle();
 	}
 	
@@ -111,10 +139,13 @@ public class PubAdd extends JPanel implements ActionListener {
 	/**
 	 * constructor for the form for modifying an existing bibliographic item
 	 * @param the publication to be modified
+	 * @param boolean value that is true - if an item is being added
+	 * 								false - if an item is being modified
 	 */
-	PubAdd(Publication p){
-		modify = true;
-		id = p.getId();
+	PubAdd(Publication p, boolean add){
+		if (!add) modify = true;
+		else modify = false;
+		if (!add) id = p.getId();
 		pubClassSel = p.getType();
 		panel = this;		
 		Dimension d = new Dimension(600,600);
@@ -143,9 +174,9 @@ public class PubAdd extends JPanel implements ActionListener {
 			if (a.getNumber() != null) numberF.setText(a.getNumber().toString());
 			if (a.getFirstPage() != null) pagesF1.setText(a.getFirstPage().toString());
 			if (a.getFirstPage() != null) pagesF2.setText(a.getLastPage().toString());
-			if (a.getMonth() != null && !a.getMonth().isEmpty()) monthBox.setSelectedIndex(getMonthIndex(a.getMonth()));
-			if (a.getNote() != null && !a.getNote().isEmpty()) noteF.setText(a.getNote());
-			if (a.getKey() != null && !a.getKey().isEmpty()) keyF.setText(a.getKey());
+			if (a.getMonth() != null) monthBox.setSelectedIndex(getMonthIndex(a.getMonth()));
+			if (a.getNote() != null) noteF.setText(a.getNote());
+			if (a.getKey() != null) keyF.setText(a.getKey());
 		}
 		if (p.getType().equals("book")) {
 			Book b = (Book) p;
@@ -162,25 +193,25 @@ public class PubAdd extends JPanel implements ActionListener {
 			yearF.setText(p.getYearString());
 			if (b.getVolume() != null) volumeF.setText(b.getVolume().toString());
 			if (b.getNumber() != null) numberF.setText(b.getNumber().toString());
-			if (b.getSeries() != null && !b.getSeries().isEmpty()) seriesF.setText(b.getSeries());
-			if (b.getAddress() != null && !b.getAddress().isEmpty()) addressF.setText(b.getAddress());
-			if (b.getEdition() != null && !b.getEdition().isEmpty()) editionF.setText(b.getEdition());
-			if (b.getMonth() != null && !b.getMonth().isEmpty()) monthBox.setSelectedIndex(getMonthIndex(b.getMonth()));
-			if (b.getUrl() != null && !b.getUrl().isEmpty()) urlF.setText(b.getUrl());
-			if (b.getNote() != null && !b.getNote().isEmpty()) noteF.setText(b.getNote());
-			if (b.getKey() != null && !b.getKey().isEmpty()) keyF.setText(b.getKey());
+			if (b.getSeries() != null) seriesF.setText(b.getSeries());
+			if (b.getAddress() != null) addressF.setText(b.getAddress());
+			if (b.getEdition() != null) editionF.setText(b.getEdition());
+			if (b.getMonth() != null) monthBox.setSelectedIndex(getMonthIndex(b.getMonth()));
+			if (b.getUrl() != null) urlF.setText(b.getUrl());
+			if (b.getNote() != null) noteF.setText(b.getNote());
+			if (b.getKey() != null) keyF.setText(b.getKey());
 		}
 		if (p.getType().equals("booklet")) {
 			Booklet b = (Booklet) p;
 			showBooklet();
 			titleF.setText(b.getTitle());
 			authorF.setText(b.getAuthorString());
-			if (b.getHowpublished() != null && !b.getHowpublished().isEmpty()) hpF.setText(b.getHowpublished());
-			if (b.getAddress() != null && !b.getAddress().isEmpty()) addressF.setText(b.getAddress());
-			if (b.getMonth() != null && !b.getMonth().isEmpty()) monthBox.setSelectedIndex(getMonthIndex(b.getMonth()));
+			if (b.getHowpublished() != null) hpF.setText(b.getHowpublished());
+			if (b.getAddress() != null) addressF.setText(b.getAddress());
+			if (b.getMonth() != null) monthBox.setSelectedIndex(getMonthIndex(b.getMonth()));
 			if (b.getYear() != null) yearF.setText(b.getYearString());
-			if (b.getNote() != null && !b.getNote().isEmpty()) noteF.setText(b.getNote());
-			if (b.getKey() != null && !b.getKey().isEmpty()) keyF.setText(b.getKey());		
+			if (b.getNote() != null) noteF.setText(b.getNote());
+			if (b.getKey() != null) keyF.setText(b.getKey());		
 		}
 		if (p.getType().equals("inbook")) {
 			Inbook ib = (Inbook) p;
@@ -200,13 +231,13 @@ public class PubAdd extends JPanel implements ActionListener {
 			yearF.setText(ib.getYearString());
 			if (ib.getVolume() != null) volumeF.setText(ib.getVolume().toString());
 			if (ib.getNumber() != null) numberF.setText(ib.getNumber().toString());
-			if (ib.getSeries() != null && !ib.getSeries().isEmpty()) seriesF.setText(ib.getSeries());
+			if (ib.getSeries() != null) seriesF.setText(ib.getSeries());
 			if (ib.getPType() != null) typeF.setText(ib.getPType());
-			if (ib.getAddress() != null && !ib.getAddress().isEmpty()) addressF.setText(ib.getAddress());
-			if (ib.getEdition() != null && !ib.getEdition().isEmpty()) editionF.setText(ib.getEdition());
-			if (ib.getMonth() != null && !ib.getMonth().isEmpty()) monthBox.setSelectedIndex(getMonthIndex(ib.getMonth()));
-			if (ib.getNote() != null && !ib.getNote().isEmpty()) noteF.setText(ib.getNote());
-			if (ib.getKey() != null && !ib.getKey().isEmpty()) keyF.setText(ib.getKey());		
+			if (ib.getAddress() != null) addressF.setText(ib.getAddress());
+			if (ib.getEdition() != null) editionF.setText(ib.getEdition());
+			if (ib.getMonth() != null) monthBox.setSelectedIndex(getMonthIndex(ib.getMonth()));
+			if (ib.getNote() != null) noteF.setText(ib.getNote());
+			if (ib.getKey() != null) keyF.setText(ib.getKey());		
 		}
 		if (p.getType().equals("incollection")) {
 			Incollection ic = (Incollection) p;
@@ -224,11 +255,11 @@ public class PubAdd extends JPanel implements ActionListener {
 			if (ic.getChapter() != null) chapF.setText(ic.getChapter().toString());
 			if (ic.getFirstPage() != null) pagesF1.setText(ic.getFirstPage().toString());
 			if (ic.getFirstPage() != null) pagesF2.setText(ic.getLastPage().toString());
-			if (ic.getAddress() != null && !ic.getAddress().isEmpty()) addressF.setText(ic.getAddress());
-			if (ic.getEdition() != null && !ic.getEdition().isEmpty()) editionF.setText(ic.getEdition());
-			if (ic.getMonth() != null && !ic.getMonth().isEmpty()) monthBox.setSelectedIndex(getMonthIndex(ic.getMonth()));
-			if (ic.getNote() != null && !ic.getNote().isEmpty()) noteF.setText(ic.getNote());
-			if (ic.getKey() != null && !ic.getKey().isEmpty()) keyF.setText(ic.getKey());		
+			if (ic.getAddress() != null) addressF.setText(ic.getAddress());
+			if (ic.getEdition() != null) editionF.setText(ic.getEdition());
+			if (ic.getMonth() != null) monthBox.setSelectedIndex(getMonthIndex(ic.getMonth()));
+			if (ic.getNote() != null) noteF.setText(ic.getNote());
+			if (ic.getKey() != null) keyF.setText(ic.getKey());		
 		}
 		if (p.getType().equals("inproceedings")) {
 			Inproceedings ip = (Inproceedings) p;
@@ -240,28 +271,28 @@ public class PubAdd extends JPanel implements ActionListener {
 			edF.setText(ip.getEditorString());
 			if (ip.getVolume() != null) volumeF.setText(ip.getVolume().toString());
 			if (ip.getNumber() != null) numberF.setText(ip.getNumber().toString());
-			if (ip.getSeries() != null && !ip.getSeries().isEmpty()) seriesF.setText(ip.getSeries());
+			if (ip.getSeries() != null) seriesF.setText(ip.getSeries());
 			if (ip.getFirstPage() != null) pagesF1.setText(ip.getFirstPage().toString());
 			if (ip.getFirstPage() != null) pagesF2.setText(ip.getLastPage().toString());
-			if (ip.getAddress() != null && !ip.getAddress().isEmpty()) addressF.setText(ip.getAddress());
-			if (ip.getMonth() != null && !ip.getMonth().isEmpty()) monthBox.setSelectedIndex(getMonthIndex(ip.getMonth()));
-			if (ip.getOrganization() != null && !ip.getOrganization().isEmpty()) orgF.setText(ip.getOrganization());
-			if (ip.getPublisher() != null && !ip.getPublisher().isEmpty()) publF.setText(ip.getPublisher());
-			if (ip.getNote() != null && !ip.getNote().isEmpty()) noteF.setText(ip.getNote());
-			if (ip.getKey() != null && !ip.getKey().isEmpty()) keyF.setText(ip.getKey());	
+			if (ip.getAddress() != null) addressF.setText(ip.getAddress());
+			if (ip.getMonth() != null) monthBox.setSelectedIndex(getMonthIndex(ip.getMonth()));
+			if (ip.getOrganization() != null) orgF.setText(ip.getOrganization());
+			if (ip.getPublisher() != null) publF.setText(ip.getPublisher());
+			if (ip.getNote() != null) noteF.setText(ip.getNote());
+			if (ip.getKey() != null) keyF.setText(ip.getKey());	
 		}
 		if (p.getType().equals("manual")) {
 			Manual m = (Manual) p;
 			showManual();
 			titleF.setText(m.getTitle());
 			authorF.setText(m.getAuthorString());
-			if (m.getOrganization() != null && !m.getOrganization().isEmpty()) orgF.setText(m.getOrganization());
-			if (m.getAddress() != null && !m.getAddress().isEmpty()) addressF.setText(m.getAddress());
-			if (m.getEdition() != null && !m.getEdition().isEmpty()) editionF.setText(m.getEdition());
-			if (m.getMonth() != null && !m.getMonth().isEmpty()) monthBox.setSelectedIndex(getMonthIndex(m.getMonth()));
+			if (m.getOrganization() != null) orgF.setText(m.getOrganization());
+			if (m.getAddress() != null) addressF.setText(m.getAddress());
+			if (m.getEdition() != null) editionF.setText(m.getEdition());
+			if (m.getMonth() != null) monthBox.setSelectedIndex(getMonthIndex(m.getMonth()));
 			yearF.setText(m.getYearString());
-			if (m.getNote() != null && !m.getNote().isEmpty()) noteF.setText(m.getNote());
-			if (m.getKey() != null && !m.getKey().isEmpty()) keyF.setText(m.getKey());	
+			if (m.getNote() != null) noteF.setText(m.getNote());
+			if (m.getKey() != null) keyF.setText(m.getKey());	
 		}
 		if (p.getType().equals("mastersthesis")) {
 			Mastersthesis m = (Mastersthesis) p;
@@ -270,22 +301,22 @@ public class PubAdd extends JPanel implements ActionListener {
 			authorF.setText(m.getAuthorString());
 			schoolF.setText(m.getSchool());
 			yearF.setText(m.getYearString());
-			if (m.getPType() != null && !m.getPType().isEmpty()) typeF.setText(m.getPType());
-			if (m.getAddress() != null && !m.getAddress().isEmpty()) addressF.setText(m.getAddress());
-			if (m.getMonth() != null && !m.getMonth().isEmpty()) monthBox.setSelectedIndex(getMonthIndex(m.getMonth()));
-			if (m.getNote() != null && !m.getNote().isEmpty()) noteF.setText(m.getNote());
-			if (m.getKey() != null && !m.getKey().isEmpty()) keyF.setText(m.getKey());	
+			if (m.getPType() != null) typeF.setText(m.getPType());
+			if (m.getAddress() != null) addressF.setText(m.getAddress());
+			if (m.getMonth() != null) monthBox.setSelectedIndex(getMonthIndex(m.getMonth()));
+			if (m.getNote() != null) noteF.setText(m.getNote());
+			if (m.getKey() != null) keyF.setText(m.getKey());	
 		}
 		if (p.getType().equals("misc")) {
 			Misc m = (Misc) p;
 			showMisc();
 			titleF.setText(m.getTitle());
 			authorF.setText(m.getAuthorString());
-			if (m.getHowpublished() != null && !m.getHowpublished().isEmpty()) hpF.setText(m.getHowpublished());
-			if (m.getMonth() != null && !m.getMonth().isEmpty()) monthBox.setSelectedIndex(getMonthIndex(m.getMonth()));
+			if (m.getHowpublished() != null) hpF.setText(m.getHowpublished());
+			if (m.getMonth() != null) monthBox.setSelectedIndex(getMonthIndex(m.getMonth()));
 			yearF.setText(m.getYearString());
-			if (m.getNote() != null && !m.getNote().isEmpty()) noteF.setText(m.getNote());
-			if (m.getKey() != null && !m.getKey().isEmpty()) keyF.setText(m.getKey());	
+			if (m.getNote() != null) noteF.setText(m.getNote());
+			if (m.getKey() != null) keyF.setText(m.getKey());	
 		}
 		if (p.getType().equals("phdthesis")) {
 			Phdthesis pt = (Phdthesis) p;
@@ -294,11 +325,11 @@ public class PubAdd extends JPanel implements ActionListener {
 			authorF.setText(pt.getAuthorString());
 			schoolF.setText(pt.getSchool());
 			yearF.setText(pt.getYearString());
-			if (pt.getPType() != null && !pt.getPType().isEmpty()) typeF.setText(pt.getPType());
-			if (pt.getAddress() != null && !pt.getAddress().isEmpty()) addressF.setText(pt.getAddress());
-			if (pt.getMonth() != null && !pt.getMonth().isEmpty()) monthBox.setSelectedIndex(getMonthIndex(pt.getMonth()));
-			if (pt.getNote() != null && !pt.getNote().isEmpty()) noteF.setText(pt.getNote());
-			if (pt.getKey() != null && !pt.getKey().isEmpty()) keyF.setText(pt.getKey());	
+			if (pt.getPType() != null) typeF.setText(pt.getPType());
+			if (pt.getAddress() != null) addressF.setText(pt.getAddress());
+			if (pt.getMonth() != null) monthBox.setSelectedIndex(getMonthIndex(pt.getMonth()));
+			if (pt.getNote() != null) noteF.setText(pt.getNote());
+			if (pt.getKey() != null) keyF.setText(pt.getKey());	
 		}
 		if (p.getType().equals("proceedings")) {
 			Proceedings pr = (Proceedings) p;
@@ -308,13 +339,13 @@ public class PubAdd extends JPanel implements ActionListener {
 			edF.setText(pr.getEditorString());
 			if (pr.getVolume() != null) volumeF.setText(pr.getVolume().toString());
 			if (pr.getNumber() != null) numberF.setText(pr.getNumber().toString());
-			if (pr.getSeries() != null && !pr.getSeries().isEmpty()) seriesF.setText(pr.getSeries());
-			if (pr.getAddress() != null && !pr.getAddress().isEmpty()) addressF.setText(pr.getAddress());
-			if (pr.getMonth() != null && !pr.getMonth().isEmpty()) monthBox.setSelectedIndex(getMonthIndex(pr.getMonth()));
-			if (pr.getOrganization() != null && !pr.getOrganization().isEmpty()) orgF.setText(pr.getOrganization());
-			if (pr.getPublisher() != null && !pr.getPublisher().isEmpty()) publF.setText(pr.getPublisher());
-			if (pr.getNote() != null && !pr.getNote().isEmpty()) noteF.setText(pr.getNote());
-			if (pr.getKey() != null && !pr.getKey().isEmpty()) keyF.setText(pr.getKey());	
+			if (pr.getSeries() != null) seriesF.setText(pr.getSeries());
+			if (pr.getAddress() != null) addressF.setText(pr.getAddress());
+			if (pr.getMonth() != null) monthBox.setSelectedIndex(getMonthIndex(pr.getMonth()));
+			if (pr.getOrganization() != null) orgF.setText(pr.getOrganization());
+			if (pr.getPublisher() != null) publF.setText(pr.getPublisher());
+			if (pr.getNote() != null) noteF.setText(pr.getNote());
+			if (pr.getKey() != null) keyF.setText(pr.getKey());	
 		}
 		if (p.getType().equals("techreport")) {
 			Techreport tr = (Techreport) p;
@@ -325,8 +356,8 @@ public class PubAdd extends JPanel implements ActionListener {
 			yearF.setText(tr.getYearString());
 			if (tr.getPType() != null && !tr.getPType().isEmpty()) typeF.setText(tr.getPType());
 			if (tr.getNumber() != null) numberF.setText(tr.getNumber().toString());
-			if (tr.getAddress() != null && !tr.getAddress().isEmpty()) addressF.setText(tr.getAddress());
-			if (tr.getMonth() != null && !tr.getMonth().isEmpty()) monthBox.setSelectedIndex(getMonthIndex(tr.getMonth()));
+			if (tr.getAddress() != null) addressF.setText(tr.getAddress());
+			if (tr.getMonth() != null) monthBox.setSelectedIndex(getMonthIndex(tr.getMonth()));
 			if (tr.getNote() != null && !tr.getNote().isEmpty()) noteF.setText(tr.getNote());
 			if (tr.getKey() != null && !tr.getKey().isEmpty()) keyF.setText(tr.getKey());	
 		}
@@ -336,9 +367,9 @@ public class PubAdd extends JPanel implements ActionListener {
 			titleF.setText(u.getTitle());
 			authorF.setText(u.getAuthorString());
 			yearF.setText(u.getYearString());
-			if (u.getMonth() != null && !u.getMonth().isEmpty()) monthBox.setSelectedIndex(getMonthIndex(u.getMonth()));
-			if (u.getNote() != null && !u.getNote().isEmpty()) noteF.setText(u.getNote());
-			if (u.getKey() != null && !u.getKey().isEmpty()) keyF.setText(u.getKey());	
+			if (u.getMonth() != null) monthBox.setSelectedIndex(getMonthIndex(u.getMonth()));
+			if (u.getNote() != null) noteF.setText(u.getNote());
+			if (u.getKey() != null) keyF.setText(u.getKey());	
 		}
 	}
 
@@ -620,10 +651,7 @@ public class PubAdd extends JPanel implements ActionListener {
 	}
 	
 	private void addTitleFields(int row, boolean req) {
-		JLabel titleL = new JLabel("Title: ");
 		if (req) titleL.setForeground(Color.RED);
-		titleF = new JTextField();
-		titleF.setPreferredSize(dim);
 	    c.weightx = 0; c.gridx = 0; c.gridy = row;
 		panel.add(titleL, c);
 		c.weightx = 1; c.gridx = 1; c.gridy = row;
@@ -631,10 +659,7 @@ public class PubAdd extends JPanel implements ActionListener {
 	}
 	
 	private void addAuthorFields(int row, boolean req) {
-		JLabel authorL = new JLabel("Author(s): ");
 		if (req) authorL.setForeground(Color.RED);
-		authorF = new JTextField();
-		authorF.setPreferredSize(dim);
 		c.weightx = 0; c.gridx = 0; c.gridy = row;
 		panel.add(authorL, c);
 		c.weightx = 1; c.gridx = 1; c.gridy = row;
@@ -642,226 +667,153 @@ public class PubAdd extends JPanel implements ActionListener {
 	}
 	
 	private void addJournalFields(int row, boolean req) {
-		JLabel journalL = new JLabel("Journal: ");
 		if (req) journalL.setForeground(Color.RED);
 		c.weightx = 0; c.gridx = 0; c.gridy = row; ;
 		panel.add(journalL, c);
-		journalF = new JTextField();
-		journalF.setPreferredSize(dim);
 		c.weightx = 1; c.gridx = 1; c.gridy = row;
 		panel.add(journalF, c);
 	}
 	
 	private void addYearFields(int row, boolean req) {
-		JLabel yearL = new JLabel("Year: ");
 		if (req) yearL.setForeground(Color.RED);
 		c.weightx = 0; c.gridx = 0; c.gridy = row; 
 		panel.add(yearL, c);
-		yearF = new JTextField(Year.now().toString());
-		yearF.setPreferredSize(dim);
 		c.weightx = 1; c.gridx = 1; c.gridy = row;
 		panel.add(yearF, c);
 	}
 	
 	private void addVolumeFields(int row, boolean req) {
-		JLabel volumeL = new JLabel("Volume: ");
 		if (req) volumeL.setForeground(Color.RED);
 		c.weightx = 0; c.gridx = 0; c.gridy = row; 
 		panel.add(volumeL, c);
-		volumeF = new JTextField();
-		volumeF.setPreferredSize(dim);
 		c.weightx = 1; c.gridx = 1; c.gridy = row;
 		panel.add(volumeF, c);
 	}
 	
 	private void addNumberFields(int row, boolean req) {
-		JLabel numberL = new JLabel("Number: ");
 		if (req) numberL.setForeground(Color.RED);
 		c.weightx = 0; c.gridx = 0; c.gridy = row;
 		panel.add(numberL, c);
-		numberF = new JTextField();
-		numberF.setPreferredSize(dim);
 		c.weightx = 1; c.gridx = 1; c.gridy = row;
 		panel.add(numberF, c);
 	}
 	
 	private void addPagesFields(int row, boolean req) {
-		JLabel pagesL = new JLabel("Pages: ");
 		if (req) pagesL.setForeground(Color.RED);
 		c.weightx = 0; c.gridx = 0; c.gridy = row;
 		panel.add(pagesL, c);
-		pagesPanel = new JPanel();
-		pagesF1 = new JTextField();
-		pagesF1.setPreferredSize(new Dimension(50,25));
-		pagesPanel.add(pagesF1);
-		JLabel minus = new JLabel(" - ");
-		pagesPanel.add(minus);
-		pagesF2 = new JTextField();
-		pagesF2.setPreferredSize(new Dimension(50,25));
-		pagesPanel.add(pagesF2);
 		c.weightx = 1; c.gridx = 1; c.gridy = row;
 		panel.add(pagesPanel, c);
 	}
 	
 	private void addMonthFields(int row, boolean req) {
-		JLabel monthL = new JLabel("Month: ");
 		if (req) monthL.setForeground(Color.RED);
 		c.weightx = 0; c.gridx = 0; c.gridy = row; 
 		panel.add(monthL, c);
-		monthBox = new JComboBox<String>(months);
-		monthBox.setPreferredSize(dim);
 		monthBox.setSelectedIndex(0);
 		c.weightx = 1; c.gridx = 1; c.gridy = row;
 		panel.add(monthBox, c);
 	}
 	
 	private void addKeyFields(int row, boolean req) {
-		JLabel keyL = new JLabel("Key: ");
 		if (req) keyL.setForeground(Color.RED);
 		c.weightx = 0; c.gridx = 0; c.gridy = row; 
 		panel.add(keyL, c);
-		keyF = new JTextField();
-		keyF.setPreferredSize(dim);
 		c.weightx = 1; c.gridx = 1; c.gridy = row;
 		panel.add(keyF, c);
 	}
 	
 	private void addNoteFields(int row, boolean req) {
-		JLabel noteL = new JLabel("Note: ");
 		if (req) noteL.setForeground(Color.RED);
 		c.weightx = 0; c.gridx = 0; c.gridy = row; c.insets = new Insets(5,0,0,0);
 		panel.add(noteL, c);
-		noteF = new JTextArea();
-		noteF.setPreferredSize(new Dimension(200,50));
 		c.weightx = 1; c.gridx = 1; c.gridy = row;
 		panel.add(noteF, c);
 	}
 	
 	private void addSchoolFields(int row, boolean req) {
-		JLabel schoolL = new JLabel("School: ");
 		if (req) schoolL.setForeground(Color.RED);
 	    c.weightx = 0; c.gridx = 0; c.gridy = row; 
 		panel.add(schoolL, c);
-		schoolF = new JTextField();
-		schoolF.setPreferredSize(dim);
 		c.weightx = 1; c.gridx = 1; c.gridy = row;
 		panel.add(schoolF, c);
 	}
 	
 	private void addAuthEdFields(int row, boolean req) {
-		String[] authed = {"Author(s)", "Editor(s)"};
-		aeBox = new JComboBox<String>(authed);
 		if (req) aeBox.setForeground(Color.RED);
-		aeBox.setPreferredSize(new Dimension(90, 23));
 		aeBox.setSelectedIndex(0);
 	    c.weightx = 0; c.gridx = 0; c.gridy = row; c.insets = new Insets(0,0,0,5);
 		panel.add(aeBox, c);
-		authedF = new JTextField();
-		authedF.setPreferredSize(dim);
 		c.weightx = 1; c.gridx = 1; c.gridy = row; c.insets = new Insets(0,0,0,0);
 		panel.add(authedF, c);
 	}
 	
 	private void addAddressFields(int row, boolean req) {
-		JLabel addressL = new JLabel("Address: ");
 		if (req) addressL.setForeground(Color.RED);
 		c.weightx = 0; c.gridx = 0; c.gridy = row; 
 		panel.add(addressL, c);
-		addressF = new JTextField();
-		addressF.setPreferredSize(dim);
 		c.weightx = 1; c.gridx = 1; c.gridy = row;
 		panel.add(addressF, c);
 	}
 	
 	private void addPublisherFields(int row, boolean req) {
-		JLabel publL = new JLabel("Publisher: ");
 		if (req) publL.setForeground(Color.RED);
 		c.weightx = 0; c.gridx = 0; c.gridy = row;
 		panel.add(publL, c);
-		publF = new JTextField();
-		publF.setPreferredSize(dim);
 		c.weightx = 1; c.gridx = 1; c.gridy = row;
 		panel.add(publF, c);
 	}
 	
 	private void addBooktitleFields(int row, boolean req) {
-		JLabel booktitleL = new JLabel("Booktitle: ");
 		if (req) booktitleL.setForeground(Color.RED);
 	    c.weightx = 0; c.gridx = 0; c.gridy = row; 
 		panel.add(booktitleL, c);
-		booktitleF = new JTextField();
-		booktitleF.setPreferredSize(dim);
 		c.weightx = 1; c.gridx = 1; c.gridy = row;
 		panel.add(booktitleF, c);
 	}
 	
 	private void addVolNumFields(int row, boolean req) {
-		String[] volnum = {"Volume", "Number"};
-		vnBox = new JComboBox<String>(volnum);
-		vnBox.setPreferredSize(new Dimension(90, 23));
 		vnBox.setSelectedIndex(0);
 	    c.weightx = 0; c.gridx = 0; c.gridy = row; c.insets = new Insets(0,0,0,5);
 		panel.add(vnBox, c);
-		volNumF = new JTextField();
-		volNumF.setPreferredSize(dim);
 		c.weightx = 1; c.gridx = 1; c.gridy = row; c.insets = new Insets(0,0,0,0);
 		panel.add(volNumF, c);
 	}
 	
 	private void addSeriesFields(int row, boolean req) {
-		JLabel seriesL = new JLabel("Series: ");
 		if (req) seriesL.setForeground(Color.RED);
 		c.weightx = 0; c.gridx = 0; c.gridy = row;
 		panel.add(seriesL, c);
-		seriesF = new JTextField();
-		seriesF.setPreferredSize(dim);
 		c.weightx = 1; c.gridx = 1; c.gridy = row;
 		panel.add(seriesF, c);
 	}
 	
 	private void addEditionFields(int row, boolean req) {
-		JLabel editionL = new JLabel("Edition: ");
 		if (req) editionL.setForeground(Color.RED);
 		c.weightx = 0; c.gridx = 0; c.gridy = row;
 		panel.add(editionL, c);
-		editionF = new JTextField();
-		editionF.setPreferredSize(dim);
 		c.weightx = 1; c.gridx = 1; c.gridy = row;
 		panel.add(editionF, c);
 	}
 	
 	private void addURLFields(int row, boolean req) {
-		JLabel urlL = new JLabel("URL: ");
 		if (req) urlL.setForeground(Color.RED);
 		c.weightx = 0; c.gridx = 0; c.gridy = row;
 		panel.add(urlL, c);
-		urlF = new JTextField();
-		urlF.setPreferredSize(dim);
 		c.weightx = 1; c.gridx = 1; c.gridy = row;
 		panel.add(urlF, c);
 	}
 	
 	private void addHowpublishedFields(int row, boolean req) {
-		JLabel hpL = new JLabel("How published: ");
 		if (req) hpL.setForeground(Color.RED);
 		c.weightx = 0; c.gridx = 0; c.gridy = row;
 		panel.add(hpL, c);
-		hpF = new JTextField();
-		hpF.setPreferredSize(dim);
 		c.weightx = 1; c.gridx = 1; c.gridy = row;
 		panel.add(hpF, c);
 	}
 	
 	private void addChaPaFields(int row, boolean req) {
-		String[] chapa = {"Chapter", "Pages"};
-		cpBox = new JComboBox<String>(chapa);
 		if (req) cpBox.setForeground(Color.RED);
-		pagesPanel = new JPanel();
-		pagesPanel.setPreferredSize(dim);
-		chapF = new JTextField();
-		chapF.setPreferredSize(dim);
-		pagesPanel.add(chapF);
-		cpBox.setPreferredSize(new Dimension(90, 23));
 		cpBox.setSelectedIndex(0);
 		cpBox.addActionListener(new ActionListener() {
 			@Override
@@ -873,16 +825,6 @@ public class PubAdd extends JPanel implements ActionListener {
 				if (sel == 0) { // chapter
 					panel.add(chapF, c);
 				} else { // pages
-					if (pagesPanel.getComponentCount() == 0){
-						pagesF1 = new JTextField();
-						pagesF1.setPreferredSize(new Dimension(50,25));
-						pagesPanel.add(pagesF1);
-						JLabel minus = new JLabel(" - ");
-						pagesPanel.add(minus);
-						pagesF2 = new JTextField();
-						pagesF2.setPreferredSize(new Dimension(50,25));
-						pagesPanel.add(pagesF2);
-						}
 					panel.add(pagesPanel, c);
 				}
 				panel.revalidate();
@@ -896,56 +838,41 @@ public class PubAdd extends JPanel implements ActionListener {
 	}
 	
 	private void addTypeFields(int row, boolean req) {
-		JLabel typeL = new JLabel("Type: ");
 		if (req) typeL.setForeground(Color.RED);
 		c.weightx = 0; c.gridx = 0; c.gridy = row;
 		panel.add(typeL, c);
-		typeF = new JTextField();
-		typeF.setPreferredSize(dim);
 		c.weightx = 1; c.gridx = 1; c.gridy = row;
 		panel.add(typeF, c);
 	}
 	
 	private void addEditorFields(int row, boolean req) {
-		JLabel edL = new JLabel("Editor(s): ");
 		if (req) edL.setForeground(Color.RED);
 		c.weightx = 0; c.gridx = 0; c.gridy = row;
 		panel.add(edL, c);
-		edF = new JTextField();
-		edF.setPreferredSize(dim);
 		c.weightx = 1; c.gridx = 1; c.gridy = row;
 		panel.add(edF, c);
 	}
 	
 	private void addChapterFields(int row, boolean req) {
-		JLabel chapL = new JLabel("Chapter: ");
 		if (req) chapL.setForeground(Color.RED);
 		c.weightx = 0; c.gridx = 0; c.gridy = row;
 		panel.add(chapL, c);
-		chapF = new JTextField();
-		chapF.setPreferredSize(dim);
 		c.weightx = 1; c.gridx = 1; c.gridy = row;
 		panel.add(chapF, c);
 	}
 	
 	private void addOrgFields(int row, boolean req) {
-		JLabel orgL = new JLabel("Organization: ");
 		if (req) orgL.setForeground(Color.RED);
 		c.weightx = 0; c.gridx = 0; c.gridy = row;
 		panel.add(orgL, c);
-		orgF = new JTextField();
-		orgF.setPreferredSize(dim);
 		c.weightx = 1; c.gridx = 1; c.gridy = row;
 		panel.add(orgF, c);
 	}
 	
 	private void addInstitutionFields(int row, boolean req) {
-		JLabel instL = new JLabel("Institution: ");
 		if (req) instL.setForeground(Color.RED);
 		c.weightx = 0; c.gridx = 0; c.gridy = row;
 		panel.add(instL, c);
-		instF = new JTextField();
-		instF.setPreferredSize(dim);
 		c.weightx = 1; c.gridx = 1; c.gridy = row;
 		panel.add(instF, c);
 	}
@@ -1597,5 +1524,131 @@ public class PubAdd extends JPanel implements ActionListener {
 			}
 		}
 		return al;
+	}
+	
+	private void createElements(){
+		titleL = new JLabel("Title: ");
+		titleF = new JTextField();
+		titleF.setPreferredSize(dim);
+		
+		authorL = new JLabel("Author(s): ");
+		authorF = new JTextField();
+		authorF.setPreferredSize(dim);
+		
+		journalL = new JLabel("Journal: ");
+		journalF = new JTextField();
+		journalF.setPreferredSize(dim);
+
+		yearL = new JLabel("Year: ");
+		yearF = new JTextField(Year.now().toString());
+		yearF.setPreferredSize(dim);
+		
+		volumeL = new JLabel("Volume: ");
+		volumeF = new JTextField();
+		volumeF.setPreferredSize(dim);
+		
+		numberL = new JLabel("Number: ");
+		numberF = new JTextField();
+		numberF.setPreferredSize(dim);
+		
+		pagesL = new JLabel("Pages: ");
+		pagesPanel = new JPanel();
+		pagesF1 = new JTextField();
+		pagesF1.setPreferredSize(new Dimension(50,25));
+		pagesPanel.add(pagesF1);
+		minus = new JLabel(" - ");
+		pagesPanel.add(minus);
+		pagesF2 = new JTextField();
+		pagesF2.setPreferredSize(new Dimension(50,25));
+		pagesPanel.add(pagesF2);
+		
+		monthL = new JLabel("Month: ");
+		monthBox = new JComboBox<String>(months);
+		monthBox.setPreferredSize(dim);
+
+		keyL = new JLabel("Key: ");
+		keyF = new JTextField();
+		keyF.setPreferredSize(dim);
+		
+		noteL = new JLabel("Note: ");
+		noteF = new JTextArea();
+		noteF.setPreferredSize(new Dimension(200,50));
+	
+		schoolL = new JLabel("School: ");
+		schoolF = new JTextField();
+		schoolF.setPreferredSize(dim);
+		
+		booktitleL = new JLabel("Booktitle: ");
+		booktitleF = new JTextField();
+		booktitleF.setPreferredSize(dim);
+		
+		String[] authed = {"Author(s)", "Editor(s)"};
+		aeBox = new JComboBox<String>(authed);
+		aeBox.setPreferredSize(new Dimension(90, 23));
+		authedF = new JTextField();
+		authedF.setPreferredSize(dim);
+		
+		addressL = new JLabel("Address: ");
+		addressF = new JTextField();
+		addressF.setPreferredSize(dim);
+		
+		publL = new JLabel("Publisher: ");
+		publF = new JTextField();
+		publF.setPreferredSize(dim);
+		
+		String[] volnum = {"Volume", "Number"};
+		vnBox = new JComboBox<String>(volnum);
+		vnBox.setPreferredSize(new Dimension(90, 23));
+		volNumF = new JTextField();
+		volNumF.setPreferredSize(dim);
+		
+		seriesL = new JLabel("Series: ");
+		seriesF = new JTextField();
+		seriesF.setPreferredSize(dim);
+		
+		editionL = new JLabel("Edition: ");
+		editionF = new JTextField();
+		editionF.setPreferredSize(dim);
+		
+		urlL = new JLabel("URL: ");
+		urlF = new JTextField();
+		urlF.setPreferredSize(dim);
+		
+		hpL = new JLabel("How published: ");
+		hpF = new JTextField();
+		hpF.setPreferredSize(dim);
+		
+		String[] chapa = {"Chapter", "Pages"};
+		cpBox = new JComboBox<String>(chapa);
+		cpBox.setPreferredSize(new Dimension(90, 23));
+		chapF = new JTextField();
+		chapF.setPreferredSize(dim);
+
+		typeL = new JLabel("Type: ");
+		typeF = new JTextField();
+		typeF.setPreferredSize(dim);
+		
+		edL = new JLabel("Editor(s): ");
+		edF = new JTextField();
+		edF.setPreferredSize(dim);
+		
+		chapL = new JLabel("Chapter: ");
+		chapF = new JTextField();
+		chapF.setPreferredSize(dim);
+		
+		orgL = new JLabel("Organization: ");
+		orgF = new JTextField();
+		orgF.setPreferredSize(dim);
+		
+		instL = new JLabel("Institution: ");
+		instF = new JTextField();
+		instF.setPreferredSize(dim);
+	}
+
+
+	@Override
+	public void propertyChange(PropertyChangeEvent arg0) {
+		// TODO Auto-generated method stub
+		
 	}
 }

@@ -25,7 +25,6 @@ public class BibTexParser {
 			Publication pub = createPublication(type, key, rest);
 			if (pub != null) {
 				list.add(pub);
-				System.out.println(pub);
 			}
 		}
 	}
@@ -218,6 +217,10 @@ public class BibTexParser {
 		for (int i = 0; i < arr.length; i++) {
 			list.add(arr[i]);
 		}
+		return list;
+	}
+
+	public ArrayList<Publication> getPublicationList() {
 		return list;
 	}
 }

@@ -131,7 +131,8 @@ public class DBManagement {
     	BasicConfigurator.configure();
     }
     
-    private void test() {
+    @SuppressWarnings("unused")
+	private void test() {
     	clearAll();
     	
     	Article a = new Article();

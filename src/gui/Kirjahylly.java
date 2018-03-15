@@ -100,7 +100,12 @@ public class Kirjahylly extends JFrame {
 					System.out.println("OK clicked");
 					ArrayList<Publication> list = bi.getPublications();
 					for (Publication p : list) {
-						new PubAdd(p);
+						PubAdd pa = new PubAdd(p, true);
+						int opt = JOptionPane.showConfirmDialog(null, pa, "modify " + p.getType(), JOptionPane.OK_CANCEL_OPTION);
+						if (opt == JOptionPane.OK_OPTION) { // otherwise do nothing
+							p = pa.getPublication();
+							sr.addRow(p);
+						}
 					}
 				}
 			}

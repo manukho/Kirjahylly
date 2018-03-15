@@ -12,6 +12,7 @@ import pub.Publication;
 
 public class BibImport extends JPanel {
 	
+	private static final long serialVersionUID = -7947124469174472995L;
 	JTextArea textArea;
 	
 	public BibImport() {
@@ -26,8 +27,7 @@ public class BibImport extends JPanel {
 	}
 
 	public ArrayList<Publication> getPublications() {
-		ArrayList<Publication> list = new ArrayList<Publication>();
 		BibTexParser btp = new BibTexParser(textArea.getText());
-		return list;
+		return btp.getPublicationList();
 	}
 }
