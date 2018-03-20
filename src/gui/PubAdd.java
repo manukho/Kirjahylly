@@ -8,15 +8,11 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
-import java.time.Year;
 import java.util.ArrayList;
 
 import javax.swing.BoxLayout;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
@@ -1588,7 +1584,7 @@ public class PubAdd extends JPanel implements ActionListener{
 		journalF.setPreferredSize(dim);
 
 		yearL = new JLabel("Year: ");
-		yearF = new JTextField(Year.now().toString());
+		yearF = new JTextField();
 		yearF.setPreferredSize(dim);
 		
 		volumeL = new JLabel("Volume: ");
