@@ -77,19 +77,39 @@ public class Kirjahylly extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				PubAdd pa = new PubAdd();
-				int option = JOptionPane.showConfirmDialog(kh, pa, "", JOptionPane.OK_CANCEL_OPTION);
-				if (option == JOptionPane.OK_OPTION) {
-					Publication p = pa.getPublication();
-					if (p != null) {
-						defaultBS.addPub(p);
-						dbm.insertPublication(p);
-						sr.addRow(p);
-					} else {
-						System.out.println("publication was null.");
+				final JOptionPane optionPane = new JOptionPane(pa, JOptionPane.PLAIN_MESSAGE, JOptionPane.OK_CANCEL_OPTION);
+				final JDialog dialog = new JDialog(kh, true);
+				dialog.setContentPane(optionPane);
+				dialog.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
+				optionPane.addPropertyChangeListener(new PropertyChangeListener() {
+					@Override
+					public void propertyChange(PropertyChangeEvent e) {
+						String prop = e.getPropertyName();
+						if (dialog.isVisible() && (e.getSource() == optionPane) && (prop.equals(JOptionPane.VALUE_PROPERTY)) && (optionPane.getValue() != JOptionPane.UNINITIALIZED_VALUE)) {
+							int value = ((Integer)optionPane.getValue()).intValue();
+							if (value == JOptionPane.OK_OPTION) {
+								if (!pa.validateInput()) {
+									String errMsg = pa.getErrMsg();
+									 JOptionPane.showMessageDialog(kh, errMsg, "Error", JOptionPane.ERROR_MESSAGE); 
+									 pa.clearErrMsg();
+									 optionPane.setValue(JOptionPane.UNINITIALIZED_VALUE);
+								} else {
+									Publication p = pa.getPublication();
+									if (p != null) {
+										defaultBS.addPub(p);
+										dbm.insertPublication(p);
+										sr.addRow(p);
+									}
+									dialog.dispose();
+								}									
+							} else {
+								dialog.dispose();
+							}
+						}
 					}
-				} else {
-					System.out.println("option: " + option);
-				}
+				});
+				dialog.pack();
+				dialog.setVisible(true);
 			}
 		});
 		
@@ -112,15 +132,14 @@ public class Kirjahylly extends JFrame {
 						optionPane.addPropertyChangeListener(new PropertyChangeListener() {
 							public void propertyChange(PropertyChangeEvent e) {
 								String prop = e.getPropertyName();
-								if (dialog.isVisible() && (e.getSource() == optionPane) && (prop.equals(JOptionPane.VALUE_PROPERTY))) {
-									dialog.setVisible(false);
+								if (dialog.isVisible() && (e.getSource() == optionPane) && (prop.equals(JOptionPane.VALUE_PROPERTY)) && (optionPane.getValue() != JOptionPane.UNINITIALIZED_VALUE)) {
 									int value = ((Integer)optionPane.getValue()).intValue();
 									if (value == JOptionPane.OK_OPTION) {
 										if (!pa.validateInput()) {
 											String errMsg = pa.getErrMsg();
 											 JOptionPane.showMessageDialog(kh, errMsg, "Error", JOptionPane.ERROR_MESSAGE); 
 											 pa.clearErrMsg();
-											 dialog.setVisible(true);
+											 optionPane.setValue(JOptionPane.UNINITIALIZED_VALUE);
 										} else {
 											Publication p = pa.getPublication();
 											if (p != null) {

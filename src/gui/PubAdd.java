@@ -399,7 +399,10 @@ public class PubAdd extends JPanel implements ActionListener{
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if (!modify) pubClassSel = (String) pubClassList.getSelectedItem();
+		if (!modify) { 
+			System.out.println("here! modify = " + modify);
+			pubClassSel = (String) pubClassList.getSelectedItem();
+		}
 		if (pubClassSel.equals("article")) showArticle();
 		if (pubClassSel.equals("book")) showBook();
 		if (pubClassSel.equals("booklet")) showBooklet();
@@ -895,6 +898,8 @@ public class PubAdd extends JPanel implements ActionListener{
 	
 	boolean validateInput() {
 		boolean bool = true;
+		if (!modify) pubClassSel = (String) pubClassList.getSelectedItem();
+		
 		if (pubClassSel.equals("article")) {
 			b = new Article();
 			if (modify) b.setId(id);
@@ -1100,7 +1105,7 @@ public class PubAdd extends JPanel implements ActionListener{
 	
 	/* this assumes validateInput has been called before, thus b is not null */
 	Publication getPublication() {
-		if (!modify) pubClassSel = (String) pubClassList.getSelectedItem();
+//		if (!modify) pubClassSel = (String) pubClassList.getSelectedItem();
 		return b;
 	}
 	
