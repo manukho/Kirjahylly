@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Options;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
@@ -14,6 +15,7 @@ public interface MiscMapper {
 
 	String selectAll = "SELECT * FROM misc";
 	String selectByTitle = "SELECT * from misc where UPPER(title) LIKE UPPER(#{s})";
+	String selectByTitleAndYear = "SELECT * from misc where UPPER(title) LIKE UPPER(#{s}) AND year=#{y}";
 	String selectByID = "SELECT id, title, howpublished, month, year, note, key FROM misc WHERE id=#{id}";
 	String insert = "INSERT INTO misc(id, title, howpublished, month, year, note, key) "
 			+ "VALUES (#{id}, #{title}, #{howpublished}, #{month}, #{year}, #{note}, #{key})";
@@ -31,6 +33,9 @@ public interface MiscMapper {
 	
 	@Select(selectByTitle)
 	public ArrayList<Misc> searchByTitle(String s);
+	
+	@Select(selectByTitleAndYear)
+	public ArrayList<Misc> searchByTitleAndYear(@Param("s") String s, @Param("y") int y);
 		
 	@Insert(insert)
 	@Options(useGeneratedKeys = true, keyProperty = "id", keyColumn = "id")    

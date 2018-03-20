@@ -54,8 +54,6 @@ public class SearchBar extends JPanel {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			/* TODO: do something */
-			System.out.println("Extended Search button clicked");
 			esb = new ExtendedSearchBar(kh);
 			kh.setSearchBar(esb);
 		}

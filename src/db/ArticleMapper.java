@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Options;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
@@ -15,6 +16,7 @@ public interface ArticleMapper {
 	String selectAll = "SELECT * FROM articles";
 	String selectByID = "SELECT id, title, journal, year, volume, number, firstPage, lastPage, month, note key FROM ARTICLES WHERE id=#{id}";
 	String selectByTitle = "SELECT * from articles where UPPER(title) LIKE UPPER(#{s})";
+	String selectByTitleAndYear = "SELECT * from articles where UPPER(title) LIKE UPPER(#{s}) AND year=#{y}";
 	String insert = "INSERT INTO articles(id, title, journal, year, volume, number, firstPage, lastPage, "
 			+ "month, note, key) "
 			+ "VALUES (#{id},#{title},#{journal},#{year},#{volume},#{number},#{firstPage},#{lastPage},"
@@ -33,6 +35,9 @@ public interface ArticleMapper {
 	
 	@Select(selectByTitle)
 	public ArrayList<Article> searchByTitle(String s);
+	
+	@Select(selectByTitleAndYear)
+	public ArrayList<Article> searchByTitleAndYear(@Param("s") String s, @Param("y") int y);
 
 	@Insert(insert)
 	@Options(useGeneratedKeys = true, keyProperty = "id", keyColumn = "id")
@@ -45,8 +50,5 @@ public interface ArticleMapper {
 	public int deleteArticle(Article a);
 	
 	@Delete(deleteAll)
-	public int clear();
-
-	
-	
+	public int clear();	
 }

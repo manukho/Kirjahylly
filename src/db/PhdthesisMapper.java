@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Options;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
@@ -16,6 +17,7 @@ public interface PhdthesisMapper {
 	String selectByID = "SELECT id, title, school, year, PHDtype, address, month, note, key "
 			+ "FROM phdthesis WHERE id=#{id}";
 	String selectByTitle = "SELECT * from phdthesis where UPPER(title) LIKE UPPER(#{s})";
+	String selectByTitleAndYear = "SELECT * from phdthesis where UPPER(title) LIKE UPPER(#{s}) AND year=#{y}";
 	String insert = "INSERT INTO phdthesis(id, title, school, year, PHDtype, address, month, note, key) "
 			+ "VALUES (#{id}, #{title}, #{school}, #{year}, #{PType}, #{address}, #{month}, #{note}, #{key})";
 	String update = "UPDATE phdthesis SET title=#{title}, school=#{school}, year=#{year}, "
@@ -32,6 +34,9 @@ public interface PhdthesisMapper {
 	
 	@Select(selectByTitle)
 	public ArrayList<Phdthesis> searchByTitle(String s);
+	
+	@Select(selectByTitleAndYear)
+	public ArrayList<Phdthesis> searchByTitleAndYear(@Param("s") String s, @Param("y") int y);
 		
 	@Insert(insert)
 	@Options(useGeneratedKeys = true, keyProperty = "id", keyColumn = "id")    

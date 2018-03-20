@@ -85,8 +85,16 @@ public class ExtendedSearchBar extends JPanel {
 			String year_s = yearf.getText();
 			String title_s = titlef.getText();
 			ArrayList<Publication> list = new ArrayList<Publication>();
-			if (auth_s.isEmpty() && year_s.isEmpty() && !title_s.isEmpty()) {
+			if (!title_s.isEmpty() && auth_s.isEmpty() && year_s.isEmpty()) {
 				list = dbm.searchByTitle(title_s);
+			}
+			if (!title_s.isEmpty() && auth_s.isEmpty() && !year_s.isEmpty()) {
+				if (isNumeric(year_s)) {
+					list = dbm.searchByTitleAndYear(title_s, Integer.parseInt(year_s));
+				} else {
+					list = dbm.searchByTitle(title_s);
+				}
+				
 			}
 			sr.clear();
 			sr.addRows(list);
@@ -102,5 +110,16 @@ public class ExtendedSearchBar extends JPanel {
 			
 		} 
 		
+	}
+	
+	@SuppressWarnings("unused")
+	public static boolean isNumeric(String s){  
+	  try {  
+	    int i = Integer.parseInt(s);  
+	  }  
+	  catch(NumberFormatException e) {  
+	    return false;  
+	  }  
+	  return true;  
 	}
 }

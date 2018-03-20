@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Options;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
@@ -16,6 +17,7 @@ public interface TechreportMapper {
 	String selectByID = "SELECT id, title, institution, year, TType, number, address, month, key "
 			+ "FROM techreports WHERE id=#{id}";
 	String selectByTitle = "SELECT * from techreport where UPPER(title) LIKE UPPER(#{s})";
+	String selectByTitleAndYear = "SELECT * from techreport where UPPER(title) LIKE UPPER(#{s}) AND year=#{y}";
 	String insert = "INSERT INTO techreport(id, title, institution, year, TType, number, address, month, note, key) "
 			+ "VALUES (#{id}, #{title}, #{institution}, #{year}, #{PType}, #{number}, #{address}, #{month}, #{note}, #{key})";
     String update = "UPDATE techreport SET title=#{title}, institution=#{institution}, year=#{year}, TType=#{PType}, "
@@ -32,6 +34,9 @@ public interface TechreportMapper {
 	
 	@Select(selectByTitle)
 	public ArrayList<Techreport> searchByTitle(String s);
+	
+	@Select(selectByTitleAndYear)
+	public ArrayList<Techreport> searchByTitleAndYear(@Param("s") String s, @Param("y") int y);
 		
 	@Insert(insert)
 	@Options(useGeneratedKeys = true, keyProperty = "id", keyColumn = "id")    

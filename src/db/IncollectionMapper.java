@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Options;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
@@ -15,6 +16,7 @@ public interface IncollectionMapper {
 	
 	String selectAll = "SELECT * FROM incollections";
 	String selectByTitle = "SELECT * from incollections where UPPER(title) LIKE UPPER(#{s})";
+	String selectByTitleAndYear = "SELECT * from incollections where UPPER(title) LIKE UPPER(#{s}) AND year=#{y}";
 	String insert = "INSERT INTO incollections(id, title, booktitle, publisher, year, volume, number, series, "
 			+ "ICType, chapter, firstPage, lastPage, address, edition, month, note, key) "
 			+ "VALUES (#{id}, #{title}, #{booktitle}, #{publisher}, #{year}, #{volume}, #{number}, #{series}, "
@@ -31,6 +33,9 @@ public interface IncollectionMapper {
 	
 	@Select(selectByTitle)
 	public ArrayList<Incollection> searchByTitle(String s);
+	
+	@Select(selectByTitleAndYear)
+	public ArrayList<Incollection> searchByTitleAndYear(@Param("s") String s, @Param("y") int y);
 	
 	@Insert(insert)
 	@Options(useGeneratedKeys = true, keyProperty = "id", keyColumn = "id")    
