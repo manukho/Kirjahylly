@@ -10,6 +10,8 @@ public class BibTexParser {
 	
 	private ArrayList<Publication> list;
 	
+	// TODO: allow fieldName = "val" as well
+	
 	public BibTexParser(String s) {
 		list = new ArrayList<Publication>();
 		// look for entries

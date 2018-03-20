@@ -4,9 +4,14 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.util.ArrayList;
 
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -97,15 +102,42 @@ public class Kirjahylly extends JFrame {
 				BibImport bi = new BibImport();
 				int option = JOptionPane.showConfirmDialog(kh, bi, "", JOptionPane.OK_CANCEL_OPTION);
 				if (option == JOptionPane.OK_OPTION) {
-					System.out.println("OK clicked");
 					ArrayList<Publication> list = bi.getPublications();
 					for (Publication p : list) {
 						PubAdd pa = new PubAdd(p, true);
-						int opt = JOptionPane.showConfirmDialog(null, pa, "modify " + p.getType(), JOptionPane.OK_CANCEL_OPTION);
-						if (opt == JOptionPane.OK_OPTION) { // otherwise do nothing
-							p = pa.getPublication();
-							sr.addRow(p);
-						}
+						final JOptionPane optionPane = new JOptionPane(pa, JOptionPane.PLAIN_MESSAGE, JOptionPane.OK_CANCEL_OPTION);
+						final JDialog dialog = new JDialog(kh, true);
+						dialog.setContentPane(optionPane);
+						dialog.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
+						optionPane.addPropertyChangeListener(new PropertyChangeListener() {
+							public void propertyChange(PropertyChangeEvent e) {
+								String prop = e.getPropertyName();
+								if (dialog.isVisible() && (e.getSource() == optionPane) && (prop.equals(JOptionPane.VALUE_PROPERTY))) {
+									dialog.setVisible(false);
+									int value = ((Integer)optionPane.getValue()).intValue();
+									if (value == JOptionPane.OK_OPTION) {
+										if (!pa.validateInput()) {
+											String errMsg = pa.getErrMsg();
+											 JOptionPane.showMessageDialog(kh, errMsg, "Error", JOptionPane.ERROR_MESSAGE); 
+											 pa.clearErrMsg();
+											 dialog.setVisible(true);
+										} else {
+											Publication p = pa.getPublication();
+											if (p != null) {
+												defaultBS.addPub(p);
+												dbm.insertPublication(p);
+												sr.addRow(p);
+											}
+											dialog.dispose();
+										}									
+									} else {
+										dialog.dispose();
+									}
+								}
+							}
+						});
+						dialog.pack();
+						dialog.setVisible(true);
 					}
 				}
 			}

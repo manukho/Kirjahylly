@@ -31,7 +31,7 @@ import pub.*;
  *
  * @author Manuela Hopp
  */
-public class PubAdd extends JPanel implements ActionListener, PropertyChangeListener {
+public class PubAdd extends JPanel implements ActionListener{
 	
     private static final long serialVersionUID = 1L;
 	
@@ -99,6 +99,7 @@ public class PubAdd extends JPanel implements ActionListener, PropertyChangeList
 	JLabel chapL;
 	private String[] months = {"", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
 	StringBuilder errMsg;
+	private Publication b;
 	/**
 	 * constructor for the form for adding a new bibliographic item
 	 */
@@ -107,7 +108,7 @@ public class PubAdd extends JPanel implements ActionListener, PropertyChangeList
 		Dimension d = new Dimension(600,600);
 		setPreferredSize(d);
 		setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
-		errMsg = new StringBuilder();;
+		errMsg = new StringBuilder();
 		
 		JPanel classListPanel = new JPanel();
 		pubClasses = new String[] {"article", "book", "booklet", "inbook", "incollection", "inproceedings", "manual", "mastersthesis", "misc", "phdthesis", "proceedings", "techreport", "unpublished"};
@@ -147,12 +148,27 @@ public class PubAdd extends JPanel implements ActionListener, PropertyChangeList
 		else modify = false;
 		if (!add) id = p.getId();
 		pubClassSel = p.getType();
-		panel = this;		
+		createElements();
 		Dimension d = new Dimension(600,600);
 		setPreferredSize(d);
 		setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
+		if (add) {
+			JPanel classListPanel = new JPanel();
+			pubClasses = new String[] {"article", "book", "booklet", "inbook", "incollection", "inproceedings", "manual", "mastersthesis", "misc", "phdthesis", "proceedings", "techreport", "unpublished"};
+			pubClassList = new JComboBox<String>(pubClasses);
+			pubClassList.setPreferredSize(new Dimension(150,25));
+			pubClassList.setSelectedIndex(0);
+			pubClassList.addActionListener(this);
+			classListPanel.add(pubClassList);
+			add(classListPanel);
+			panel = new JPanel();
+			panel.setLayout(new GridBagLayout());
+			add(panel);
+		} else {
+			panel = this;
+		}
 		
-		setLayout(new GridBagLayout());
+		panel.setLayout(new GridBagLayout());
 		c = new GridBagConstraints();
 		dim = new Dimension(350,25);
 		
@@ -877,28 +893,26 @@ public class PubAdd extends JPanel implements ActionListener, PropertyChangeList
 		panel.add(instF, c);
 	}
 	
-	Publication getPublication() {
-		if (!modify) pubClassSel = (String) pubClassList.getSelectedItem();
+	boolean validateInput() {
 		boolean bool = true;
 		if (pubClassSel.equals("article")) {
-			Article a = new Article();
-			if (modify) a.setId(id);
-			bool &= setTitle(a, true);
-			bool &= setAuthors(a, true);
-			bool &= setJournal(a, true);
-			bool &= setYear(a, true);
-			bool &= setVolume(a, true);
-			bool &= setNumber(a, false);
-			bool &= setPages(a, false);
-			bool &= setMonth(a, false);
-			bool &= setNote(a, false);
-			bool &= setKey(a, false);
-			if (bool) {
-				return a;
-			}
+			b = new Article();
+			if (modify) b.setId(id);
+			bool &= setTitle(b, true);
+			bool &= setAuthors(b, true);
+			bool &= setJournal((Article) b, true);
+			bool &= setYear(b, true);
+			bool &= setVolume(b, true);
+			bool &= setNumber(b, false);
+			bool &= setPages(b, false);
+			bool &= setMonth(b, false);
+			bool &= setNote(b, false);
+			bool &= setKey(b, false);
+			return bool;
 		}
 		if (pubClassSel.equals("book")) {
-			Book b = new Book();
+			b = new Book();
+			if (modify) b.setId(id);
 			bool &= setTitle(b, true);
 			bool &= setAuthEd(b, true);
 			bool &= setPublisher(b, true);
@@ -911,12 +925,12 @@ public class PubAdd extends JPanel implements ActionListener, PropertyChangeList
 			bool &= setMonth(b, false);
 			bool &= setUrl(b, false);
 			bool &= setKey(b, false);
-			bool &= setNote(b, false);
-			if (bool) return b;
-			
+			bool &= setNote(b, false);	
+			return bool;
 		}
 		if (pubClassSel.equals("booklet")) {
-			Booklet b = new Booklet();
+			b = new Booklet();
+			if (modify) b.setId(id);
 			bool &= setTitle(b, true);
 			bool &= setAuthors(b, false);
 			bool &= setHowpublished(b, false);
@@ -925,10 +939,11 @@ public class PubAdd extends JPanel implements ActionListener, PropertyChangeList
 			bool &= setYear(b, false);
 			bool &= setKey(b, false);
 			bool &= setNote(b, false);
-			if (bool) return b;
+			return bool;
 		}
 		if (pubClassSel.equals("inbook")) {
-			Inbook b = new Inbook();
+			b = new Inbook();
+			if (modify) b.setId(id);
 			bool &= setTitle(b, true);
 			bool &= setAuthEd(b, true);
 			bool &= setChaPa(b, true);
@@ -942,10 +957,11 @@ public class PubAdd extends JPanel implements ActionListener, PropertyChangeList
 			bool &= setMonth(b, false);
 			bool &= setKey(b, false);
 			bool &= setNote(b, false);
-			if (bool) return b;
+			return bool;
 		}
 		if (pubClassSel.equals("incollection")) {
-			Incollection b = new Incollection();
+			b = new Incollection();
+			if (modify) b.setId(id);
 			bool &= setTitle(b, true);
 			bool &= setBooktitle(b, true);
 			bool &= setAuthors(b, true);
@@ -962,10 +978,11 @@ public class PubAdd extends JPanel implements ActionListener, PropertyChangeList
 			bool &= setMonth(b, false);
 			bool &= setKey(b, false);
 			bool &= setNote(b, false);
-			if (bool) return b;
+			return bool;
 		}
 		if (pubClassSel.equals("inproceedings")) {
-			Inproceedings b = new Inproceedings();
+			b = new Inproceedings();
+			if (modify) b.setId(id);
 			bool &= setTitle(b, true);
 			bool &= setBooktitle(b, true);
 			bool &= setAuthors(b, true);
@@ -980,10 +997,11 @@ public class PubAdd extends JPanel implements ActionListener, PropertyChangeList
 			bool &= setPublisher(b, false);
 			bool &= setKey(b, false);
 			bool &= setNote(b, false);
-			if (bool) return b;
+			return bool;
 		}
 		if (pubClassSel.equals("manual")) {
-			Manual b = new Manual();
+			b = new Manual();
+			if (modify) b.setId(id);
 			bool &= setTitle(b, true);
 			bool &= setAuthors(b, false);
 			bool &= setOrganization(b, false);
@@ -993,10 +1011,11 @@ public class PubAdd extends JPanel implements ActionListener, PropertyChangeList
 			bool &= setYear(b, false);
 			bool &= setKey(b, false);
 			bool &= setNote(b, false);
-			if (bool) return b;
+			return bool;
 		}
 		if (pubClassSel.equals("mastersthesis")) {
-			Mastersthesis b = new Mastersthesis();
+			b = new Mastersthesis();
+			if (modify) b.setId(id);
 			bool &= setTitle(b, true);
 			bool &= setAuthors(b, true);
 			bool &= setSchool(b, true);
@@ -1006,10 +1025,11 @@ public class PubAdd extends JPanel implements ActionListener, PropertyChangeList
 			bool &= setMonth(b, false);
 			bool &= setKey(b, false);
 			bool &= setNote(b, false);
-			if (bool) return b;
+			return bool;
 		}
 		if (pubClassSel.equals("misc")) {
-			Misc b = new Misc();
+			b = new Misc();
+			if (modify) b.setId(id);
 			bool &= setTitle(b, false);
 			bool &= setAuthors(b, false);
 			bool &= setHowpublished(b, false);
@@ -1017,10 +1037,11 @@ public class PubAdd extends JPanel implements ActionListener, PropertyChangeList
 			bool &= setYear(b, false);
 			bool &= setKey(b, false);
 			bool &= setNote(b, false);
-			if (bool) return b;
+			return bool;
 		}
 		if (pubClassSel.equals("phdthesis")) {
-			Phdthesis b = new Phdthesis();
+			b = new Phdthesis();
+			if (modify) b.setId(id);
 			bool &= setTitle(b, true);
 			bool &= setAuthors(b, true);
 			bool &= setSchool(b, true);
@@ -1030,10 +1051,11 @@ public class PubAdd extends JPanel implements ActionListener, PropertyChangeList
 			bool &= setMonth(b, false);
 			bool &= setKey(b, false);
 			bool &= setNote(b, false);
-			if (bool) return b;
+			return bool;
 		}
 		if (pubClassSel.equals("proceedings")) {
-			Proceedings b = new Proceedings();
+			b = new Proceedings();
+			if (modify) b.setId(id);
 			bool &= setTitle(b, true);
 			bool &= setYear(b, true);
 			bool &= setEditors(b, false);
@@ -1045,10 +1067,11 @@ public class PubAdd extends JPanel implements ActionListener, PropertyChangeList
 			bool &= setOrganization(b, false);
 			bool &= setKey(b, false);
 			bool &= setNote(b, false);
-			if (bool) return b;
+			return bool;
 		}
 		if (pubClassSel.equals("techreport")) {
-			Techreport b = new Techreport();
+			b = new Techreport();
+			if (modify) b.setId(id);
 			bool &= setTitle(b, true);
 			bool &= setAuthors(b, true);
 			bool &= setInstitution(b, true);
@@ -1059,27 +1082,34 @@ public class PubAdd extends JPanel implements ActionListener, PropertyChangeList
 			bool &= setMonth(b, false);
 			bool &= setKey(b, false);
 			bool &= setNote(b, false);
-			if (bool) return b;
+			return bool;
 		}
 		if (pubClassSel.equals("unpublished")) {
-			Unpublished b = new Unpublished();
+			b = new Unpublished();
+			if (modify) b.setId(id);
 			bool &= setTitle(b, true);
 			bool &= setAuthors(b, true);
 			bool &= setNote(b, true);
 			bool &= setMonth(b, false);
 			bool &= setYear(b, false);
 			bool &= setKey(b, false);
-			if (bool) return b;
-		}		
-		
-		/* TODO: keep window open if there are errors */
-		//int option = JOptionPane.showConfirmDialog(this, errMsg.toString());
-		int option = JOptionPane.showConfirmDialog(this, errMsg.toString(), "Error", JOptionPane.OK_CANCEL_OPTION);
-		if (option == JOptionPane.OK_OPTION) { // otherwise do nothing
-			System.out.println("YEAH! Should keep this open... but won't.");
+			return bool;
 		}
-		
-		return null;
+		return true;
+	}
+	
+	/* this assumes validateInput has been called before, thus b is not null */
+	Publication getPublication() {
+		if (!modify) pubClassSel = (String) pubClassList.getSelectedItem();
+		return b;
+	}
+	
+	String getErrMsg() {
+		return errMsg.toString();
+	}
+	
+	void clearErrMsg() {
+		errMsg.delete(0, errMsg.length());
 	}
 	
 	private boolean setTitle(Publication p, boolean req) {
@@ -1643,12 +1673,5 @@ public class PubAdd extends JPanel implements ActionListener, PropertyChangeList
 		instL = new JLabel("Institution: ");
 		instF = new JTextField();
 		instF.setPreferredSize(dim);
-	}
-
-
-	@Override
-	public void propertyChange(PropertyChangeEvent arg0) {
-		// TODO Auto-generated method stub
-		
 	}
 }
