@@ -157,7 +157,7 @@ public class PubAdd extends JPanel implements ActionListener{
 			pubClasses = new String[] {"article", "book", "booklet", "inbook", "incollection", "inproceedings", "manual", "mastersthesis", "misc", "phdthesis", "proceedings", "techreport", "unpublished"};
 			pubClassList = new JComboBox<String>(pubClasses);
 			pubClassList.setPreferredSize(new Dimension(150,25));
-			pubClassList.setSelectedIndex(0);
+			setSelectedIndexOfPubClassList(p.getType());
 			pubClassList.addActionListener(this);
 			classListPanel.add(pubClassList);
 			add(classListPanel);
@@ -388,6 +388,19 @@ public class PubAdd extends JPanel implements ActionListener{
 			if (u.getKey() != null) keyF.setText(u.getKey());	
 		}
 	}
+
+	private void setSelectedIndexOfPubClassList(String type) {
+		System.out.println("setSelectedIndexOfPubClassList");
+		pubClasses = new String[] {"article", "book", "booklet", "inbook", "incollection", "inproceedings", "manual", "mastersthesis", "misc", "phdthesis", "proceedings", "techreport", "unpublished"};
+		for (int i = 0; i < pubClasses.length; i++) {
+			if (type.equals(pubClasses[i])) {
+				pubClassList.setSelectedIndex(i);
+				
+			}
+		}
+		System.out.println("Index selected: " + pubClassList.getSelectedIndex());
+	}
+
 
 	private int getMonthIndex(String month) {
 		for (int i = 0; i < months.length; i++) {
