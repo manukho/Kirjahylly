@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Comparator;
 
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
@@ -386,5 +387,59 @@ public class DBManagement {
     	}
     	
 		return list;
+	}
+	
+	public ArrayList<Publication> searchByTitleAndAuthor(String title, String auth){
+		ArrayList<Publication> list = new ArrayList<Publication>();
+    	title = "%" + title + "%";
+    	list.addAll(articleMapper.searchByTitle(title));
+    	list.addAll(bookMapper.searchByTitle(title));
+    	list.addAll(bookletMapper.searchByTitle(title));
+    	list.addAll(inbookMapper.searchByTitle(title));
+    	list.addAll(incollectionMapper.searchByTitle(title));
+    	list.addAll(inproceedingsMapper.searchByTitle(title));
+    	list.addAll(manualMapper.searchByTitle(title));
+    	list.addAll(mastersthesisMapper.searchByTitle(title));
+    	list.addAll(miscMapper.searchByTitle(title));
+    	list.addAll(phdthesisMapper.searchByTitle(title));
+    	list.addAll(proceedingsMapper.searchByTitle(title));
+    	list.addAll(techreportMapper.searchByTitle(title));
+    	list.addAll(unpublishedMapper.searchByTitle(title));
+		auth.replaceAll(",", "");
+		auth.replace(";", "");
+		auth.replace("and", "");
+		auth.replace("AND", "");
+		String[] a = auth.split(" ");
+		for (int i = 0; i < a.length; i++) {
+			a[i] = "%" + a[i].trim() + "%";
+		}
+		ArrayList<Publication> result = new ArrayList<Publication>();
+		for (int i = 0; i < list.size(); i++) {
+			Publication p = list.get(i);
+			int count = 0;
+			for (String s : a) {
+				count += pubAuthMapper.countIdName(p.getId(), p.getType(), s);
+			}
+			if (count > 0) {
+				p.setWeight(count);
+				result.add(p);
+			}
+			result.sort(new PublicationComparator());
+		}
+		
+    	for (Publication pub : result) {
+    		pub.setAuthors(pubAuthMapper.getAllPublicationAuthors(pub.getId(), pub.getType()));
+    		pub.setEditors(pubEdMapper.getAllPublicationEditors(pub.getId(), pub.getType()));
+    	}
+    	
+		return result;
+	}
+	
+	private class PublicationComparator implements Comparator<Publication>{
+
+		@Override
+		public int compare(Publication p1, Publication p2) {
+			return p2.getWeight()-p1.getWeight();
+		}
 	}
 }

@@ -149,7 +149,9 @@ public class Inproceedings extends Publication {
 	
 	@Override
 	public String getYearString() {
-		return year.toString();
+		if (year != null)
+			return year.toString();
+		else return "";
 	}	
 
 	@Override

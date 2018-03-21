@@ -94,7 +94,9 @@ public class ExtendedSearchBar extends JPanel {
 				} else {
 					list = dbm.searchByTitle(title_s);
 				}
-				
+			}
+			if (!title_s.isEmpty() && !auth_s.isEmpty() && year_s.isEmpty()) {
+				list = dbm.searchByTitleAndAuthor(title_s, auth_s);
 			}
 			sr.clear();
 			sr.addRows(list);

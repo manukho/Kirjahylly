@@ -10,6 +10,7 @@ import org.apache.ibatis.annotations.Select;
 public interface PublicationAuthorMapper {
 	
 	String select = "SELECT (name) from pubauth WHERE id = #{id} and type = #{type}";
+	String count = "SELECT COUNT(id) FROM pubauth WHERE id=#{id} AND type=#{type} and UPPER(name) LIKE UPPER(#{name})";
 	String insert = "INSERT INTO pubauth(id, type, name) VALUES (#{id}, #{type}, #{name})";
 	String delete = "DELETE from pubauth WHERE id = #{id} AND type = #{type} AND name = #{name}";
 	String deleteAll = "DELETE from pubauth WHERE id = #{id} AND type = #{type}";
@@ -17,6 +18,9 @@ public interface PublicationAuthorMapper {
 
 	@Select(select)
     public ArrayList<String> getAllPublicationAuthors(@Param("id") int id, @Param("type") String type);
+	
+	@Select(count)
+	public int countIdName(@Param("id") int id, @Param("type") String type, @Param("name") String name);
 	
     @Insert(insert)
     public boolean insertPublicationAuthor(@Param("id") int id, @Param("type") String type, @Param("name") String name);

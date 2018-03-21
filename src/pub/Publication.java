@@ -16,6 +16,7 @@ public abstract class Publication {
 	Integer id;
 	String note;
 	String key;	
+	int weight = 0; // for sorting purposes
 	
 	public String getNote() {
 		return note;
@@ -178,6 +179,11 @@ public abstract class Publication {
     	return null;
 	}
 
-
+	public void setWeight(int w) {
+		weight = w;
+	}
 	
+	public int getWeight() {
+		return weight;
+	}
 }
