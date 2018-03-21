@@ -15,6 +15,7 @@ public interface InproceedingsMapper {
 
 	String selectAll = "SELECT * FROM inproceedings";
 	String selectByTitle = "SELECT * from inproceedings where UPPER(title) LIKE UPPER(#{s})";
+	String selectByYear = "SELECT * from inproceedings where year=#{y}";
 	String selectByTitleAndYear = "SELECT * from inproceedings where UPPER(title) LIKE UPPER(#{s}) AND year=#{y}";
 	String selectByID = "SELECT id, title, booktitle, year, volume, number, series, firstPage, lastPage, "
 			+ "address, month, organization, publisher, note, key FROM inproceedings WHERE id=#{id}";
@@ -30,13 +31,16 @@ public interface InproceedingsMapper {
 	String deleteAll = "DELETE from inproceedings";
 		
 		@Select(selectAll)
-	    public ArrayList<Inproceedings> getAllInproceedings();
+	    public ArrayList<Inproceedings> getAll();
 		
 		@Select(selectByID)
 		public Inproceedings getInproceedings(int id);
 		
 		@Select(selectByTitle)
 		public ArrayList<Inproceedings> searchByTitle(String s);
+
+		@Select(selectByYear)
+		public ArrayList<Inproceedings> searchByYear(@Param("y") int y);
 		
 		@Select(selectByTitleAndYear)
 		public ArrayList<Inproceedings> searchByTitleAndYear(@Param("s") String s, @Param("y") int y);

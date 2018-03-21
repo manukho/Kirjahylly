@@ -15,6 +15,7 @@ public interface MiscMapper {
 
 	String selectAll = "SELECT * FROM misc";
 	String selectByTitle = "SELECT * from misc where UPPER(title) LIKE UPPER(#{s})";
+	String selectByYear = "SELECT * from misc where year=#{y}";
 	String selectByTitleAndYear = "SELECT * from misc where UPPER(title) LIKE UPPER(#{s}) AND year=#{y}";
 	String selectByID = "SELECT id, title, howpublished, month, year, note, key FROM misc WHERE id=#{id}";
 	String insert = "INSERT INTO misc(id, title, howpublished, month, year, note, key) "
@@ -26,13 +27,16 @@ public interface MiscMapper {
 
 		
 	@Select(selectAll)
-	public ArrayList<Misc> getAllMisc();
+	public ArrayList<Misc> getAll();
 		
 	@Select(selectByID)
 	public Misc getMisc(int id);
 	
 	@Select(selectByTitle)
 	public ArrayList<Misc> searchByTitle(String s);
+
+	@Select(selectByYear)
+	public ArrayList<Misc> searchByYear(@Param("y") int y);
 	
 	@Select(selectByTitleAndYear)
 	public ArrayList<Misc> searchByTitleAndYear(@Param("s") String s, @Param("y") int y);

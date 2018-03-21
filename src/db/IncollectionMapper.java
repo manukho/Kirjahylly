@@ -16,6 +16,7 @@ public interface IncollectionMapper {
 	
 	String selectAll = "SELECT * FROM incollections";
 	String selectByTitle = "SELECT * from incollections where UPPER(title) LIKE UPPER(#{s})";
+	String selectByYear = "SELECT * from incollections where year=#{y}";
 	String selectByTitleAndYear = "SELECT * from incollections where UPPER(title) LIKE UPPER(#{s}) AND year=#{y}";
 	String insert = "INSERT INTO incollections(id, title, booktitle, publisher, year, volume, number, series, "
 			+ "ICType, chapter, firstPage, lastPage, address, edition, month, note, key) "
@@ -29,10 +30,13 @@ public interface IncollectionMapper {
 	String deleteAll = "DELETE from incollections";
 	
 	@Select(selectAll)
-    public ArrayList<Incollection> getAllIncollections();
+    public ArrayList<Incollection> getAll();
 	
 	@Select(selectByTitle)
 	public ArrayList<Incollection> searchByTitle(String s);
+	
+	@Select(selectByYear)
+	public ArrayList<Incollection> searchByYear(@Param("y") int y);
 	
 	@Select(selectByTitleAndYear)
 	public ArrayList<Incollection> searchByTitleAndYear(@Param("s") String s, @Param("y") int y);

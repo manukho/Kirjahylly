@@ -17,6 +17,7 @@ public interface TechreportMapper {
 	String selectByID = "SELECT id, title, institution, year, TType, number, address, month, key "
 			+ "FROM techreports WHERE id=#{id}";
 	String selectByTitle = "SELECT * from techreport where UPPER(title) LIKE UPPER(#{s})";
+	String selectByYear = "SELECT * from techreport where year=#{y}";
 	String selectByTitleAndYear = "SELECT * from techreport where UPPER(title) LIKE UPPER(#{s}) AND year=#{y}";
 	String insert = "INSERT INTO techreport(id, title, institution, year, TType, number, address, month, note, key) "
 			+ "VALUES (#{id}, #{title}, #{institution}, #{year}, #{PType}, #{number}, #{address}, #{month}, #{note}, #{key})";
@@ -27,13 +28,16 @@ public interface TechreportMapper {
 
 		
 	@Select(selectAll)
-	public ArrayList<Techreport> getAllTechreports();
+	public ArrayList<Techreport> getAll();
 		
 	@Select(selectByID)
 	public Techreport getTechreport(int id);
 	
 	@Select(selectByTitle)
 	public ArrayList<Techreport> searchByTitle(String s);
+
+	@Select(selectByYear)
+	public ArrayList<Techreport> searchByYear(@Param("y") int y);
 	
 	@Select(selectByTitleAndYear)
 	public ArrayList<Techreport> searchByTitleAndYear(@Param("s") String s, @Param("y") int y);

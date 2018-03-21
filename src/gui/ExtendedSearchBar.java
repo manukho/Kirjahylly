@@ -85,19 +85,15 @@ public class ExtendedSearchBar extends JPanel {
 			String year_s = yearf.getText();
 			String title_s = titlef.getText();
 			ArrayList<Publication> list = new ArrayList<Publication>();
-			if (!title_s.isEmpty() && auth_s.isEmpty() && year_s.isEmpty()) {
-				list = dbm.searchByTitle(title_s);
-			}
-			if (!title_s.isEmpty() && auth_s.isEmpty() && !year_s.isEmpty()) {
-				if (isNumeric(year_s)) {
-					list = dbm.searchByTitleAndYear(title_s, Integer.parseInt(year_s));
-				} else {
-					list = dbm.searchByTitle(title_s);
-				}
-			}
-			if (!title_s.isEmpty() && !auth_s.isEmpty() && year_s.isEmpty()) {
-				list = dbm.searchByTitleAndAuthor(title_s, auth_s);
-			}
+			String title = null;
+			String author = null;
+			Integer year = null;
+			if (!title_s.isEmpty()) title = title_s;
+			if (!auth_s.isEmpty()) author = auth_s;
+			if (!year_s.isEmpty() && isNumeric(year_s)) year = Integer.parseInt(year_s);
+			
+			list = dbm.search(title, author, year);
+			
 			sr.clear();
 			sr.addRows(list);
 		}

@@ -15,6 +15,7 @@ public interface ManualMapper {
 	
 	String selectAll = "SELECT * FROM manual";
 	String selectByTitle = "SELECT * from manual where UPPER(title) LIKE UPPER(#{s})";
+	String selectByYear = "SELECT * from manual where year=#{y}";
 	String selectByTitleAndYear = "SELECT * from manual where UPPER(title) LIKE UPPER(#{s}) AND year=#{y}";
 	String selectByID = "SELECT id, title, organization, address, edition, month, year, note, key FROM manual "
 			+ "WHERE id=#{id}";
@@ -26,13 +27,16 @@ public interface ManualMapper {
 	String deleteAll = "DELETE from manual";
 	
 	@Select(selectAll)
-	public ArrayList<Manual> getAllManuals();
+	public ArrayList<Manual> getAll();
 			
 	@Select(selectByID)
 	public Manual getManual(int id);
 	
 	@Select(selectByTitle)
 	public ArrayList<Manual> searchByTitle(String s);
+
+	@Select(selectByYear)
+	public ArrayList<Manual> searchByYear(@Param("y") int y);
 	
 	@Select(selectByTitleAndYear)
 	public ArrayList<Manual> searchByTitleAndYear(@Param("s") String s, @Param("y") int y);

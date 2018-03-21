@@ -53,7 +53,7 @@ public class DBManagement {
 	
 	
 	public DBManagement() {
-		configurelog4j();
+		//configurelog4j();
 		init();
 		//test();
 	}
@@ -338,100 +338,113 @@ public class DBManagement {
     	pubAuthMapper.deleteAllPublicationAuthors(p.getId(), p.getType());
     	pubEdMapper.deleteAllPublicationEditors(p.getId(), p.getType());
     }
-    
-    public ArrayList<Publication> searchByTitle(String s){
-    	ArrayList<Publication> list = new ArrayList<Publication>();
-    	s = "%" + s + "%";
-    	list.addAll(articleMapper.searchByTitle(s));
-    	list.addAll(bookMapper.searchByTitle(s));
-    	list.addAll(bookletMapper.searchByTitle(s));
-    	list.addAll(inbookMapper.searchByTitle(s));
-    	list.addAll(incollectionMapper.searchByTitle(s));
-    	list.addAll(inproceedingsMapper.searchByTitle(s));
-    	list.addAll(manualMapper.searchByTitle(s));
-    	list.addAll(mastersthesisMapper.searchByTitle(s));
-    	list.addAll(miscMapper.searchByTitle(s));
-    	list.addAll(phdthesisMapper.searchByTitle(s));
-    	list.addAll(proceedingsMapper.searchByTitle(s));
-    	list.addAll(techreportMapper.searchByTitle(s));
-    	list.addAll(unpublishedMapper.searchByTitle(s));
-    	
-    	for (Publication pub : list) {
-    		pub.setAuthors(pubAuthMapper.getAllPublicationAuthors(pub.getId(), pub.getType()));
-    		pub.setEditors(pubEdMapper.getAllPublicationEditors(pub.getId(), pub.getType()));
-    	}
-    	
-    	return list;
-    }
-
-	public ArrayList<Publication> searchByTitleAndYear(String s, int y) {
-    	ArrayList<Publication> list = new ArrayList<Publication>();
-    	s = "%" + s + "%";
-    	list.addAll(articleMapper.searchByTitleAndYear(s, y));
-    	list.addAll(bookMapper.searchByTitleAndYear(s, y));
-    	list.addAll(bookletMapper.searchByTitleAndYear(s, y));
-    	list.addAll(inbookMapper.searchByTitleAndYear(s, y));
-    	list.addAll(incollectionMapper.searchByTitleAndYear(s, y));
-    	list.addAll(inproceedingsMapper.searchByTitleAndYear(s, y));
-    	list.addAll(manualMapper.searchByTitleAndYear(s, y));
-    	list.addAll(mastersthesisMapper.searchByTitleAndYear(s, y));
-    	list.addAll(miscMapper.searchByTitleAndYear(s, y));
-    	list.addAll(phdthesisMapper.searchByTitleAndYear(s, y));
-    	list.addAll(proceedingsMapper.searchByTitleAndYear(s, y));
-    	list.addAll(techreportMapper.searchByTitleAndYear(s, y));
-    	list.addAll(unpublishedMapper.searchByTitleAndYear(s, y));
-    	
-    	for (Publication pub : list) {
-    		pub.setAuthors(pubAuthMapper.getAllPublicationAuthors(pub.getId(), pub.getType()));
-    		pub.setEditors(pubEdMapper.getAllPublicationEditors(pub.getId(), pub.getType()));
-    	}
-    	
-		return list;
-	}
 	
-	public ArrayList<Publication> searchByTitleAndAuthor(String title, String auth){
+	public ArrayList<Publication> search(String title, String author, Integer year){
 		ArrayList<Publication> list = new ArrayList<Publication>();
-    	title = "%" + title + "%";
-    	list.addAll(articleMapper.searchByTitle(title));
-    	list.addAll(bookMapper.searchByTitle(title));
-    	list.addAll(bookletMapper.searchByTitle(title));
-    	list.addAll(inbookMapper.searchByTitle(title));
-    	list.addAll(incollectionMapper.searchByTitle(title));
-    	list.addAll(inproceedingsMapper.searchByTitle(title));
-    	list.addAll(manualMapper.searchByTitle(title));
-    	list.addAll(mastersthesisMapper.searchByTitle(title));
-    	list.addAll(miscMapper.searchByTitle(title));
-    	list.addAll(phdthesisMapper.searchByTitle(title));
-    	list.addAll(proceedingsMapper.searchByTitle(title));
-    	list.addAll(techreportMapper.searchByTitle(title));
-    	list.addAll(unpublishedMapper.searchByTitle(title));
-		auth.replaceAll(",", "");
-		auth.replace(";", "");
-		auth.replace("and", "");
-		auth.replace("AND", "");
-		String[] a = auth.split(" ");
-		for (int i = 0; i < a.length; i++) {
-			a[i] = "%" + a[i].trim() + "%";
+		String[] a;
+		
+		if (title != null) { 
+			title = "%" + title + "%";
 		}
-		ArrayList<Publication> result = new ArrayList<Publication>();
-		for (int i = 0; i < list.size(); i++) {
-			Publication p = list.get(i);
-			int count = 0;
-			for (String s : a) {
-				count += pubAuthMapper.countIdName(p.getId(), p.getType(), s);
-			}
-			if (count > 0) {
-				p.setWeight(count);
-				result.add(p);
-			}
-			result.sort(new PublicationComparator());
+		
+		if (title != null && year == null) {
+	    	list.addAll(articleMapper.searchByTitle(title));
+	    	list.addAll(bookMapper.searchByTitle(title));
+	    	list.addAll(bookletMapper.searchByTitle(title));
+	    	list.addAll(inbookMapper.searchByTitle(title));
+	    	list.addAll(incollectionMapper.searchByTitle(title));
+	    	list.addAll(inproceedingsMapper.searchByTitle(title));
+	    	list.addAll(manualMapper.searchByTitle(title));
+	    	list.addAll(mastersthesisMapper.searchByTitle(title));
+	    	list.addAll(miscMapper.searchByTitle(title));
+	    	list.addAll(phdthesisMapper.searchByTitle(title));
+	    	list.addAll(proceedingsMapper.searchByTitle(title));
+	    	list.addAll(techreportMapper.searchByTitle(title));
+	    	list.addAll(unpublishedMapper.searchByTitle(title));
 		}
+		
+		if (title != null && year != null) {
+	    	list.addAll(articleMapper.searchByTitleAndYear(title, year));
+	    	list.addAll(bookMapper.searchByTitleAndYear(title, year));
+	    	list.addAll(bookletMapper.searchByTitleAndYear(title, year));
+	    	list.addAll(inbookMapper.searchByTitleAndYear(title, year));
+	    	list.addAll(incollectionMapper.searchByTitleAndYear(title, year));
+	    	list.addAll(inproceedingsMapper.searchByTitleAndYear(title, year));
+	    	list.addAll(manualMapper.searchByTitleAndYear(title, year));
+	    	list.addAll(mastersthesisMapper.searchByTitleAndYear(title, year));
+	    	list.addAll(miscMapper.searchByTitleAndYear(title, year));
+	    	list.addAll(phdthesisMapper.searchByTitleAndYear(title, year));
+	    	list.addAll(proceedingsMapper.searchByTitleAndYear(title, year));
+	    	list.addAll(techreportMapper.searchByTitleAndYear(title, year));
+	    	list.addAll(unpublishedMapper.searchByTitleAndYear(title, year));
+		}
+		
+		if (title == null && year != null) {
+			list.addAll(articleMapper.searchByYear(year));
+	    	list.addAll(bookMapper.searchByYear(year));
+	    	list.addAll(bookletMapper.searchByYear(year));
+	    	list.addAll(inbookMapper.searchByYear(year));
+	    	list.addAll(incollectionMapper.searchByYear(year));
+	    	list.addAll(inproceedingsMapper.searchByYear(year));
+	    	list.addAll(manualMapper.searchByYear(year));
+	    	list.addAll(mastersthesisMapper.searchByYear(year));
+	    	list.addAll(miscMapper.searchByYear(year));
+	    	list.addAll(phdthesisMapper.searchByYear(year));
+	    	list.addAll(proceedingsMapper.searchByYear(year));
+	    	list.addAll(techreportMapper.searchByYear(year));
+	    	list.addAll(unpublishedMapper.searchByYear(year));
+		}
+		
+		if (title == null && year == null) {
+			list.addAll(articleMapper.getAll());
+			list.addAll(bookMapper.getAll());
+			list.addAll(bookletMapper.getAll());
+	    	list.addAll(inbookMapper.getAll());
+	    	list.addAll(incollectionMapper.getAll());
+	    	list.addAll(inproceedingsMapper.getAll());
+	    	list.addAll(manualMapper.getAll());
+	    	list.addAll(mastersthesisMapper.getAll());
+	    	list.addAll(miscMapper.getAll());
+	    	list.addAll(phdthesisMapper.getAll());
+	    	list.addAll(proceedingsMapper.getAll());
+	    	list.addAll(techreportMapper.getAll());
+	    	list.addAll(unpublishedMapper.getAll());
+		}
+		
+		ArrayList<Publication> result;
+		
+		if (author == null) {
+			result = list;
+		} else {
+			result = new ArrayList<Publication>();
+			author.replaceAll(",", "");
+			author.replace(";", "");
+			author.replace("and", "");
+			author.replace("AND", "");
+			a = author.split(" ");
+			for (int i = 0; i < a.length; i++) {
+				a[i] = "%" + a[i].trim() + "%";
+			}
+			for (int i = 0; i < list.size(); i++) {
+				Publication p = list.get(i);
+				int count = 0;
+				for (String s : a) {
+					count += pubAuthMapper.countIdName(p.getId(), p.getType(), s);
+				}
+				if (count > 0) {
+					p.setWeight(count);
+					result.add(p);
+				}
+			}
+		}
+		
+		result.sort(new PublicationComparator());
 		
     	for (Publication pub : result) {
     		pub.setAuthors(pubAuthMapper.getAllPublicationAuthors(pub.getId(), pub.getType()));
     		pub.setEditors(pubEdMapper.getAllPublicationEditors(pub.getId(), pub.getType()));
     	}
-    	
+		
 		return result;
 	}
 	

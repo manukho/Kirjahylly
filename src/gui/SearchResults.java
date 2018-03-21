@@ -60,10 +60,6 @@ public class SearchResults extends JPanel {
 		/* set maximum width for the year column */
 		table.getColumnModel().getColumn(2).setMaxWidth(50);
 		
-//		model.addRow(new Object[] {0, "Algebrization: A New Barrier in Complexity Theory", "Scott Aaronson, Avi Wigderson", "2009"});
-//		model.addRow(new Object[] {1, "Reactive search, a history-sensitive heuristic for MAX-SAT", "Roberto Battiti, Marco Protasi", "1997"});
-		
-		
 		/* add popup menu on table */
         final JPopupMenu popupMenu = new JPopupMenu();
         
@@ -77,7 +73,6 @@ public class SearchResults extends JPanel {
     			@Override
     			public void actionPerformed(ActionEvent e) {
     				int row = table.getSelectedRow();
-                    //JOptionPane.showMessageDialog(table, "add item in row " + row + " to stack " + s);
                     lm.getBSByName(s).addPub(getById((Integer)table.getModel().getValueAt(row, 0)));;
     			}
         	});

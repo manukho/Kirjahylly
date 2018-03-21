@@ -16,6 +16,7 @@ public interface UnpublishedMapper {
 	String selectAll = "SELECT * FROM unpublished";
 	String selectByID = "SELECT id, title, year, month, note, key FROM unpublished WHERE id=#{id}";
 	String selectByTitle = "SELECT * from unpublished where UPPER(title) LIKE UPPER(#{s})";
+	String selectByYear = "SELECT * from unpublished where year=#{y}";
 	String selectByTitleAndYear = "SELECT * from unpublished where UPPER(title) LIKE UPPER(#{s}) AND year=#{y}";
 	String insert = "INSERT INTO unpublished(id, title, year, month, note, key) VALUES (#{id}, #{title}, "
 			+ "#{year}, #{month}, #{note}, #{key})";
@@ -26,13 +27,16 @@ public interface UnpublishedMapper {
 
 		
 	@Select(selectAll)
-	public ArrayList<Unpublished> getAllUnpublisheds();
+	public ArrayList<Unpublished> getAll();
 		
 	@Select(selectByID)
 	public Unpublished getUnpublished(int id);
 	
 	@Select(selectByTitle)
 	public ArrayList<Unpublished> searchByTitle(String s);
+
+	@Select(selectByYear)
+	public ArrayList<Unpublished> searchByYear(@Param("y") int y);
 	
 	@Select(selectByTitleAndYear)
 	public ArrayList<Unpublished> searchByTitleAndYear(@Param("s") String s, @Param("y") int y);

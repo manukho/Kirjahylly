@@ -17,6 +17,7 @@ public interface ArticleMapper {
 	String selectByID = "SELECT id, title, journal, year, volume, number, firstPage, lastPage, month, note key FROM ARTICLES WHERE id=#{id}";
 	String selectByTitle = "SELECT * from articles where UPPER(title) LIKE UPPER(#{s})";
 	String selectByTitleAndYear = "SELECT * from articles where UPPER(title) LIKE UPPER(#{s}) AND year=#{y}";
+	String selectByYear = "SELECT * from articles where year=#{y}";
 	String insert = "INSERT INTO articles(id, title, journal, year, volume, number, firstPage, lastPage, "
 			+ "month, note, key) "
 			+ "VALUES (#{id},#{title},#{journal},#{year},#{volume},#{number},#{firstPage},#{lastPage},"
@@ -28,13 +29,16 @@ public interface ArticleMapper {
 	String deleteAll = "DELETE from articles";
 	
 	@Select(selectAll)
-    public ArrayList<Article> getAllArticles();
+    public ArrayList<Article> getAll();
 	
 	@Select(selectByID)
 	public Article getArticle(int id);
 	
 	@Select(selectByTitle)
 	public ArrayList<Article> searchByTitle(String s);
+	
+	@Select(selectByYear)
+	public ArrayList<Article> searchByYear(@Param("y") int y);
 	
 	@Select(selectByTitleAndYear)
 	public ArrayList<Article> searchByTitleAndYear(@Param("s") String s, @Param("y") int y);

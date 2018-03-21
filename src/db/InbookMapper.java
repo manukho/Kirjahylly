@@ -15,6 +15,7 @@ public interface InbookMapper {
 
 	String selectAll = "SELECT * FROM inbooks";
 	String selectByTitle = "SELECT * from inbooks where UPPER(title) LIKE UPPER(#{s})";
+	String selectByYear = "SELECT * from inbooks where year=#{y}";
 	String selectByTitleAndYear = "SELECT * from inbooks where UPPER(title) LIKE UPPER(#{s}) AND year=#{y}";
 	String insert = "INSERT INTO inbooks(id, title, chapter, firstPage, lastPage, publisher, year, "
 			+ "volume, number, series, IBType, address, edition, month, note, key) "
@@ -28,10 +29,13 @@ public interface InbookMapper {
 	String deleteAll = "DELETE from inbooks";
 	
 	@Select(selectAll)
-    public ArrayList<Inbook> getAllInbooks();
+    public ArrayList<Inbook> getAll();
 	
 	@Select(selectByTitle)
 	public ArrayList<Inbook> searchByTitle(String s);
+
+	@Select(selectByYear)
+	public ArrayList<Inbook> searchByYear(@Param("y") int y);
 	
 	@Select(selectByTitleAndYear)
 	public ArrayList<Inbook> searchByTitleAndYear(@Param("s") String s, @Param("y") int y);

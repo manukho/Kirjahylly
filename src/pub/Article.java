@@ -58,6 +58,7 @@ public class Article extends Publication {
 	
 	@Override
 	public String getYearString() {
+		if (year == null) return "";
 		return year.toString();
 	}
 	

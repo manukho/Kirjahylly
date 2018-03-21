@@ -1541,8 +1541,8 @@ public class PubAdd extends JPanel implements ActionListener{
 	ArrayList<String> constructList(String s){
 		ArrayList<String> al = new ArrayList<String>();
 		s.replaceAll("AND", "and");
-		s.replaceAll(";", "and");
-		String[] sarr = s.split("and");
+		s.replaceAll(";", " and ");
+		String[] sarr = s.split(" and ");
 		for (int i = 0; i < sarr.length; i++) {
 			String[] name = sarr[i].split(",");
 			if (name.length == 2) { 

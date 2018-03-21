@@ -15,6 +15,7 @@ public interface BookletMapper {
 
 	String selectAll = "SELECT * FROM booklets";
 	String selectByTitle = "SELECT * from booklets where UPPER(title) LIKE UPPER(#{s})";
+	String selectByYear = "SELECT * from booklets where year=#{y}";
 	String selectByTitleAndYear = "SELECT * from booklets where UPPER(title) LIKE UPPER(#{s}) AND year=#{y}";
 	String insert = "INSERT INTO booklets(id, title, howpublished, address, month, year, note, key) "
 			+ "VALUES (#{id}, #{title}, #{howpublished}, #{address}, #{month}, #{year}, #{note}, #{key})";
@@ -24,10 +25,13 @@ public interface BookletMapper {
 	String deleteAll = "DELETE from booklets";
 	
 	@Select(selectAll)
-    public ArrayList<Booklet> getAllBooklets();
+    public ArrayList<Booklet> getAll();
 	
 	@Select(selectByTitle)
 	public ArrayList<Booklet> searchByTitle(String s);
+
+	@Select(selectByYear)
+	public ArrayList<Booklet> searchByYear(@Param("y") int y);
 	
 	@Select(selectByTitleAndYear)
 	public ArrayList<Booklet> searchByTitleAndYear(@Param("s") String s, @Param("y") int y);

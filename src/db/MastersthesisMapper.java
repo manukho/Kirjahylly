@@ -17,6 +17,7 @@ public interface MastersthesisMapper {
 	String selectByID = "SELECT id, title, school, year, MSType, address, month, note, key "
 			+ "FROM mastersthesis WHERE id=#{id}";
 	String selectByTitle = "SELECT * from mastersthesis where UPPER(title) LIKE UPPER(#{s})";
+	String selectByYear = "SELECT * from mastersthesis where year=#{y}";
 	String selectByTitleAndYear = "SELECT * from mastersthesis where UPPER(title) LIKE UPPER(#{s}) AND year=#{y}";
 	String insert = "INSERT INTO mastersthesis(id, title, school, year, MSType, address, month, note, key) "
 			+ "VALUES (#{id}, #{title}, #{school}, #{year}, #{PType}, #{address}, #{month}, #{note}, #{key})";
@@ -27,13 +28,16 @@ public interface MastersthesisMapper {
 
 		
 	@Select(selectAll)
-	public ArrayList<Mastersthesis> getAllMastersthesis();
+	public ArrayList<Mastersthesis> getAll();
 		
 	@Select(selectByID)
 	public Mastersthesis getMastersthesis(int id);
 	
 	@Select(selectByTitle)
 	public ArrayList<Mastersthesis> searchByTitle(String s);
+
+	@Select(selectByYear)
+	public ArrayList<Mastersthesis> searchByYear(@Param("y") int y);
 	
 	@Select(selectByTitleAndYear)
 	public ArrayList<Mastersthesis> searchByTitleAndYear(@Param("s") String s, @Param("y") int y);

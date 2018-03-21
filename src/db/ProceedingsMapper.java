@@ -17,6 +17,7 @@ public interface ProceedingsMapper {
 	String selectByID = "SELECT id, title, year, volume, number, series, address, month, publisher, organization, "
 			+ "note, key FROM proceedings WHERE id=#{id}";
 	String selectByTitle = "SELECT * from proceedings where UPPER(title) LIKE UPPER(#{s})";
+	String selectByYear = "SELECT * from proceedings where year=#{y}";
 	String selectByTitleAndYear = "SELECT * from proceedings where UPPER(title) LIKE UPPER(#{s}) AND year=#{y}";
 	String insert = "INSERT INTO proceedings(id, title, year, volume, number, series, address, month, publisher, "
 			+ "organization, note, key) VALUES (#{id}, #{title}, #{year}, #{volume}, #{number}, #{series}, "
@@ -29,13 +30,16 @@ public interface ProceedingsMapper {
 
 		
 	@Select(selectAll)
-	public ArrayList<Proceedings> getAllProceedings();
+	public ArrayList<Proceedings> getAll();
 		
 	@Select(selectByID)
 	public Proceedings getProceedings(int id);
 	
 	@Select(selectByTitle)
 	public ArrayList<Proceedings> searchByTitle(String s);
+
+	@Select(selectByYear)
+	public ArrayList<Proceedings> searchByYear(@Param("y") int y);
 	
 	@Select(selectByTitleAndYear)
 	public ArrayList<Proceedings> searchByTitleAndYear(@Param("s") String s, @Param("y") int y);
