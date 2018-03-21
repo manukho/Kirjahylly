@@ -448,6 +448,89 @@ public class DBManagement {
 		return result;
 	}
 	
+	public ArrayList<Publication> searchAll(String text){
+		ArrayList<Publication> list = new ArrayList<Publication>();
+		text.replaceAll(",", "");
+		text.replace(";", "");
+		text.replace("and", "");
+		text.replace("AND", "");
+		String[] part = text.split(" ");
+		for (int i = 0; i < part.length; i++) {
+			part[i] = "%" + part[i].trim() + "%";
+		}
+		
+		for (String s : part) {
+	    	list = searchTitleOrAuthor(list, s);
+		}
+		
+		list.sort(new PublicationComparator());
+		
+    	for (Publication pub : list) {
+    		pub.setAuthors(pubAuthMapper.getAllPublicationAuthors(pub.getId(), pub.getType()));
+    		pub.setEditors(pubEdMapper.getAllPublicationEditors(pub.getId(), pub.getType()));
+    	}
+		
+		return list;
+	}
+	
+	private ArrayList<Publication> searchTitleOrAuthor(ArrayList<Publication> list, String s){
+		ArrayList<Publication> al = new ArrayList<Publication>();
+
+		al.addAll(articleMapper.searchByTitle(s));
+		al.addAll(bookMapper.searchByTitle(s));
+		al.addAll(bookletMapper.searchByTitle(s));
+		al.addAll(inbookMapper.searchByTitle(s));
+		al.addAll(incollectionMapper.searchByTitle(s));
+		al.addAll(inproceedingsMapper.searchByTitle(s));
+    	al.addAll(manualMapper.searchByTitle(s));
+    	al.addAll(mastersthesisMapper.searchByTitle(s));
+    	al.addAll(miscMapper.searchByTitle(s));
+    	al.addAll(phdthesisMapper.searchByTitle(s));
+    	al.addAll(proceedingsMapper.searchByTitle(s));
+    	al.addAll(techreportMapper.searchByTitle(s));
+    	al.addAll(unpublishedMapper.searchByTitle(s));
+    	
+    	for (Publication p : al) {
+    		list = addItem(list, p);
+    	}
+
+    	al.clear();
+    	
+		al.addAll(articleMapper.getAll());
+		al.addAll(bookMapper.getAll());
+		al.addAll(bookletMapper.getAll());
+		al.addAll(inbookMapper.getAll());
+		al.addAll(incollectionMapper.getAll());
+		al.addAll(inproceedingsMapper.getAll());
+		al.addAll(manualMapper.getAll());
+		al.addAll(mastersthesisMapper.getAll());
+		al.addAll(miscMapper.getAll());
+		al.addAll(phdthesisMapper.getAll());
+		al.addAll(proceedingsMapper.getAll());
+		al.addAll(techreportMapper.getAll());
+		al.addAll(unpublishedMapper.getAll());
+		
+    	for (Publication p : al) {
+    		if (pubAuthMapper.countIdName(p.getId(), p.getType(), s) > 0) {
+    			list = addItem(list, p);
+    		}
+    	}
+		return list;
+	}
+	
+	private ArrayList<Publication> addItem(ArrayList<Publication> list, Publication p){
+		for (int i = 0; i < list.size(); i++) {
+			if ( (list.get(i).getId().equals(p.getId())) 
+					&& (list.get(i).getType().equals(p.getType())) ) {
+				list.get(i).incrementWeight();
+				return list;
+			}
+		}
+		p.incrementWeight();
+		list.add(p);
+		return list;
+	}
+	
 	private class PublicationComparator implements Comparator<Publication>{
 
 		@Override

@@ -186,4 +186,18 @@ public abstract class Publication {
 	public int getWeight() {
 		return weight;
 	}
+	
+	public void incrementWeight() {
+		weight++;
+	}
+	
+	@Override
+	public boolean equals(Object o) {
+		if (!(o instanceof Publication)) return false;
+		if (((Publication) o).getId() == this.getId() 
+				&& ((Publication) o).getType().equals(this.getType()))
+			return true;
+		return false;
+		
+	}
 }

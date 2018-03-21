@@ -208,6 +208,7 @@ public class Kirjahylly extends JFrame {
 	
 	public SearchResults getSR() {
 		if (sr == null) sr = new SearchResults();
+		sr.validate();
 		return sr;
 	}
 }

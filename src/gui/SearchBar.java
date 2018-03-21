@@ -4,10 +4,14 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+
+import db.DBManagement;
+import pub.Publication;
 
 /**
  * Searchbar is the Panel showing the search bar.
@@ -21,14 +25,19 @@ public class SearchBar extends JPanel {
 	Kirjahylly kh;
 	SearchBar sb;
 	ExtendedSearchBar esb;
+	private DBManagement dbm;
+	private SearchResults sr;	
+	JTextField searchField;
 	
 	SearchBar(Kirjahylly k){
 		super();
 		sb = this;
 		kh = k;
+		dbm = kh.getDBM();
+		sr = kh.getSR();
 		setSize(1000, 30);
 		setLayout(new FlowLayout());
-		JTextField searchField = new JTextField();
+		searchField = new JTextField();
 		searchField.setPreferredSize(new Dimension(600, 25));
 		JButton searchButton = new JButton("Search");
 		searchButton.addActionListener(new SearchButtonListener());
@@ -45,8 +54,17 @@ public class SearchBar extends JPanel {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			/* TODO: do something */
-			System.out.println("Search button clicked");
+			String text = searchField.getText();
+			if (text.isEmpty()) {
+				text = null;
+			}
+			
+			ArrayList<Publication> list = dbm.searchAll(text);
+			
+			sr = kh.getSR();
+			
+			sr.clear();
+			sr.addRows(list);
 		}
 	}
 	

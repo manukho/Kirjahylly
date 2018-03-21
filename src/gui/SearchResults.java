@@ -144,12 +144,16 @@ public class SearchResults extends JPanel {
 	
 	public void addRow(Publication p) {
 		tmp.add(p);
-		model.addRow(new Object[] {p.getTitle(), p.getAuthorString(), p.getYearString()});
+		Object[] obj = new Object[] {p.getTitle(), p.getAuthorString(), p.getYearString()};
+		model.addRow(obj);
 	}
 	
 	public void addRows(ArrayList<Publication> list) {
-		for (Publication pub : list)
+		for (Publication pub : list) {
 			addRow(pub);
+		}
+		 model.fireTableDataChanged();
+		 table.repaint();
 	}
 	
 	public void clear() {
