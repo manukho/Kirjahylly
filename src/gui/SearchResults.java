@@ -5,6 +5,8 @@ import java.awt.GridLayout;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.ArrayList;
 
 import javax.swing.JLabel;
@@ -59,6 +61,44 @@ public class SearchResults extends JPanel {
 
 		/* set maximum width for the year column */
 		table.getColumnModel().getColumn(2).setMaxWidth(50);
+		
+		table.getTableHeader().addMouseListener(new MouseListener() {
+
+			@Override
+			public void mouseClicked(MouseEvent e) {}
+
+			@Override
+			public void mouseEntered(MouseEvent e) {}
+
+			@Override
+			public void mouseExited(MouseEvent e) {}
+
+			@Override
+			public void mousePressed(MouseEvent e) {}
+
+			@Override
+			public void mouseReleased(MouseEvent e) {
+		        int col = table.columnAtPoint(e.getPoint());
+		        ArrayList<Publication> list = new ArrayList<Publication>();
+		        switch (col){
+		        case 0: // sort by title
+		        	list.addAll(dbm.sortByTitle(tmp));
+		        	clear();
+		        	addRows(list);
+		        	break;
+		        case 1: // sort by author
+		        	list.addAll(dbm.sortByAuthors(tmp));
+		        	clear();
+		        	addRows(list);
+		        	break;
+		        case 2: // sort by year
+		        	list.addAll(dbm.sortByYear(tmp));
+		        	clear();
+		        	addRows(list);
+		        	break;
+		        }
+			}
+		});
 		
 		/* add popup menu on table */
         final JPopupMenu popupMenu = new JPopupMenu();

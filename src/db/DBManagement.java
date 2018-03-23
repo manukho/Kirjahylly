@@ -450,20 +450,25 @@ public class DBManagement {
 	
 	public ArrayList<Publication> searchAll(String text){
 		ArrayList<Publication> list = new ArrayList<Publication>();
-		text.replaceAll(",", "");
-		text.replace(";", "");
-		text.replace("and", "");
-		text.replace("AND", "");
-		String[] part = text.split(" ");
-		for (int i = 0; i < part.length; i++) {
-			part[i] = "%" + part[i].trim() + "%";
+		if (text == null) {
+			list = getAll();
+			list = sortByTitle(list);
+		} else {
+			text.replaceAll(",", "");
+			text.replace(";", "");
+			text.replace("and", "");
+			text.replace("AND", "");
+			String[] part = text.split(" ");
+			for (int i = 0; i < part.length; i++) {
+				part[i] = "%" + part[i].trim() + "%";
+			}
+			
+			for (String s : part) {
+		    	list.addAll(searchTitleOrAuthor(list, s));
+			}
+			
+			list.sort(new PublicationComparator());	
 		}
-		
-		for (String s : part) {
-	    	list = searchTitleOrAuthor(list, s);
-		}
-		
-		list.sort(new PublicationComparator());
 		
     	for (Publication pub : list) {
     		pub.setAuthors(pubAuthMapper.getAllPublicationAuthors(pub.getId(), pub.getType()));
@@ -474,41 +479,14 @@ public class DBManagement {
 	}
 	
 	private ArrayList<Publication> searchTitleOrAuthor(ArrayList<Publication> list, String s){
-		ArrayList<Publication> al = new ArrayList<Publication>();
-
-		al.addAll(articleMapper.searchByTitle(s));
-		al.addAll(bookMapper.searchByTitle(s));
-		al.addAll(bookletMapper.searchByTitle(s));
-		al.addAll(inbookMapper.searchByTitle(s));
-		al.addAll(incollectionMapper.searchByTitle(s));
-		al.addAll(inproceedingsMapper.searchByTitle(s));
-    	al.addAll(manualMapper.searchByTitle(s));
-    	al.addAll(mastersthesisMapper.searchByTitle(s));
-    	al.addAll(miscMapper.searchByTitle(s));
-    	al.addAll(phdthesisMapper.searchByTitle(s));
-    	al.addAll(proceedingsMapper.searchByTitle(s));
-    	al.addAll(techreportMapper.searchByTitle(s));
-    	al.addAll(unpublishedMapper.searchByTitle(s));
+		ArrayList<Publication> al = searchByTitle(s);
     	
+		// adds items, but no duplicates
     	for (Publication p : al) {
     		list = addItem(list, p);
     	}
-
-    	al.clear();
     	
-		al.addAll(articleMapper.getAll());
-		al.addAll(bookMapper.getAll());
-		al.addAll(bookletMapper.getAll());
-		al.addAll(inbookMapper.getAll());
-		al.addAll(incollectionMapper.getAll());
-		al.addAll(inproceedingsMapper.getAll());
-		al.addAll(manualMapper.getAll());
-		al.addAll(mastersthesisMapper.getAll());
-		al.addAll(miscMapper.getAll());
-		al.addAll(phdthesisMapper.getAll());
-		al.addAll(proceedingsMapper.getAll());
-		al.addAll(techreportMapper.getAll());
-		al.addAll(unpublishedMapper.getAll());
+    	al = getAll();
 		
     	for (Publication p : al) {
     		if (pubAuthMapper.countIdName(p.getId(), p.getType(), s) > 0) {
@@ -531,8 +509,81 @@ public class DBManagement {
 		return list;
 	}
 	
-	private class PublicationComparator implements Comparator<Publication>{
+	private ArrayList<Publication> getAll(){
+		ArrayList<Publication> list = new ArrayList<Publication>();
+		list.addAll(articleMapper.getAll());
+		list.addAll(bookMapper.getAll());
+		list.addAll(bookletMapper.getAll());
+		list.addAll(inbookMapper.getAll());
+		list.addAll(incollectionMapper.getAll());
+		list.addAll(inproceedingsMapper.getAll());
+		list.addAll(manualMapper.getAll());
+		list.addAll(mastersthesisMapper.getAll());
+		list.addAll(miscMapper.getAll());
+		list.addAll(phdthesisMapper.getAll());
+		list.addAll(proceedingsMapper.getAll());
+		list.addAll(techreportMapper.getAll());
+		list.addAll(unpublishedMapper.getAll());
+		
+    	for (Publication pub : list) {
+    		pub.setAuthors(pubAuthMapper.getAllPublicationAuthors(pub.getId(), pub.getType()));
+    		pub.setEditors(pubEdMapper.getAllPublicationEditors(pub.getId(), pub.getType()));
+    	}
+		
+		return list;
+	}
+	
+	private ArrayList<Publication> searchByTitle(String s){
+		ArrayList<Publication> list = new ArrayList<Publication>();
 
+		list.addAll(articleMapper.searchByTitle(s));
+		list.addAll(bookMapper.searchByTitle(s));
+		list.addAll(bookletMapper.searchByTitle(s));
+		list.addAll(inbookMapper.searchByTitle(s));
+		list.addAll(incollectionMapper.searchByTitle(s));
+		list.addAll(inproceedingsMapper.searchByTitle(s));
+		list.addAll(manualMapper.searchByTitle(s));
+		list.addAll(mastersthesisMapper.searchByTitle(s));
+		list.addAll(miscMapper.searchByTitle(s));
+		list.addAll(phdthesisMapper.searchByTitle(s));
+		list.addAll(proceedingsMapper.searchByTitle(s));
+		list.addAll(techreportMapper.searchByTitle(s));
+		list.addAll(unpublishedMapper.searchByTitle(s));
+    	
+    	return list;
+	}
+	
+	public ArrayList<Publication> sortByTitle(ArrayList<Publication> list) {
+		list.sort(new Comparator<Publication>() {
+			@Override
+			public int compare(Publication p1, Publication p2) {
+				return p1.getTitle().compareToIgnoreCase(p2.getTitle());
+			}
+		});
+		return list;
+	}
+	
+	public ArrayList<Publication> sortByAuthors(ArrayList<Publication> list) {
+		list.sort(new Comparator<Publication>() {
+			@Override
+			public int compare(Publication p1, Publication p2) {
+				return p1.getAuthorString().compareToIgnoreCase(p2.getAuthorString()); 
+			}
+		});
+		return list;
+	}
+	
+	public ArrayList<Publication> sortByYear(ArrayList<Publication> list) {
+		list.sort(new Comparator<Publication>() {
+			@Override
+			public int compare(Publication p1, Publication p2) {
+				return p2.getYearString().compareToIgnoreCase(p1.getYearString());
+			}
+		});
+		return list;
+	}
+	
+	private class PublicationComparator implements Comparator<Publication>{
 		@Override
 		public int compare(Publication p1, Publication p2) {
 			return p2.getWeight()-p1.getWeight();
