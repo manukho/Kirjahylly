@@ -26,6 +26,22 @@ public interface BookMapper {
 			+ "month=#{month}, url=#{url}, note=#{note}, key=#{key} WHERE id=#{id}";
 	String delete = "DELETE FROM books WHERE id = #{id}";
 	String deleteAll = "DELETE from books";
+	String exists = "SELECT count(*) FROM information_schema.TABLES WHERE TABLE_NAME LIKE 'BOOKS'";
+	String createTable = "CREATE TABLE books(" + 
+			"    id          int             not null," + 
+			"    title       varchar(255)    not null," + 
+			"    publisher   varchar(255)    not null," + 
+			"    year        int             not null," + 
+			"    volume      int," + 
+			"    number      int," + 
+			"    series      varchar(255)," + 
+			"    address     varchar(255)," + 
+			"    edition     varchar(255)," + 
+			"    month       varchar(15)," + 
+			"    url         varchar(255)," + 
+			"    note        varchar(1023)," + 
+			"    key         varchar(15)," + 
+			"    primary key(id))";
 	
 	@Select(selectAll)
     public ArrayList<Book> getAll();
@@ -52,4 +68,9 @@ public interface BookMapper {
 	@Delete(deleteAll)
 	public int clear();
 
+	@Update(createTable)
+	public boolean createTable();
+	
+	@Select(exists)
+	public int num();
 }

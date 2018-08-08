@@ -27,6 +27,20 @@ public interface ArticleMapper {
 			+ "key=#{key} WHERE id=#{id}";
 	String delete = "DELETE from articles WHERE id=#{id}";
 	String deleteAll = "DELETE from articles";
+	String exists = "SELECT count(*) FROM information_schema.TABLES WHERE TABLE_NAME LIKE 'ARTICLES'";
+	String createTable = "CREATE TABLE articles(    "+ 
+			"id 		int		 		not null," + 
+			"title		varchar(255) 	not null," + 
+			"journal	varchar(255)	not null," + 
+			"year		int				not null," + 
+			"volume		int		        not null," + 
+			"number		int						," + 
+			"firstPage 	int						," + 
+			"lastPage	int						," + 
+			"month		varchar(15)				," + 
+			"note		varchar(1023)			," + 
+			"key		varchar(15)				," + 
+			"primary key(id))";
 	
 	@Select(selectAll)
     public ArrayList<Article> getAll();
@@ -55,4 +69,10 @@ public interface ArticleMapper {
 	
 	@Delete(deleteAll)
 	public int clear();	
+	
+	@Select(exists)
+	public int num();
+	
+	@Update(createTable)
+	public boolean createTable();
 }

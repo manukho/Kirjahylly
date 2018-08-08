@@ -25,6 +25,18 @@ public interface ManualMapper {
 			+ "edition=#{edition}, month=#{month}, year=#{year}, note=#{note}, key=#{key} WHERE id=#{id}";
 	String delete = "DELETE FROM manual WHERE id = #{id}";
 	String deleteAll = "DELETE from manual";
+	String exists = "SELECT count(*) FROM information_schema.TABLES WHERE TABLE_NAME LIKE 'MANUAL'";
+	String createTable = "CREATE TABLE manual(" + 
+			"id         	int             not null	," + 
+			"title      	varchar(255)    not null	," +
+			"organization	varchar(255)    			," + 
+			"address    	varchar(255)				," + 
+			"edition     	varchar(255)				," + 
+			"month      	varchar(15)					," + 
+			"year       	int             			," + 
+			"note       	varchar(1023)				," + 
+			"key        	varchar(15)					," + 
+			"primary key(id))";
 	
 	@Select(selectAll)
 	public ArrayList<Manual> getAll();
@@ -54,4 +66,9 @@ public interface ManualMapper {
 	@Delete(deleteAll)
 	public int clear();
 
+	@Select(exists)
+	public int num();
+	
+	@Update(createTable)
+	public boolean createTable();
 }

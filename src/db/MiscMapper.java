@@ -24,7 +24,16 @@ public interface MiscMapper {
     		+ "year=#{year}, note=#{note}, key=#{key} WHERE id=#{id}";
 	String delete = "DELETE FROM misc WHERE id = #{id}";
 	String deleteAll = "DELETE from misc";
-
+	String exists = "SELECT count(*) FROM information_schema.TABLES WHERE TABLE_NAME LIKE 'MISC'";
+	String createTable = "CREATE TABLE misc(" + 
+			"id          	int  			not null	," + 
+			"title       	varchar(255)    			," + 
+			"howpublished	varchar(255)				," + 
+			"month       	varchar(15)					," + 
+			"year        	int							," + 
+			"note        	varchar(1023)				," + 
+			"key         	varchar(15)					," + 
+			"primary key(id))";
 		
 	@Select(selectAll)
 	public ArrayList<Misc> getAll();
@@ -54,4 +63,9 @@ public interface MiscMapper {
 	@Delete(deleteAll)
 	public int clear();
 
+	@Select(exists)
+	public int num();
+	
+	@Update(createTable)
+	public boolean createTable();
 }

@@ -25,7 +25,18 @@ public interface PhdthesisMapper {
 			+ "PHDtype=#{PType}, address=#{address}, month=#{month}, note=#{note}, key=#{key} WHERE id=#{id}";
 	String delete = "DELETE FROM phdthesis WHERE id = #{id}";
 	String deleteAll = "DELETE from phdthesis";
-
+	String exists = "SELECT count(*) FROM information_schema.TABLES WHERE TABLE_NAME LIKE 'PHDTHESIS'";
+	String createTable = "CREATE TABLE phdthesis(" + 
+			"id         	int             not null	," + 
+			"title      	varchar(255)    not null	," +
+			"school  		varchar(255)    not null	," +
+			"year       	int             not null	," + 
+			"type	     	varchar(255)				," + 
+			"address    	varchar(255)				," + 
+			"month      	varchar(15)					," + 
+			"note       	varchar(1023)				," + 
+			"key        	varchar(15)					," + 
+			"primary key(id))";
 		
 	@Select(selectAll)
 	public ArrayList<Phdthesis> getAll();
@@ -55,4 +66,9 @@ public interface PhdthesisMapper {
 	@Delete(deleteAll)
 	public int clear();
 
+	@Select(exists)
+	public int num();
+	
+	@Update(createTable)
+	public boolean createTable();
 }

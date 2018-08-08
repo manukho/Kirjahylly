@@ -125,6 +125,8 @@ public class DBManagement {
     	
     	pubAuthMapper = session.getMapper(PublicationAuthorMapper.class);
     	pubEdMapper = session.getMapper(PublicationEditorMapper.class);
+    	
+    	createTables();
     }
     
     private void configurelog4j() {
@@ -237,6 +239,19 @@ public class DBManagement {
     	
     	insertPublication(ic);
     }  	
+    
+    private void createTables() {
+    	if (articleMapper.num() == 0) articleMapper.createTable();
+    	if (bookMapper.num() == 0) bookMapper.createTable();
+    	if (bookletMapper.num() == 0) bookletMapper.createTable();
+    	if (inbookMapper.num() == 0) inbookMapper.createTable();
+    	if (incollectionMapper.num() == 0) incollectionMapper.createTable();
+    	if (inproceedingsMapper.num() == 0) inproceedingsMapper.createTable();
+    	if (manualMapper.num() == 0) manualMapper.createTable();
+    	if (mastersthesisMapper.num() == 0) mastersthesisMapper.createTable();
+    	if (miscMapper.num() == 0) miscMapper.createTable();
+    	if (phdthesisMapper.num() == 0) phdthesisMapper.createTable();
+    }
     
     private void insertAuthors(int id, String type, ArrayList<String> al) {
     	if (al == null || al.isEmpty()) return;
@@ -533,6 +548,33 @@ public class DBManagement {
 		return list;
 	}
 	
+	private ArrayList<Publication> getAll(boolean article, boolean book, boolean booklet, 
+			boolean inbook, boolean incollection, boolean inproceedings, boolean manual, 
+			boolean mastersthesis, boolean misc, boolean phdthesis, boolean proceedings, 
+			boolean techreport, boolean unpublished){
+		ArrayList<Publication> list = new ArrayList<Publication>();
+		if (article) list.addAll(articleMapper.getAll());
+		if (book) list.addAll(bookMapper.getAll());
+		if (booklet) list.addAll(bookletMapper.getAll());
+		if (inbook) list.addAll(inbookMapper.getAll());
+		if (incollection) list.addAll(incollectionMapper.getAll());
+		if (inproceedings) list.addAll(inproceedingsMapper.getAll());
+		if (manual) list.addAll(manualMapper.getAll());
+		if (mastersthesis) list.addAll(mastersthesisMapper.getAll());
+		if (misc) list.addAll(miscMapper.getAll());
+		if (phdthesis) list.addAll(phdthesisMapper.getAll());
+		if (proceedings) list.addAll(proceedingsMapper.getAll());
+		if (techreport) list.addAll(techreportMapper.getAll());
+		if (unpublished) list.addAll(unpublishedMapper.getAll());
+		
+    	for (Publication p : list) {
+    		p.setAuthors(pubAuthMapper.getAllPublicationAuthors(p.getId(), p.getType()));
+    		p.setEditors(pubEdMapper.getAllPublicationEditors(p.getId(), p.getType()));
+    	}
+		return list;
+	}
+
+	
 	private ArrayList<Publication> searchByTitle(String s){
 		ArrayList<Publication> list = new ArrayList<Publication>();
 
@@ -552,6 +594,8 @@ public class DBManagement {
     	
     	return list;
 	}
+	
+	
 	
 	public ArrayList<Publication> sortByTitle(ArrayList<Publication> list) {
 		list.sort(new Comparator<Publication>() {

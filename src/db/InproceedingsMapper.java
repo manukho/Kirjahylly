@@ -29,6 +29,24 @@ public interface InproceedingsMapper {
 			+ "publisher=#{publisher}, note=#{note}, key#={key} WHERE id=#{id}";
 	String delete = "DELETE FROM inproceedings WHERE id = #{id}";
 	String deleteAll = "DELETE from inproceedings";
+	String exists = "SELECT count(*) FROM information_schema.TABLES WHERE TABLE_NAME LIKE 'INPROCEEDINGS'";
+	String createTable = "CREATE TABLE inproceedings(" + 
+			"id         	int             not null	," + 
+			"title      	varchar(255)    not null	," +
+			"booktitle  	varchar(255)    not null	," +
+			"year       	int             not null	," + 
+			"volume     	int							," + 
+			"number     	int							," + 
+			"series     	varchar(255)				," + 
+			"firstPage		int							," +
+			"lastPage		int							," +
+			"address    	varchar(255)				," + 
+			"month      	varchar(15)					," + 
+			"organization	varchar(255)    			," + 
+			"publisher  	varchar(255)    			," + 
+			"note       	varchar(1023)				," + 
+			"key        	varchar(15)					," + 
+			"primary key(id))";
 		
 		@Select(selectAll)
 	    public ArrayList<Inproceedings> getAll();
@@ -58,6 +76,9 @@ public interface InproceedingsMapper {
 		@Delete(deleteAll)
 		public int clear();
 
-	
-
+		@Select(exists)
+		public int num();
+		
+		@Update(createTable)
+		public boolean createTable();
 }

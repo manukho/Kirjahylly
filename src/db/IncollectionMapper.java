@@ -28,7 +28,27 @@ public interface IncollectionMapper {
 			+ "address=#{address}, edition=#{edition}, month=#{month}, note=#{note}, key=#{key} WHERE id=#{id}";
 	String delete = "DELETE FROM incollections WHERE id = #{id}";
 	String deleteAll = "DELETE from incollections";
-	
+	String exists = "SELECT count(*) FROM information_schema.TABLES WHERE TABLE_NAME LIKE 'INCOLLECTIONS'";
+	String createTable = "CREATE TABLE incollections(" + 
+			"id         int             not null	," + 
+			"title      varchar(255)    not null	," +
+			"booktitle  varchar(255)    not null	," +
+			"publisher  varchar(255)    not null	," + 
+			"year       int             not null	," + 
+			"volume     int							," + 
+			"number     int							," + 
+			"series     varchar(255)				," + 
+			"type		varchar(255)				," +
+			"chapter	int							," +
+			"firstPage	int							," +
+			"lastPage	int							," +
+			"address    varchar(255)				," + 
+			"edition    varchar(255)				," + 
+			"month      varchar(15)					," + 
+			"note       varchar(1023)				," + 
+			"key        varchar(15)					," + 
+			"primary key(id))";
+
 	@Select(selectAll)
     public ArrayList<Incollection> getAll();
 	
@@ -54,4 +74,9 @@ public interface IncollectionMapper {
 	@Delete(deleteAll)
 	public int clear();
 
+	@Select(exists)
+	public int num();
+	
+	@Update(createTable)
+	public boolean createTable();
 }

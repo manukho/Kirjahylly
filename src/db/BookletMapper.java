@@ -23,6 +23,17 @@ public interface BookletMapper {
 			+ "address=#{address}, month=#{month}, year=#{year}, note=#{note}, key=#{key} WHERE id=#{id}";
 	String delete = "DELETE FROM booklets WHERE id = #{id}";
 	String deleteAll = "DELETE from booklets";
+	String exists = "SELECT count(*) FROM information_schema.TABLES WHERE TABLE_NAME LIKE 'BOOKLETS'";
+	String createTable = "CREATE TABLE booklets(			" + 
+			"id				int             not null	," + 
+			"title       	varchar(255)    not null	," + 
+			"howpublished   varchar(255)				," + 
+			"address     	varchar(255) 				," + 
+			"month       	varchar(15) 				," + 
+			"year			int 						," + 
+			"note        	varchar(1023) 				," + 
+			"key         	varchar(15) 				," + 
+			"primary key(id))							";
 	
 	@Select(selectAll)
     public ArrayList<Booklet> getAll();
@@ -48,5 +59,11 @@ public interface BookletMapper {
 	
 	@Delete(deleteAll)
 	public int clear();
+	
+	@Select(exists)
+	public int num();
+	
+	@Update(createTable)
+	public boolean createTable();
 
 }
