@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 public interface PublicationAuthorMapper {
 	
@@ -15,6 +16,11 @@ public interface PublicationAuthorMapper {
 	String delete = "DELETE from pubauth WHERE id = #{id} AND type = #{type} AND name = #{name}";
 	String deleteAll = "DELETE from pubauth WHERE id = #{id} AND type = #{type}";
 	String clear = "DELETE from pubauth";
+	String exists = "SELECT count(*) FROM information_schema.TABLES WHERE TABLE_NAME LIKE 'PUBAUTH'";
+	String createTable = "CREATE TABLE pubauth(    "+ 
+			"id 		int		 		not null," + 
+			"type		varchar(15) 	not null," + 
+			"name		varchar(255)	not null)";
 
 	@Select(select)
     public ArrayList<String> getAllPublicationAuthors(@Param("id") int id, @Param("type") String type);
@@ -33,4 +39,10 @@ public interface PublicationAuthorMapper {
 
     @Delete(clear)
     public int clear();
+    
+	@Select(exists)
+	public int num();
+	
+	@Update(createTable)
+	public boolean createTable();
 }

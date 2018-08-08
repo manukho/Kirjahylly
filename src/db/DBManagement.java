@@ -251,6 +251,11 @@ public class DBManagement {
     	if (mastersthesisMapper.num() == 0) mastersthesisMapper.createTable();
     	if (miscMapper.num() == 0) miscMapper.createTable();
     	if (phdthesisMapper.num() == 0) phdthesisMapper.createTable();
+    	if (proceedingsMapper.num() == 0) proceedingsMapper.createTable();
+    	if (techreportMapper.num() == 0) techreportMapper.createTable();
+    	if (unpublishedMapper.num() == 0) unpublishedMapper.createTable();
+    	if (pubAuthMapper.num() == 0) pubAuthMapper.createTable();
+    	if (pubEdMapper.num() == 0) pubEdMapper.createTable();
     }
     
     private void insertAuthors(int id, String type, ArrayList<String> al) {

@@ -24,7 +24,15 @@ public interface UnpublishedMapper {
     		+ "key=#{key} WHERE id=#{id}";
 	String delete = "DELETE FROM unpublished WHERE id = #{id}";
 	String deleteAll = "DELETE from unpublished";
-
+	String exists = "SELECT count(*) FROM information_schema.TABLES WHERE TABLE_NAME LIKE 'UNPUBLISHED'";
+	String createTable = "CREATE TABLE unpublished(" 	   +
+			"id         	int             not null	," + 
+			"title      	varchar(255)    not null	," +
+			"year       	int             not null	," + 
+			"month      	varchar(15)					," + 
+			"note       	varchar(1023)	not null	," + 
+			"key        	varchar(15)					," + 
+			"primary key(id))";
 		
 	@Select(selectAll)
 	public ArrayList<Unpublished> getAll();
@@ -54,4 +62,9 @@ public interface UnpublishedMapper {
 	@Delete(deleteAll)
 	public int clear();
 
+	@Select(exists)
+	public int num();
+	
+	@Update(createTable)
+	public boolean createTable();
 }
