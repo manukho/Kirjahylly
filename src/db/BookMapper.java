@@ -28,20 +28,19 @@ public interface BookMapper {
 	String deleteAll = "DELETE from books";
 	String exists = "SELECT count(*) FROM information_schema.TABLES WHERE TABLE_NAME LIKE 'BOOKS'";
 	String createTable = "CREATE TABLE books(" + 
-			"    id          int             not null," + 
-			"    title       varchar(255)    not null," + 
-			"    publisher   varchar(255)    not null," + 
-			"    year        int             not null," + 
-			"    volume      int," + 
-			"    number      int," + 
-			"    series      varchar(255)," + 
-			"    address     varchar(255)," + 
-			"    edition     varchar(255)," + 
-			"    month       varchar(15)," + 
-			"    url         varchar(255)," + 
-			"    note        varchar(1023)," + 
-			"    key         varchar(15)," + 
-			"    primary key(id))";
+			"id 		int		 		primary key 	auto_increment," + 
+			"title     	varchar(255)    not null," + 
+			"publisher  varchar(255)    not null," + 
+			"year       int             not null," + 
+			"volume     int," + 
+			"number     int," + 
+			"series     varchar(255)," + 
+			"address    varchar(255)," + 
+			"edition    varchar(255)," + 
+			"month      varchar(15)," + 
+			"url        varchar(255)," + 
+			"note       varchar(1023)," + 
+			"key        varchar(15))";
 	
 	@Select(selectAll)
     public ArrayList<Book> getAll();

@@ -27,7 +27,7 @@ public interface TechreportMapper {
 	String deleteAll = "DELETE from techreport";
 	String exists = "SELECT count(*) FROM information_schema.TABLES WHERE TABLE_NAME LIKE 'TECHREPORT'";
 	String createTable = "CREATE TABLE techreport(" +
-			"id 			int		 		not null," + 
+			"id 		int		 		primary key 	auto_increment," + 
 			"title			varchar(255) 	not null," + 
 			"institution  	varchar(255)    not null," +
 			"year			int				not null," + 
@@ -36,8 +36,7 @@ public interface TechreportMapper {
 			"address    	varchar(255)			," + 
 			"month			varchar(15)				," + 
 			"note			varchar(1023)			," + 
-			"key			varchar(15)				," + 
-			"primary key(id))";
+			"key			varchar(15))";
 		
 	@Select(selectAll)
 	public ArrayList<Techreport> getAll();

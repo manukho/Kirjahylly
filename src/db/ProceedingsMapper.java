@@ -29,7 +29,7 @@ public interface ProceedingsMapper {
 	String deleteAll = "DELETE from proceedings";
 	String exists = "SELECT count(*) FROM information_schema.TABLES WHERE TABLE_NAME LIKE 'PROCEEDINGS'";
 	String createTable = "CREATE TABLE proceedings(" +
-			"id 			int		 		not null," + 
+			"id 			int		 		primary key 	auto_increment," + 
 			"title			varchar(255) 	not null," + 
 			"year			int				not null," + 
 			"volume			int		        		," + 
@@ -40,8 +40,7 @@ public interface ProceedingsMapper {
 			"publisher  	varchar(255)    		," +
 			"organization	varchar(255)    		," + 
 			"note			varchar(1023)			," + 
-			"key			varchar(15)				," + 
-			"primary key(id))";
+			"key			varchar(15))";
 		
 	@Select(selectAll)
 	public ArrayList<Proceedings> getAll();

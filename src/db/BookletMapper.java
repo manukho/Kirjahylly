@@ -25,15 +25,14 @@ public interface BookletMapper {
 	String deleteAll = "DELETE from booklets";
 	String exists = "SELECT count(*) FROM information_schema.TABLES WHERE TABLE_NAME LIKE 'BOOKLETS'";
 	String createTable = "CREATE TABLE booklets(			" + 
-			"id				int             not null	," + 
+			"id 			int		 		primary key 	auto_increment," + 
 			"title       	varchar(255)    not null	," + 
 			"howpublished   varchar(255)				," + 
 			"address     	varchar(255) 				," + 
 			"month       	varchar(15) 				," + 
 			"year			int 						," + 
 			"note        	varchar(1023) 				," + 
-			"key         	varchar(15) 				," + 
-			"primary key(id))							";
+			"key         	varchar(15))";
 	
 	@Select(selectAll)
     public ArrayList<Booklet> getAll();

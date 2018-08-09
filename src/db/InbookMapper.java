@@ -29,7 +29,7 @@ public interface InbookMapper {
 	String deleteAll = "DELETE from inbooks";
 	String exists = "SELECT count(*) FROM information_schema.TABLES WHERE TABLE_NAME LIKE 'INBOOKS'";
 	String createTable = "CREATE TABLE inbooks(" + 
-			"id         int             not null	," + 
+			"id 		int		 		primary key 	auto_increment," + 
 			"title      varchar(255)    not null	," +
 			"chapter	int							," +
 			"firstPage	int							," +
@@ -44,8 +44,7 @@ public interface InbookMapper {
 			"edition    varchar(255)," + 
 			"month      varchar(15)," + 
 			"note       varchar(1023)," + 
-			"key        varchar(15)," + 
-			"primary key(id))";
+			"key        varchar(15))";
 	
 	@Select(selectAll)
     public ArrayList<Inbook> getAll();

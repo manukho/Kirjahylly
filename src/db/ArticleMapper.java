@@ -29,7 +29,7 @@ public interface ArticleMapper {
 	String deleteAll = "DELETE from articles";
 	String exists = "SELECT count(*) FROM information_schema.TABLES WHERE TABLE_NAME LIKE 'ARTICLES'";
 	String createTable = "CREATE TABLE articles(    "+ 
-			"id 		int		 		not null," + 
+			"id 		int		 		primary key 	auto_increment," + 
 			"title		varchar(255) 	not null," + 
 			"journal	varchar(255)	not null," + 
 			"year		int				not null," + 
@@ -39,8 +39,7 @@ public interface ArticleMapper {
 			"lastPage	int						," + 
 			"month		varchar(15)				," + 
 			"note		varchar(1023)			," + 
-			"key		varchar(15)				," + 
-			"primary key(id))";
+			"key		varchar(15))";
 	
 	@Select(selectAll)
     public ArrayList<Article> getAll();

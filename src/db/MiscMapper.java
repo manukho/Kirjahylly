@@ -26,14 +26,13 @@ public interface MiscMapper {
 	String deleteAll = "DELETE from misc";
 	String exists = "SELECT count(*) FROM information_schema.TABLES WHERE TABLE_NAME LIKE 'MISC'";
 	String createTable = "CREATE TABLE misc(" + 
-			"id          	int  			not null	," + 
+			"id 			int		 		primary key 	auto_increment," + 
 			"title       	varchar(255)    			," + 
 			"howpublished	varchar(255)				," + 
 			"month       	varchar(15)					," + 
 			"year        	int							," + 
 			"note        	varchar(1023)				," + 
-			"key         	varchar(15)					," + 
-			"primary key(id))";
+			"key         	varchar(15))";
 		
 	@Select(selectAll)
 	public ArrayList<Misc> getAll();

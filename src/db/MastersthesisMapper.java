@@ -27,16 +27,15 @@ public interface MastersthesisMapper {
 	String deleteAll = "DELETE from mastersthesis";
 	String exists = "SELECT count(*) FROM information_schema.TABLES WHERE TABLE_NAME LIKE 'MASTERSTHESIS'";
 	String createTable = "CREATE TABLE mastersthesis(" + 
-			"id         	int             not null	," + 
-			"title      	varchar(255)    not null	," +
-			"school  		varchar(255)    not null	," +
-			"year       	int             not null	," + 
-			"type	     	varchar(255)				," + 
-			"address    	varchar(255)				," + 
-			"month      	varchar(15)					," + 
-			"note       	varchar(1023)				," + 
-			"key        	varchar(15)					," + 
-			"primary key(id))";
+			"id 		int		 		primary key 	auto_increment," + 
+			"title      varchar(255)    not null	," +
+			"school  	varchar(255)    not null	," +
+			"year      	int             not null	," + 
+			"type     	varchar(255)				," + 
+			"address    varchar(255)				," + 
+			"month     	varchar(15)					," + 
+			"note      	varchar(1023)				," + 
+			"key       	varchar(15))";
 		
 	@Select(selectAll)
 	public ArrayList<Mastersthesis> getAll();
