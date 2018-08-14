@@ -42,6 +42,7 @@ public class Phdthesis extends Publication {
 		this.title = title;
 	}
 
+	@Override
 	public String getSchool() {
 		return school;
 	}
@@ -58,14 +59,16 @@ public class Phdthesis extends Publication {
 		this.year = year;
 	}
 
+	@Override
 	public String getPType() {
 		return PType;
 	}
 
-	public void setPType(String type) {
-		this.PType = type;
+	public void setPType(String PType) {
+		this.PType = PType;
 	}
 
+	@Override
 	public String getAddress() {
 		return address;
 	}
@@ -74,6 +77,7 @@ public class Phdthesis extends Publication {
 		this.address = address;
 	}
 
+	@Override
 	public String getMonth() {
 		return month;
 	}

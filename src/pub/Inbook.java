@@ -85,6 +85,12 @@ public class Inbook extends Publication {
 		this.chapter = chapter;
 	}
 
+	@Override
+	public String getChapterString() {
+		if (chapter == null) return "";
+		return chapter.toString();
+	}
+	
 	public Integer getFirstPage() {
 		return firstPage;
 	}
@@ -101,6 +107,7 @@ public class Inbook extends Publication {
 		this.lastPage = lastPage;
 	}
 
+	@Override
 	public String getPublisher() {
 		return publisher;
 	}
@@ -124,6 +131,12 @@ public class Inbook extends Publication {
 	public void setVolume(Integer volume) {
 		this.volume = volume;
 	}
+	
+	@Override
+	public String getVolumeString() {
+		if (volume == null) return "";
+		return volume.toString();
+	}
 
 	public Integer getNumber() {
 		return number;
@@ -132,7 +145,14 @@ public class Inbook extends Publication {
 	public void setNumber(Integer number) {
 		this.number = number;
 	}
+	
+	@Override
+	public String getNumberString() {
+		if (volume == null) return "";
+		return number.toString();
+	}
 
+	@Override
 	public String getSeries() {
 		return series;
 	}
@@ -141,14 +161,16 @@ public class Inbook extends Publication {
 		this.series = series;
 	}
 
+	@Override
 	public String getPType() {
 		return PType;
 	}
 
-	public void setPType(String IBType) {
-		this.PType = IBType;
+	public void setPType(String IBPType) {
+		this.PType = IBPType;
 	}
 
+	@Override
 	public String getAddress() {
 		return address;
 	}
@@ -157,6 +179,7 @@ public class Inbook extends Publication {
 		this.address = address;
 	}
 
+	@Override
 	public String getEdition() {
 		return edition;
 	}
@@ -165,6 +188,7 @@ public class Inbook extends Publication {
 		this.edition = edition;
 	}
 
+	@Override
 	public String getMonth() {
 		return month;
 	}
@@ -182,6 +206,13 @@ public class Inbook extends Publication {
 	public void setPages(Integer first, Integer last) {
 		firstPage = first;
 		lastPage = last;
+	}
+	
+	@Override
+	public String getPageString() {
+		if (firstPage == null || lastPage == null)
+			return "";
+		return firstPage.toString() + " -- " + lastPage.toString();
 	}
 
 	@Override

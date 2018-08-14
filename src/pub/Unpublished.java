@@ -46,6 +46,7 @@ public class Unpublished extends Publication {
 		this.year = year;
 	}
 
+	@Override
 	public String getMonth() {
 		return month;
 	}

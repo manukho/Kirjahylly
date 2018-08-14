@@ -62,6 +62,7 @@ public class Book extends Publication {
 		this.title = title;
 	}
 
+	@Override
 	public String getPublisher() {
 		return publisher;
 	}
@@ -92,6 +93,12 @@ public class Book extends Publication {
 	public void setVolume(Integer volume) {
 		this.volume = volume;
 	}
+	
+	@Override
+	public String getVolumeString() {
+		if (volume == null) return "";
+		return volume.toString();
+	}
 
 	public Integer getNumber() {
 		return number;
@@ -101,6 +108,12 @@ public class Book extends Publication {
 		this.number = number;
 	}
 
+	@Override
+	public String getNumberString() {
+		if (number == null) return "";
+		return number.toString();
+	}
+	
 	public String getSeries() {
 		return series;
 	}
@@ -109,6 +122,7 @@ public class Book extends Publication {
 		this.series = series;
 	}
 
+	@Override
 	public String getAddress() {
 		return address;
 	}
@@ -125,6 +139,7 @@ public class Book extends Publication {
 		this.edition = edition;
 	}
 
+	@Override
 	public String getMonth() {
 		return month;
 	}
@@ -133,6 +148,7 @@ public class Book extends Publication {
 		this.month = month;
 	}
 
+	@Override
 	public String getUrl() {
 		return url;
 	}

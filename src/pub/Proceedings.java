@@ -59,6 +59,12 @@ public class Proceedings extends Publication {
 	public void setVolume(Integer volume) {
 		this.volume = volume;
 	}
+	
+	@Override
+	public String getVolumeString() {
+		if (volume == null) return "";
+		return volume.toString();
+	}
 
 	public Integer getNumber() {
 		return number;
@@ -67,7 +73,14 @@ public class Proceedings extends Publication {
 	public void setNumber(Integer number) {
 		this.number = number;
 	}
+	
+	@Override
+	public String getNumberString() {
+		if (volume == null) return "";
+		return number.toString();
+	}
 
+	@Override
 	public String getSeries() {
 		return series;
 	}
@@ -76,6 +89,7 @@ public class Proceedings extends Publication {
 		this.series = series;
 	}
 
+	@Override
 	public String getAddress() {
 		return address;
 	}
@@ -84,6 +98,7 @@ public class Proceedings extends Publication {
 		this.address = address;
 	}
 
+	@Override
 	public String getMonth() {
 		return month;
 	}
@@ -92,6 +107,7 @@ public class Proceedings extends Publication {
 		this.month = month;
 	}
 
+	@Override
 	public String getPublisher() {
 		return publisher;
 	}
@@ -100,6 +116,7 @@ public class Proceedings extends Publication {
 		this.publisher = publisher;
 	}
 
+	@Override
 	public String getOrganization() {
 		return organization;
 	}

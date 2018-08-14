@@ -37,6 +37,7 @@ public class Misc extends Publication {
 		this.title = title;
 	}
 
+	@Override
 	public String getHowpublished() {
 		return howpublished;
 	}
@@ -45,6 +46,7 @@ public class Misc extends Publication {
 		this.howpublished = howpublished;
 	}
 
+	@Override
 	public String getMonth() {
 		return month;
 	}

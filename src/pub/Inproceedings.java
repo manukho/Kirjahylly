@@ -51,6 +51,7 @@ public class Inproceedings extends Publication {
 		this.title = title;
 	}
 
+	@Override
 	public String getBooktitle() {
 		return booktitle;
 	}
@@ -82,6 +83,12 @@ public class Inproceedings extends Publication {
 	public void setVolume(Integer volume) {
 		this.volume = volume;
 	}
+	
+	@Override
+	public String getVolumeString() {
+		if (volume == null) return "";
+		return volume.toString();
+	}
 
 	public Integer getNumber() {
 		return number;
@@ -90,7 +97,14 @@ public class Inproceedings extends Publication {
 	public void setNumber(Integer number) {
 		this.number = number;
 	}
+	
+	@Override
+	public String getNumberString() {
+		if (volume == null) return "";
+		return number.toString();
+	}
 
+	@Override
 	public String getSeries() {
 		return series;
 	}
@@ -114,7 +128,15 @@ public class Inproceedings extends Publication {
 	public void setLastPage(Integer lastPage) {
 		this.lastPage = lastPage;
 	}
+	
+	@Override
+	public String getPageString() {
+		if (firstPage == null || lastPage == null)
+			return "";
+		return firstPage.toString() + " -- " + lastPage.toString();
+	}
 
+	@Override
 	public String getAddress() {
 		return address;
 	}
@@ -123,6 +145,7 @@ public class Inproceedings extends Publication {
 		this.address = address;
 	}
 
+	@Override
 	public String getMonth() {
 		return month;
 	}
@@ -131,6 +154,7 @@ public class Inproceedings extends Publication {
 		this.month = month;
 	}
 
+	@Override
 	public String getOrganization() {
 		return organization;
 	}
@@ -138,7 +162,8 @@ public class Inproceedings extends Publication {
 	public void setOrganization(String organization) {
 		this.organization = organization;
 	}
-
+	
+	@Override
 	public String getPublisher() {
 		return publisher;
 	}

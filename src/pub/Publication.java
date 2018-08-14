@@ -109,6 +109,135 @@ public abstract class Publication {
 		return "";
 	}
 	
+	/**
+	 * If the subclass has a volume, then the volume should be returned as a String
+	 * Otherwise, the return value is an empty String.
+	 */
+	public String getVolumeString() {
+		return "";
+	}
+	
+	/**
+	 * This method will be overridden by most subclasses.
+	 * If the subclass has a number, then the number should be returned as a String
+	 * Otherwise, the return value is an empty String.
+	 */
+	public String getNumberString() {
+		return "";
+	}
+	
+	/**
+	 * If the subclass has pages, then the pages should be returned as a String
+	 * Otherwise, the return value is an empty String.
+	 */
+	public String getPageString() {
+		return "";
+	}
+	
+	/**
+	 * If the subclass has a month, then the month should be returned as a String
+	 * Otherwise, the return value is an empty String.
+	 */
+	public String getMonth() {
+		return "";
+	}
+	
+	/**
+	 * If the subclass has a URL, then the URL should be returned as a String
+	 * Otherwise, the return value is an empty String.
+	 */
+	public String getUrl() {
+		return "";
+	}
+	
+	/**
+	 * If the subclass has an address, then the address should be returned as a String
+	 * Otherwise, the return value is an empty String.
+	 */
+	public String getAddress() {
+		return "";
+	}
+
+	/**
+	 * If the subclass has a publisher, this method should be overwritten and the publisher be returned as a String
+	 * Otherwise, the return value is an empty String.
+	 */	
+	public String getPublisher() {
+		return "";
+	}
+	
+	/**
+	 * If the subclass has a series, this method should be overwritten and the series be returned as a String
+	 * Otherwise, the return value is an empty String.
+	 */	
+	public String getSeries() {
+		return "";
+	}
+	
+	/**
+	 * If the subclass has an edition, this method should be overwritten and the edition be returned as a String
+	 * Otherwise, the return value is an empty String.
+	 */	
+	public String getEdition() {
+		return "";
+	}
+	
+	/**
+	 * If the subclass has an edition, this method should be overwritten and the edition be returned as a String
+	 * Otherwise, the return value is an empty String.
+	 */	
+	public String getHowpublished() {
+		return "";
+	}
+	
+	/**
+	 * If the subclass has a chapter, this method should be overwritten and the chapter be returned as a String
+	 * Otherwise, the return value is an empty String.
+	 */	
+	public String getChapterString() {
+		return "";
+	}
+	
+	/**
+	 * If the subclass has a type, this method should be overwritten and the type be returned as a String
+	 * Otherwise, the return value is an empty String.
+	 */	
+	public String getPType() {
+		return "";
+	}
+	
+	/**
+	 * If the subclass has a booktitle, this method should be overwritten and the booktitle be returned as a String
+	 * Otherwise, the return value is an empty String.
+	 */	
+	public String getBooktitle() {
+		return "";
+	}
+
+	/**
+	 * If the subclass has an organization, this method should be overwritten and the organization be returned as a String
+	 * Otherwise, the return value is an empty String.
+	 */	
+	public String getOrganization() {
+		return "";
+	}
+	
+	/**
+	 * If the subclass has an institution, this method should be overwritten and the institution be returned as a String
+	 * Otherwise, the return value is an empty String.
+	 */	
+	public String getInstitution() {
+		return "";
+	}
+	
+	/**
+	 * If the subclass has a school, this method should be overwritten and the school be returned as a String
+	 * Otherwise, the return value is an empty String.
+	 */	
+	public String getSchool() {
+		return "";
+	}
+	
 	/*
 	 * the following methods do not do anything and are just here for convenience.
 	 * if the respective fields exist in the subclass, they will be overwritten 

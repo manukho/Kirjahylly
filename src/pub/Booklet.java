@@ -39,6 +39,7 @@ public class Booklet extends Publication {
 		this.authors = authors;
 	}
 
+	@Override
 	public String getHowpublished() {
 		return howpublished;
 	}
@@ -47,6 +48,7 @@ public class Booklet extends Publication {
 		this.howpublished = howpublished;
 	}
 
+	@Override
 	public String getAddress() {
 		return address;
 	}
@@ -55,6 +57,7 @@ public class Booklet extends Publication {
 		this.address = address;
 	}
 
+	@Override
 	public String getMonth() {
 		return month;
 	}

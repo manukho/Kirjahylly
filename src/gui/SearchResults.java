@@ -113,6 +113,7 @@ public class SearchResults extends JPanel {
     			@Override
     			public void actionPerformed(ActionEvent e) {
     				int row = table.getSelectedRow();
+    				System.out.println(table.getModel().getValueAt(row, 0));
                     lm.getBSByName(s).addPub(getById((Integer)table.getModel().getValueAt(row, 0)));;
     			}
         	});

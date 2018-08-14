@@ -71,6 +71,11 @@ public class Article extends Publication {
 		volume = vol;
 	}
 	
+	@Override
+	public String getVolumeString() {
+		return volume.toString();
+	}
+	
 	public Integer getNumber() {
 		return number;
 	}
@@ -78,6 +83,12 @@ public class Article extends Publication {
 	@Override
 	public void setNumber(Integer n) {
 		number = n;
+	}
+	
+	@Override
+	public String getNumberString() {
+		if (number == null) return "";
+		return number.toString();
 	}
 	
 	@Override
@@ -94,6 +105,7 @@ public class Article extends Publication {
 		firstPage = p;
 	}
 	
+	@Override
 	public String getMonth() {
 		return month;
 	}
@@ -104,6 +116,13 @@ public class Article extends Publication {
 	
 	public void setLastPage(Integer p) {
 		lastPage = p;
+	}
+	
+	@Override
+	public String getPageString() {
+		if (firstPage == null || lastPage == null)
+			return "";
+		return firstPage.toString() + " -- " + lastPage.toString();
 	}
 	
 	@Override

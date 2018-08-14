@@ -54,6 +54,7 @@ public class Incollection extends Publication {
 		this.title = title;
 	}
 
+	@Override
 	public String getBooktitle() {
 		return booktitle;
 	}
@@ -62,6 +63,7 @@ public class Incollection extends Publication {
 		this.booktitle = booktitle;
 	}
 
+	@Override
 	public String getPublisher() {
 		return publisher;
 	}
@@ -93,6 +95,12 @@ public class Incollection extends Publication {
 	public void setVolume(Integer volume) {
 		this.volume = volume;
 	}
+	
+	@Override
+	public String getVolumeString() {
+		if (volume == null) return "";
+		return volume.toString();
+	}
 
 	public Integer getNumber() {
 		return number;
@@ -101,7 +109,14 @@ public class Incollection extends Publication {
 	public void setNumber(Integer number) {
 		this.number = number;
 	}
+	
+	@Override
+	public String getNumberString() {
+		if (volume == null) return "";
+		return number.toString();
+	}
 
+	@Override
 	public String getSeries() {
 		return series;
 	}
@@ -110,12 +125,13 @@ public class Incollection extends Publication {
 		this.series = series;
 	}
 
+	@Override
 	public String getPType() {
 		return PType;
 	}
 
-	public void setPType(String type) {
-		this.PType = type;
+	public void setPType(String PType) {
+		this.PType = PType;
 	}
 
 	public Integer getChapter() {
@@ -124,6 +140,12 @@ public class Incollection extends Publication {
 
 	public void setChapter(Integer chapter) {
 		this.chapter = chapter;
+	}
+	
+	@Override 
+	public String getChapterString() {
+		if (chapter == null) return "";
+		return chapter.toString();
 	}
 
 	public Integer getFirstPage() {
@@ -141,7 +163,15 @@ public class Incollection extends Publication {
 	public void setLastPage(Integer lastPage) {
 		this.lastPage = lastPage;
 	}
+	
+	@Override
+	public String getPageString() {
+		if (firstPage == null || lastPage == null)
+			return "";
+		return firstPage.toString() + " -- " + lastPage.toString();
+	}
 
+	@Override
 	public String getAddress() {
 		return address;
 	}
@@ -150,6 +180,7 @@ public class Incollection extends Publication {
 		this.address = address;
 	}
 
+	@Override
 	public String getEdition() {
 		return edition;
 	}
@@ -158,6 +189,7 @@ public class Incollection extends Publication {
 		this.edition = edition;
 	}
 
+	@Override
 	public String getMonth() {
 		return month;
 	}

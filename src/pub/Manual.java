@@ -40,6 +40,7 @@ public class Manual extends Publication {
 		this.authors = authors;
 	}
 
+	@Override
 	public String getOrganization() {
 		return organization;
 	}
@@ -48,6 +49,7 @@ public class Manual extends Publication {
 		this.organization = organization;
 	}
 
+	@Override
 	public String getAddress() {
 		return address;
 	}
@@ -56,6 +58,7 @@ public class Manual extends Publication {
 		this.address = address;
 	}
 
+	@Override
 	public String getEdition() {
 		return edition;
 	}
@@ -64,6 +67,7 @@ public class Manual extends Publication {
 		this.edition = edition;
 	}
 
+	@Override
 	public String getMonth() {
 		return month;
 	}
