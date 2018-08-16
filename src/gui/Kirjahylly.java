@@ -35,6 +35,8 @@ public class Kirjahylly extends JFrame {
 	static DBManagement dbm;
 	private Bookstack defaultBS;
 	private SearchResults sr;
+	private Bookstacks stacks;
+	private ArrayList<String> keys;
 	
     private static final long serialVersionUID = 1L;
 
@@ -46,6 +48,7 @@ public class Kirjahylly extends JFrame {
 	public Kirjahylly() {
 		super("Kirjahylly");
 		kh = this;
+		keys = new ArrayList<String>();
 		defaultBS = new Bookstack("unnamed");
 		dir = System.getProperty("user.home") + File.separator + "Kirjahylly";
 		File f = new File(dir);
@@ -61,8 +64,10 @@ public class Kirjahylly extends JFrame {
 		
 		searchBar = new SearchBar(this);
 		add(searchBar, BorderLayout.NORTH);
-		sr = new SearchResults();
+		sr = SearchResults.getSR();
 		add(sr, BorderLayout.CENTER);
+		stacks = Bookstacks.getInstance();
+		add(stacks, BorderLayout.WEST);
 		
 		pack();
 	}
@@ -198,17 +203,16 @@ public class Kirjahylly extends JFrame {
 		pack();
 	}
 	
-	public void setBookstack(Bookstack bs) {
-		defaultBS = bs;
-	}
-	
 	public Bookstack getCurrBS() {
 		return defaultBS;
 	}
 	
-	public SearchResults getSR() {
-		if (sr == null) sr = new SearchResults();
-		sr.validate();
-		return sr;
+	public boolean isKeyUnique(String key) {
+		if (keys.contains(key)) return false;
+		return true;
+	}
+	
+	void addKey(String key) {
+		keys.add(key);
 	}
 }

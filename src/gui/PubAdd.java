@@ -209,7 +209,7 @@ public class PubAdd extends JPanel implements ActionListener{
 			if (b.getAddress() != null) addressF.setText(b.getAddress());
 			if (b.getEdition() != null) editionF.setText(b.getEdition());
 			if (b.getMonth() != null) monthBox.setSelectedIndex(getMonthIndex(b.getMonth()));
-			if (b.getUrl() != null) urlF.setText(b.getUrl());
+			if (b.getURL() != null) urlF.setText(b.getURL());
 			if (b.getNote() != null) noteF.setText(b.getNote());
 			if (b.getKey() != null) keyF.setText(b.getKey());
 		}

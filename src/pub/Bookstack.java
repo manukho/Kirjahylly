@@ -22,5 +22,18 @@ public class Bookstack {
 	public void addPub(Publication p) {
 		pubs.add(p);
 	}
+	
+	public void clearStack() {
+		pubs.clear();
+	}
+	
+	@Override
+	public String toString() {
+		return name;
+	}
+	
+	public ArrayList<Publication> getPublications(){
+		return pubs;
+	}
 
 }

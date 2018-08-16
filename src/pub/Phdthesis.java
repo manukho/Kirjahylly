@@ -70,6 +70,7 @@ public class Phdthesis extends Publication {
 
 	@Override
 	public String getAddress() {
+		if (address == null || address.isEmpty()) return "";
 		return address;
 	}
 

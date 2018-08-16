@@ -47,6 +47,7 @@ public class Article extends Publication {
 		journal = j;
 	}
 	
+	@Override
 	public Integer getYear() {
 		return year;
 	}

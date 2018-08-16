@@ -23,7 +23,6 @@ import javax.swing.event.PopupMenuListener;
 import javax.swing.table.DefaultTableModel;
 
 import db.DBManagement;
-import pub.LitManagement;
 import pub.Publication;
 
 public class SearchResults extends JPanel {
@@ -32,15 +31,22 @@ public class SearchResults extends JPanel {
 	DefaultTableModel model;
 	ArrayList<Publication> tmp;
 	DBManagement dbm;
-	LitManagement lm;
+	Bookstacks bs;
     private static final long serialVersionUID = 1L;
+    private JMenu addToStack;
+    private static SearchResults sr;
 	
-	SearchResults(){
+    public static SearchResults getSR() {
+    	if (sr == null) sr = new SearchResults();
+    	return sr;
+    }
+    
+	private SearchResults(){
 		super();
 		
 		dbm = DBManagement.getInstance();
-		lm = LitManagement.getLitManagementInstance();
 		tmp = new ArrayList<Publication>();
+		bs = Bookstacks.getInstance();
 		
 		setLayout(new GridLayout());
 		String[] columnNames = {"Title", "Author(s)", "Year"};
@@ -103,22 +109,9 @@ public class SearchResults extends JPanel {
 		/* add popup menu on table */
         final JPopupMenu popupMenu = new JPopupMenu();
         
-        JMenu addToStack = new JMenu("Add to Stack");
+        addToStack = new JMenu("Add to Stack");
         
-        ArrayList<String> stacklist = new ArrayList<String>();
-        stacklist.addAll(lm.getBSNames());
-        for (String s: stacklist) {
-        	JMenuItem stackItem = new JMenuItem(s);
-        	stackItem.addActionListener(new ActionListener() {
-    			@Override
-    			public void actionPerformed(ActionEvent e) {
-    				int row = table.getSelectedRow();
-    				System.out.println(table.getModel().getValueAt(row, 0));
-                    lm.getBSByName(s).addPub(getById((Integer)table.getModel().getValueAt(row, 0)));;
-    			}
-        	});
-        	addToStack.add(stackItem);
-        }
+        reloadStackMenu();
         
         popupMenu.add(addToStack);
                 
@@ -159,6 +152,7 @@ public class SearchResults extends JPanel {
                 SwingUtilities.invokeLater(new Runnable() {
                     @Override
                     public void run() {
+                    	reloadStackMenu();
                         int row = table.rowAtPoint(SwingUtilities.convertPoint(popupMenu, new Point(0, 0), table));
                         if (row > -1) {
                             table.setRowSelectionInterval(row, row);
@@ -183,6 +177,22 @@ public class SearchResults extends JPanel {
 		add(sp);
 	}
 	
+	private void reloadStackMenu() {
+    	addToStack.removeAll();
+        ArrayList<String> stacklist = bs.getStackNames();
+        for (String s: stacklist) {
+        	JMenuItem stackItem = new JMenuItem(s);
+        	stackItem.addActionListener(new ActionListener() {
+    			@Override
+    			public void actionPerformed(ActionEvent e) {
+    				int row = table.getSelectedRow();
+                    bs.getStackByName(s).addPub(tmp.get(row));
+    			}
+        	});
+        	addToStack.add(stackItem);
+        }		
+	}
+
 	public void addRow(Publication p) {
 		tmp.add(p);
 		Object[] obj = new Object[] {p.getTitle(), p.getAuthorString(), p.getYearString()};
@@ -200,12 +210,5 @@ public class SearchResults extends JPanel {
 	public void clear() {
 		model.setRowCount(0);
 		tmp.clear();
-	}
-	
-	private Publication getById(int id) {
-		for (Publication pub : tmp) {
-			if (pub.getId() == id) return pub;
-		}
-		return null;
 	}
 }

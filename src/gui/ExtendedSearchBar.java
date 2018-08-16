@@ -31,7 +31,7 @@ public class ExtendedSearchBar extends JPanel {
 		super();
 		kh = k;
 		dbm = kh.getDBM();
-		sr = kh.getSR();
+		sr = SearchResults.getSR();
 		setPreferredSize(new Dimension(1000, 100));
 		setLayout(new GridBagLayout());
 		GridBagConstraints c = new GridBagConstraints();
@@ -93,7 +93,7 @@ public class ExtendedSearchBar extends JPanel {
 			
 			ArrayList<Publication> list = dbm.search(title, author, year);
 			
-			sr = kh.getSR();
+			sr = SearchResults.getSR();
 			
 			sr.clear();
 			sr.addRows(list);

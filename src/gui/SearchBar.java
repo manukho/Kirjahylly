@@ -34,7 +34,7 @@ public class SearchBar extends JPanel {
 		sb = this;
 		kh = k;
 		dbm = kh.getDBM();
-		sr = kh.getSR();
+		sr = SearchResults.getSR();
 		setSize(1000, 30);
 		setLayout(new FlowLayout());
 		searchField = new JTextField();
@@ -60,9 +60,7 @@ public class SearchBar extends JPanel {
 			}
 			
 			ArrayList<Publication> list = dbm.searchAll(text);
-			
-			sr = kh.getSR();
-			
+						
 			sr.clear();
 			sr.addRows(list);
 		}

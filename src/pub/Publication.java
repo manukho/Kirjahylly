@@ -2,6 +2,8 @@ package pub;
 
 import java.util.ArrayList;
 
+import gui.Kirjahylly;
+
 /**
  * Publication represents a generic publication. 
  * It contains the fields id, note and key that all subclasses have as well as the getters and setters for them.
@@ -27,6 +29,7 @@ public abstract class Publication {
 	}
 	
 	public String getKey() {
+		if (key == null || key.isEmpty()) generateKey();
 		return key;
 	}
 	
@@ -65,7 +68,7 @@ public abstract class Publication {
 		
 		// now make sure the key is unique
 		int counter = 0;
-		while (!LitManagement.getLitManagementInstance().isKeyUnique(k.append(counter).toString())) {
+		while (!Kirjahylly.getKH().isKeyUnique(k.append(counter).toString())) {
 			k.replace(k.length() - String.valueOf(counter).length(), k.length(), "");
 			counter++;
 		}
@@ -146,7 +149,7 @@ public abstract class Publication {
 	 * If the subclass has a URL, then the URL should be returned as a String
 	 * Otherwise, the return value is an empty String.
 	 */
-	public String getUrl() {
+	public String getURL() {
 		return "";
 	}
 	
@@ -236,6 +239,10 @@ public abstract class Publication {
 	 */	
 	public String getSchool() {
 		return "";
+	}
+	
+	public Integer getYear() {
+		return null;
 	}
 	
 	/*

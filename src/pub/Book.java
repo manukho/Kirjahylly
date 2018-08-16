@@ -124,6 +124,7 @@ public class Book extends Publication {
 
 	@Override
 	public String getAddress() {
+		if (address == null || address.isEmpty()) return "";
 		return address;
 	}
 
@@ -149,7 +150,8 @@ public class Book extends Publication {
 	}
 
 	@Override
-	public String getUrl() {
+	public String getURL() {
+		if (url == null || url.isEmpty()) return "";
 		return url;
 	}
 
