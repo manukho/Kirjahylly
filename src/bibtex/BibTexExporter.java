@@ -18,7 +18,7 @@ public class BibTexExporter {
 		if (!p.getTitle().isEmpty()) bibtex.append(getFieldText("title", p.getTitle()));
 		if (!p.getAuthorString().isEmpty()) bibtex.append(getNameFieldText("author", p.getAuthors()));
 		if (!p.getEditorString().isEmpty()) bibtex.append(getNameFieldText("editor", p.getEditors()));
-		if (p.getType().equals("journal")) bibtex.append(getFieldText("journal", ((Article) p).getJournal()));
+		if (p.getType().equals("article")) bibtex.append(getFieldText("journal", ((Article) p).getJournal()));
 		if (p.getYear() != null) bibtex.append(getFieldText("year", p.getYearString()));
 		if (!p.getVolumeString().isEmpty()) bibtex.append(getFieldText("volume", p.getVolumeString()));
 		if (!p.getNumberString().isEmpty()) bibtex.append(getFieldText("number", p.getNumberString()));

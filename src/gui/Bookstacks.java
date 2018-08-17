@@ -75,7 +75,7 @@ public class Bookstacks extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				String bibtex = new BibTexExporter().toBibTex(list.getSelectedValue().getPublications());
-				System.out.println("what should we do with a bibtex entry early in the morning?");
+				// TODO: do something with this
 				System.out.println(bibtex);
 			}
 		});
@@ -106,9 +106,7 @@ public class Bookstacks extends JPanel {
 		list.addMouseListener(new MouseAdapter() {
 			public void mousePressed(MouseEvent e) {
 				if (SwingUtilities.isLeftMouseButton(e)) {
-					System.out.println("Left button on row " + list.locationToIndex(e.getPoint()));
 					list.setSelectedIndex(list.locationToIndex(e.getPoint()));
-					System.out.println("should show content of selected stack now");
 					sr = SearchResults.getSR();
 					sr.clear();
 					sr.addRows(list.getSelectedValue().getPublications());

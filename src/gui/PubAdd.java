@@ -142,7 +142,7 @@ public class PubAdd extends JPanel implements ActionListener{
 	PubAdd(Publication p, boolean add){
 		if (!add) modify = true;
 		else modify = false;
-		if (!add) id = p.getId();
+		if (modify) id = p.getId();
 		pubClassSel = p.getType();
 		createElements();
 		Dimension d = new Dimension(600,600);
@@ -228,7 +228,7 @@ public class PubAdd extends JPanel implements ActionListener{
 		if (p.getType().equals("inbook")) {
 			Inbook ib = (Inbook) p;
 			showInbook();
-			titleF.setText(ib.getTitle());
+			if (ib.getTitle() != null) titleF.setText(ib.getTitle());
 			if (!ib.getAuthors().isEmpty()) {
 				aeBox.setSelectedIndex(0);
 				authedF.setText(ib.getAuthorString());
@@ -236,11 +236,11 @@ public class PubAdd extends JPanel implements ActionListener{
 				aeBox.setSelectedIndex(1);
 				authedF.setText(ib.getEditorString());
 			}
-			chapF.setText(ib.getChapter().toString());
-			pagesF1.setText(ib.getFirstPage().toString());
-			pagesF2.setText(ib.getLastPage().toString());
-			publF.setText(ib.getPublisher());
-			yearF.setText(ib.getYearString());
+			if (ib.getChapter() != null) chapF.setText(ib.getChapter().toString());
+			if (ib.getFirstPage() != null)pagesF1.setText(ib.getFirstPage().toString());
+			if (ib.getLastPage() != null)pagesF2.setText(ib.getLastPage().toString());
+			if (ib.getPublisher() != null) publF.setText(ib.getPublisher());
+			if (ib.getYearString() != null) yearF.setText(ib.getYearString());
 			if (ib.getVolume() != null) volumeF.setText(ib.getVolume().toString());
 			if (ib.getNumber() != null) numberF.setText(ib.getNumber().toString());
 			if (ib.getSeries() != null) seriesF.setText(ib.getSeries());
@@ -386,7 +386,6 @@ public class PubAdd extends JPanel implements ActionListener{
 	}
 
 	private void setSelectedIndexOfPubClassList(String type) {
-		System.out.println("setSelectedIndexOfPubClassList");
 		pubClasses = new String[] {"article", "book", "booklet", "inbook", "incollection", "inproceedings", "manual", "mastersthesis", "misc", "phdthesis", "proceedings", "techreport", "unpublished"};
 		for (int i = 0; i < pubClasses.length; i++) {
 			if (type.equals(pubClasses[i])) {
@@ -394,7 +393,6 @@ public class PubAdd extends JPanel implements ActionListener{
 				
 			}
 		}
-		System.out.println("Index selected: " + pubClassList.getSelectedIndex());
 	}
 
 
@@ -409,7 +407,6 @@ public class PubAdd extends JPanel implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (!modify) { 
-			System.out.println("here! modify = " + modify);
 			pubClassSel = (String) pubClassList.getSelectedItem();
 		}
 		if (pubClassSel.equals("article")) showArticle();

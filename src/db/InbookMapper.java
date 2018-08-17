@@ -18,12 +18,12 @@ public interface InbookMapper {
 	String selectByYear = "SELECT * from inbooks where year=#{y}";
 	String selectByTitleAndYear = "SELECT * from inbooks where UPPER(title) LIKE UPPER(#{s}) AND year=#{y}";
 	String insert = "INSERT INTO inbooks(id, title, chapter, firstPage, lastPage, publisher, year, "
-			+ "volume, number, series, IBType, address, edition, month, note, key) "
+			+ "volume, number, series, type, address, edition, month, note, key) "
 			+ "VALUES (#{id}, #{title}, #{chapter}, #{firstPage}, #{lastPage}, #{publisher}, #{year}, "
 			+ "#{volume}, #{number}, #{series}, #{PType}, #{address}, #{edition}, #{month}, #{note}, #{key})";
 	String update = "UPDATE inbooks SET title=#{title}, chapter=#{chapter}, "
 			+ "firstPage=#{firstPage}, lastPage=#{lastPage}, publisher=#{publisher}, year=#{year}, "
-			+ "volume=#{volume}, number=#{number}, series=#{series}, IBType=#{PType}, "
+			+ "volume=#{volume}, number=#{number}, series=#{series}, type=#{PType}, "
 			+ "address=#{address}, edition=#{edition}, month=#{month}, note=#{note}, key=#{key} WHERE id=#{id}";
 	String delete = "DELETE FROM inbooks WHERE id = #{id}";
 	String deleteAll = "DELETE from inbooks";

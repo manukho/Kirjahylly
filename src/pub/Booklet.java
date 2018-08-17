@@ -83,7 +83,7 @@ public class Booklet extends Publication {
 
 	@Override
 	void generateKey() {
-
+		// TODO: implement generateKey() for booklets
 	}
 	
 	public String toString() {

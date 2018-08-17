@@ -121,13 +121,21 @@ public class SearchResults extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				int row = table.getSelectedRow();
                 Publication p = tmp.get(row);
-				PubAdd pa = new PubAdd(p, true);
+				PubAdd pa = new PubAdd(p, false);
 				int option = JOptionPane.showConfirmDialog(null, pa, "modify " + p.getType(), JOptionPane.OK_CANCEL_OPTION);
 				if (option == JOptionPane.OK_OPTION) { // otherwise do nothing
-					p = pa.getPublication();
-					addRow(p);
-					dbm.updatePublication(p);
-					tmp.set(row, p);
+					if (!pa.validateInput()) {
+						String errMsg = pa.getErrMsg();
+						JOptionPane.showMessageDialog(sr, errMsg, "Error", JOptionPane.ERROR_MESSAGE);
+						pa.clearErrMsg();
+					} else {
+						p = pa.getPublication();//						
+						if (p != null) {
+							replaceRow(row, p);
+							dbm.updatePublication(p);
+							tmp.set(row, p);
+						}
+					}	
 				}
 			}
         });
@@ -197,6 +205,13 @@ public class SearchResults extends JPanel {
 		tmp.add(p);
 		Object[] obj = new Object[] {p.getTitle(), p.getAuthorString(), p.getYearString()};
 		model.addRow(obj);
+	}
+	
+	public void replaceRow(int row, Publication p) {
+		tmp.set(row, p);
+		model.setValueAt(p.getTitle(), row, 0);
+		model.setValueAt(p.getAuthorString(), row, 1);
+		model.setValueAt(p.getYearString(), row, 2);
 	}
 	
 	public void addRows(ArrayList<Publication> list) {

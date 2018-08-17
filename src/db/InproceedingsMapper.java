@@ -23,10 +23,10 @@ public interface InproceedingsMapper {
 			+ "lastPage, address, month, organization, publisher, note, key) "
 			+ "VALUES (#{id}, #{title}, #{booktitle}, #{year}, #{volume}, #{number}, #{series}, #{firstPage}, "
 			+ "#{lastPage}, #{address}, #{month}, #{organization}, #{publisher}, #{note}, #{key})";
-	String update = "UPDATE incollections SET title=#{title}, booktitle=#{booktitle}, year=#{year}, "
+	String update = "UPDATE inproceedings SET title=#{title}, booktitle=#{booktitle}, year=#{year}, "
 			+ "volume=#{volume}, number=#{number}, series=#{series}, firstPage=#{firstPage}, "
 			+ "lastPage=#{lastPage}, address=#{address}, month=#{month}, organization=#{organization}, "
-			+ "publisher=#{publisher}, note=#{note}, key#={key} WHERE id=#{id}";
+			+ "publisher=#{publisher}, note=#{note}, key=#{key} WHERE id=#{id}";
 	String delete = "DELETE FROM inproceedings WHERE id = #{id}";
 	String deleteAll = "DELETE from inproceedings";
 	String exists = "SELECT count(*) FROM information_schema.TABLES WHERE TABLE_NAME LIKE 'INPROCEEDINGS'";

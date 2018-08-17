@@ -24,7 +24,7 @@ public interface IncollectionMapper {
 			+ "#{PType}, #{chapter}, #{firstPage}, #{lastPage}, #{address}, #{edition}, #{month}, #{note}, #{key})";
 	String update = "UPDATE incollections SET title=#{title}, booktitle=#{booktitle}, "
 			+ "publisher=#{publisher}, year=#{year}, volume=#{volume}, number=#{number}, series=#{series}, "
-			+ "ICType=#{PType}, chapter#{chapter}, firstPage=#{firstPage}, lastPage=#{lastPage}, "
+			+ "ICType=#{PType}, chapter=#{chapter}, firstPage=#{firstPage}, lastPage=#{lastPage}, "
 			+ "address=#{address}, edition=#{edition}, month=#{month}, note=#{note}, key=#{key} WHERE id=#{id}";
 	String delete = "DELETE FROM incollections WHERE id = #{id}";
 	String deleteAll = "DELETE from incollections";
