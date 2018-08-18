@@ -85,102 +85,117 @@ public class BibTexParser {
 	}
 
 	private Publication addFields(Publication p, String rest) {
+		// fieldName = {val}
 		Pattern pattern = Pattern.compile("(\\w*)\\s=\\s\\{([^\\}]*)\\}");
 		Matcher matcher = pattern.matcher(rest);
 		while(matcher.find()) {
-			// fieldName = {val}
 			String fieldName = matcher.group(1);
 			String val = matcher.group(2);
 			int end = matcher.end();
 			String string = getValue(val, end, rest);
-			switch(fieldName.toLowerCase()) {
-			case "title": 
-				p.setTitle(string);
-				break;
-			case "author":
-				p.setAuthors(getPersonList(string));
-				break;
-			case "editor":
-				p.setEditors(getPersonList(string));
-				break;
-			case "journal":
-				p.setJournal(string);
-				break;
-			case "volume":
-				Integer vol = getNumber(string);
-				if (vol != null) {
-					p.setVolume(vol);
-				}
-				break;
-			case "number": 
-				Integer num = getNumber(string);
-				if (num != null) {
-					p.setNumber(num);
-				}
-				break;
-			case "month": 
-				p.setMonth(string);
-				break;
-			case "year":
-				Integer y = getNumber(string);
-				if (y != null) {
-					p.setYear(y);
-				}
-				break;
-			case "pages":
-				Integer[] pages = getPages(string);
-				if (pages != null) {
-					p.setPages(pages[0], pages[1]);
-				}
-				break;
-			case "booktitle":
-				p.setBooktitle(string);
-				break;
-			case "publisher":
-				p.setPublisher(string);
-				break;
-			case "address":
-				p.setAddress(string);
-				break;
-			case "edition":
-				p.setEdition(string);
-				break;
-			case "url":
-				p.setURL(string);
-				break;
-			case "note":
-				p.setNote(string);
-				break;
-			case "key":
-				p.setKey(string);
-				break;
-			case "howpublished":
-				p.setHowpublished(string);
-				break;
-			case "chapter":
-				Integer c = getNumber(string);
-				if (c != null) {
-					p.setChapter(c);
-				}
-				break;
-			case "series":
-				p.setSeries(string);
-				break;
-			case "type":
-				p.setPType(string);
-				break;
-			case "organization":
-				p.setOrganization(string);
-				break;
-			case "school":
-				p.setSchool(string);
-				break;
-			case "institution":
-				p.setInstitution(string);
-			}
+			setField(fieldName.toLowerCase(), string, p);
+		}
+		// fieldName = "val"
+		Pattern pattern2 = Pattern.compile("(\\w*)\\s=\\s\"([^\\}]*)\"");
+		Matcher matcher2 = pattern2.matcher(rest);
+		while(matcher2.find()) {
+			String fieldName = matcher2.group(1);
+			String val = matcher2.group(2);
+			int end = matcher2.end();
+			String string = getValue(val, end, rest);
+			setField(fieldName.toLowerCase(), string, p);	
 		}
 		return p;
 	}
+	
+	private void setField(String fieldName, String string, Publication p) {
+		switch(fieldName) {
+		case "title": 
+			p.setTitle(string);
+			break;
+		case "author":
+			p.setAuthors(getPersonList(string));
+			break;
+		case "editor":
+			p.setEditors(getPersonList(string));
+			break;
+		case "journal":
+			p.setJournal(string);
+			break;
+		case "volume":
+			Integer vol = getNumber(string);
+			if (vol != null) {
+				p.setVolume(vol);
+			}
+			break;
+		case "number": 
+			Integer num = getNumber(string);
+			if (num != null) {
+				p.setNumber(num);
+			}
+			break;
+		case "month": 
+			p.setMonth(string);
+			break;
+		case "year":
+			Integer y = getNumber(string);
+			if (y != null) {
+				p.setYear(y);
+			}
+			break;
+		case "pages":
+			Integer[] pages = getPages(string);
+			if (pages != null) {
+				p.setPages(pages[0], pages[1]);
+			}
+			break;
+		case "booktitle":
+			p.setBooktitle(string);
+			break;
+		case "publisher":
+			p.setPublisher(string);
+			break;
+		case "address":
+			p.setAddress(string);
+			break;
+		case "edition":
+			p.setEdition(string);
+			break;
+		case "url":
+			p.setURL(string);
+			break;
+		case "note":
+			p.setNote(string);
+			break;
+		case "key":
+			p.setKey(string);
+			break;
+		case "howpublished":
+			p.setHowpublished(string);
+			break;
+		case "chapter":
+			Integer c = getNumber(string);
+			if (c != null) {
+				p.setChapter(c);
+			}
+			break;
+		case "series":
+			p.setSeries(string);
+			break;
+		case "type":
+			p.setPType(string);
+			break;
+		case "organization":
+			p.setOrganization(string);
+			break;
+		case "school":
+			p.setSchool(string);
+			break;
+		case "institution":
+			p.setInstitution(string);
+		}
+	}
+	
 	
 	private Integer[] getPages(String string) {
 		String[] s = string.split("--");
